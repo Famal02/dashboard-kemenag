@@ -51,7 +51,7 @@ import { createSelector } from "reselect";
 const Chat = props => {
 
   //meta title
-  document.title = "Chat | Minia - React Admin & Dashboard Template";
+  document.title = "Wakaf";
 
   const dispatch = useDispatch();
 
@@ -159,7 +159,7 @@ const Chat = props => {
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumb */}
-          <Breadcrumbs title="Apps" breadcrumbItem="Chat" />
+          <Breadcrumbs title="Menu Utama" breadcrumbItem="Wakaf" />
 
           <div className="d-lg-flex">
             <Card className="chat-leftsidebar">

@@ -15,7 +15,7 @@ import GaugeChart from "../AllCharts/echart/gaugechart";
 
 const EChart = () => {
    //meta title
-   document.title = "E Charts | Minia - React Admin & Dashboard Template";
+   document.title = "E Charts | Dashboard Kemenag";
   return (
     <React.Fragment>
       <div className="page-content">

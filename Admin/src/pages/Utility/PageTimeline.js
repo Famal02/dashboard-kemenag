@@ -10,7 +10,7 @@ import img2 from "../../assets/images/small/img-5.jpg";
 
 const PageTimeline = () => {
     //meta title
-    document.title = "Timeline | Minia - React Admin & Dashboard Template";
+    document.title = "Timeline | Dashboard Kemenag";
   return (
     <React.Fragment>
       <div className="page-content">

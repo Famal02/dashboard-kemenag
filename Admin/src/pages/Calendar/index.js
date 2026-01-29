@@ -51,7 +51,7 @@ import { createSelector } from "reselect";
 const Calender = (props) => {
 
   //meta title
-  document.title = "Calendar | Minia - React Admin & Dashboard Template";
+  document.title = "Calendar | Dashboard Kemenag";
 
   const dispatch = useDispatch();
 
@@ -203,7 +203,7 @@ const Calender = (props) => {
       currentMin,
       currentSec
     );
-    const modifiedData = { ...arg, date: modifiedDate };
+    const modifiedData = { date: modifiedDate };
 
     setSelectedDay(modifiedData);
     toggle();
@@ -323,7 +323,7 @@ const Calender = (props) => {
                               draggable
                               onDrag={(event) => onDrag(event, category)}
                             >
-                              <i className="mdi mdi-checkbox-blank-circle me-2 vertical-middle" style={{fontSize: "11px"}} />
+                              <i className="mdi mdi-checkbox-blank-circle me-2 vertical-middle" style={{ fontSize: "11px" }} />
                               {category.title}
                             </div>
                           ))}

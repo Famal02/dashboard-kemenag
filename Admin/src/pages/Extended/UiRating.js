@@ -9,7 +9,7 @@ import { Rating } from "react-simple-star-rating";
 
 const UiRating = () => {
     //meta title
-    document.title = "Rating | Minia - React Admin & Dashboard Template";
+    document.title = "Rating | Dashboard Kemenag";
 
     const [customize, setcustomize] = useState(0)
     const [rating, setRating] = useState(0)

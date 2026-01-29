@@ -155,11 +155,11 @@ const Layout = props => {
 
         <Header toggleMenuCallback={toggleMenuCallback} onChangeLayoutMode={onChangeLayoutMode} />
 
-        <Sidebar
+        {/* <Sidebar
           theme={leftSideBarTheme}
           type={leftSideBarType}
           isMobile={isMobile}
-        />
+        /> */}
         <div className="main-content">{props.children}
           <Footer />
         </div>

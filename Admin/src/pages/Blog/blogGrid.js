@@ -14,7 +14,7 @@ import FeatherIcon from "feather-icons-react";
 
 const blogGrid = () => {
 
-  document.title = "Blog Grid | Minia - React Admin & Dashboard Template";
+  document.title = "Blog Grid | Dashboard Kemenag";
 
   const [search_Menu, setsearch_Menu] = useState(false);
 

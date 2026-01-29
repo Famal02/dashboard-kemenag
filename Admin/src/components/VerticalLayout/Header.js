@@ -7,22 +7,22 @@ import { Link } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 
 // Reactstrap
-import { Dropdown, DropdownToggle, DropdownMenu, Row, Col } from "reactstrap";
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Row, Col, Container } from "reactstrap";
 
 // Import menuDropdown
-import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
-import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDropdown";
+// import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
+// import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDropdown";
 import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu";
 import LightDark from "../CommonForBoth/Menus/LightDark";
 
 // import images
-import logoSvg from "../../assets/images/logo-sm.svg";
-import github from "../../assets/images/brands/github.png";
-import bitbucket from "../../assets/images/brands/bitbucket.png";
-import dribbble from "../../assets/images/brands/dribbble.png";
-import dropbox from "../../assets/images/brands/dropbox.png";
-import mail_chimp from "../../assets/images/brands/mail_chimp.png";
-import slack from "../../assets/images/brands/slack.png";
+import logoSvg from "../../assets/images/logo-kemenag.png";
+// import github from "../../assets/images/brands/github.png";
+// import bitbucket from "../../assets/images/brands/bitbucket.png";
+// import dribbble from "../../assets/images/brands/dribbble.png";
+// import dropbox from "../../assets/images/brands/dropbox.png";
+// import mail_chimp from "../../assets/images/brands/mail_chimp.png";
+// import slack from "../../assets/images/brands/slack.png";
 
 //i18n
 import { withTranslation } from "react-i18next";
@@ -49,11 +49,13 @@ const Header = props => {
   );
   // Inside your component
   const { showRightSidebar } = useSelector(headerData);
-  
+
   const { onChangeLayoutMode } = props;
   const [search, setsearch] = useState(false);
   const [socialDrp, setsocialDrp] = useState(false);
   const [isClick, setClick] = useState(true);
+  const [menuRumahIbadah, setMenuRumahIbadah] = useState(false);
+  const [menuZis, setMenuZis] = useState(false);
 
   /*** Sidebar menu icon and default menu set */
   function tToggle() {
@@ -71,200 +73,152 @@ const Header = props => {
   return (
     <React.Fragment>
       <header id="page-topbar">
-        <div className="navbar-header">
-          <div className="d-flex">
-            <div className="navbar-brand-box">
-              <Link to="/dashboard" className="logo logo-dark">
-                <span className="logo-sm">
-                  <img src={logoSvg} alt="" height="24" />
-                </span>
-                <span className="logo-lg">
-                  <img src={logoSvg} alt="" height="24" /> <span className="logo-txt">Minia</span>
-                </span>
-              </Link>
+        <style>{`
+          .header-menu-hover:hover {
+            background-color: #e6f9ed !important; /* Hijau muda lembut */
+            color: #34c38f !important; /* Teks Hijau saat hover */
+            border-radius: 8px !important;
+            transition: all 0.3s ease;
+          }
+          /* Pastikan icon di dalam juga berubah warna */
+          .header-menu-hover:hover i {
+             color: #34c38f !important;
+          }
+          /* Class untuk Menu yang Sedang Aktif (Dibuka) */
+          .menu-active-green {
+            background-color: #e6f9ed !important;
+            color: #34c38f !important;
+            border-radius: 8px !important;
+          }
+          .menu-active-green i {
+            color: #34c38f !important;
+          }
 
-              <Link to="/dashboard" className="logo logo-light">
-                <span className="logo-sm">
-                  <img src={logoSvg} alt="" height="24" />
-                </span>
-                <span className="logo-lg">
-                  <img src={logoSvg} alt="" height="24" /> <span className="logo-txt">Minia</span>
-                </span>
-              </Link>
-            </div>
+          /* Style untuk Submenu Dropdown item */
+          .dropdown-item:hover, .dropdown-item:active, .dropdown-item:focus {
+            background-color: #e6f9ed !important;
+            color: #34c38f !important; /* Teks Hijau */
+            border-radius: 6px; /* Agar item list cantik tidak kotak kaku */
+          }
+        `}</style>
+        {/* WRAPPER UTAMA: Container membatasi lebar konten (±1200px) agar berada di tengah */}
+        <div className="custom-container"> {/* <--- INI YANG BARU */}
+          <div className="navbar-header px-0 position-relative d-flex justify-content-between align-items-center"
+            style={{ boxShadow: '0 4px 12px rgba(113, 216, 88, 0.05)' }}>
 
-            <button
-              onClick={() => {
-                tToggle();
-              }}
-              type="button" className="btn btn-sm px-3 font-size-16 header-item" id="vertical-menu-btn">
-              <i className="fa fa-fw fa-bars"></i>
-            </button>
+            {/* === 1. BAGIAN KIRI: LOGO (Tanpa Kotak Background) === */}
+            <div className="d-flex align-items-center">
+              <div className="navbar-brand-box">
+                <Link to="/dashboard" className="logo logo-dark">
+                  <span className="logo-sm">
+                    <img src={logoSvg} alt="" height="10" />
+                  </span>
+                  <span className="logo-lg d-flex align-items-center">
+                    {/* mixBlendMode: multiply membuat background putih pada logo JPG/PNG menjadi transparan */}
+                    <img src={logoSvg} alt="" height="45" style={{ mixBlendMode: 'multiply' }} />
+                    <span className="logo-txt text-dark font-size-18 fw-bold ms-2 text-uppercase">Kemenag RI</span>
+                  </span>
+                </Link>
 
-            <form className="app-search d-none d-lg-block">
-              <div className="position-relative">
-                <input type="text" className="form-control" placeholder="Search..." />
-                <button className="btn btn-primary" type="button"><i className="bx bx-search-alt align-middle"></i></button>
-              </div>
-            </form>
-          </div>
-
-          <div className="d-flex">
-            <div className="dropdown d-inline-block d-lg-none ms-2">
-              <button type="button" className="btn header-item" id="page-header-search-dropdown"
-                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <FeatherIcon
-                  icon="search"
-                  className="icon-lg"
-                />
-              </button>
-              <div className="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
-                aria-labelledby="page-header-search-dropdown">
-
-                <form className="p-3">
-                  <div className="form-group m-0">
-                    <div className="input-group">
-                      <input type="text" className="form-control" placeholder="Search ..." aria-label="Search Result" />
-
-                      <button className="btn btn-primary" type="submit"><i className="mdi mdi-magnify"></i></button>
-                    </div>
-                  </div>
-                </form>
+                <Link to="/dashboard" className="logo logo-light">
+                  <span className="logo-sm">
+                    <img src={logoSvg} alt="" height="10" />
+                  </span>
+                  <span className="logo-lg d-flex align-items-center">
+                    <img src={logoSvg} alt="" height="45" />
+                    <span className="logo-txt text-light font-size-18 fw-bold ms-2 text-uppercase">Kemenag RI</span>
+                  </span>
+                </Link>
               </div>
             </div>
 
-          </div>
-          <div className="d-flex">
-            <div className="dropdown d-inline-block d-lg-none ms-2">
-              <button
-                onClick={() => {
-                  setsearch(!search);
-                }}
-                type="button"
-                className="btn header-item noti-icon "
-                id="page-header-search-dropdown"
-              >
-                <i className="mdi mdi-magnify" />
-              </button>
-              <div
-                className={
-                  search
-                    ? "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0 show"
-                    : "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
-                }
-                aria-labelledby="page-header-search-dropdown"
-              >
-                <form className="p-3">
-                  <div className="form-group m-0">
-                    <div className="input-group">
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Search ..."
-                        aria-label="Recipient's username"
-                      />
-                      <div className="input-group-append">
-                        <button className="btn btn-primary" type="submit">
-                          <i className="mdi mdi-magnify" />
-                        </button>
+            {/* === 2. BAGIAN TENGAH: MENU NAVIGASI (Absolute Center) === */}
+            {/* Posisi Absolute membuat elemen ini lepas dari aliran flexbox dan bisa ditaruh tepat di tengah layar */}
+            <div className="d-none d-lg-flex align-items-center position-absolute start-50 translate-middle-x">
+
+              <Dropdown className="d-inline-block" isOpen={menuZis} toggle={() => setMenuZis(!menuZis)}>
+                <DropdownToggle
+                  className={`btn header-menu-hover waves-effect d-inline-flex align-items-center justify-content-center px-3 py-2 ${menuZis ? 'menu-active-green' : ''}`}
+                  tag="button"
+                >
+                  <span className="d-inline-block fw-bold font-size-15">ZIS</span>
+                  <i className={`mdi mdi-chevron-down d-inline-block ms-1 transition-all ${menuZis ? 'rotate-180' : ''}`}></i>
+                </DropdownToggle>
+
+                <DropdownMenu className="dropdown-menu-end border-0 shadow-lg rounded-3 p-2 mt-2">
+                  <Link to="/Informasi-ZIS" className="dropdown-item fw-medium font-size-14 py-2 rounded mb-1">Laporan Dana</Link>
+                  <Link to="/Informasi-ZIS/Stakeholder" className="dropdown-item fw-medium font-size-14 py-2 rounded">Stakeholder</Link>
+                </DropdownMenu>
+              </Dropdown>
+
+              <Link to="/Informasi-Wakaf" className="btn header-menu-hover waves-effect d-inline-flex align-items-center justify-content-center px-3 py-2 ms-1">
+                <span className="fw-bold font-size-15">Wakaf</span>
+              </Link>
+
+              <Dropdown className="d-inline-block ms-1" isOpen={menuRumahIbadah} toggle={() => setMenuRumahIbadah(!menuRumahIbadah)}>
+                <DropdownToggle
+                  className={`btn header-menu-hover waves-effect d-inline-flex align-items-center justify-content-center px-3 py-2 ${menuRumahIbadah ? 'menu-active-green' : ''}`}
+                  tag="button"
+                >
+                  <span className="d-inline-block fw-bold font-size-15">Rumah Ibadah</span>
+                  <i className={`mdi mdi-chevron-down d-inline-block ms-1 transition-all ${menuRumahIbadah ? 'rotate-180' : ''}`}></i>
+                </DropdownToggle>
+
+                <DropdownMenu className="dropdown-menu-end border-0 shadow-lg rounded-3 p-2 mt-2" style={{ minWidth: '200px' }}>
+                  <Link to="/Islam" className="dropdown-item fw-medium font-size-14 py-2 rounded">Islam</Link>
+                  <Link to="/Kristen" className="dropdown-item fw-medium font-size-14 py-2 rounded">Kristen</Link>
+                  <Link to="/Katolik" className="dropdown-item fw-medium font-size-14 py-2 rounded">Katolik</Link>
+                  <Link to="/Hindu" className="dropdown-item fw-medium font-size-14 py-2 rounded">Hindu</Link>
+                  <Link to="/Buddha" className="dropdown-item fw-medium font-size-14 py-2 rounded">Buddha</Link>
+                  <Link to="/Khonghucu" className="dropdown-item fw-medium font-size-14 py-2 rounded">Khonghucu</Link>
+                </DropdownMenu>
+              </Dropdown>
+            </div>
+
+            {/* === 3. BAGIAN KANAN: PROFILE & TOOLS === */}
+            <div className="d-flex align-items-center">
+              {/* Search Mobile */}
+              <div className="dropdown d-inline-block d-lg-none ms-2">
+                <button onClick={() => setsearch(!search)} type="button" className="btn header-item noti-icon" id="page-header-search-dropdown">
+                  <i className="mdi mdi-magnify" />
+                </button>
+                <div className={search ? "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0 show" : "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"}>
+                  <form className="p-3">
+                    <div className="form-group m-0">
+                      <div className="input-group">
+                        <input type="text" className="form-control" placeholder="Search ..." />
+                        <div className="input-group-append">
+                          <button className="btn btn-primary" type="submit"><i className="mdi mdi-magnify" /></button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </form>
+                  </form>
+                </div>
+              </div>
+
+              <LightDark layoutMode={props['layoutMode']} onChangeLayoutMode={onChangeLayoutMode} />
+
+              <div onClick={() => dispatch(showRightSidebarAction(!showRightSidebar))} className="dropdown d-inline-block">
+                <button type="button" className="btn header-item noti-icon right-bar-toggle">
+                  <FeatherIcon icon="settings" className="icon-lg" />
+                </button>
+              </div>
+
+              {/* PROFILE CARD TERPISAH */}
+              <div className="ms-3 shadow-sm d-flex align-items-center"
+                style={{
+                  backgroundColor: '#ffffff',
+                  borderRadius: '50px',
+                  padding: '2px 5px 2px 0',
+                  height: '42px' // Menyesuaikan tinggi agar proporsional
+                }}>
+                <ProfileMenu />
               </div>
             </div>
 
-            <LanguageDropdown />
-
-            {/* light / dark mode */}
-            <LightDark layoutMode={props['layoutMode']} onChangeLayoutMode={onChangeLayoutMode} />
-
-            <Dropdown
-              className="d-none d-lg-inline-block ms-1"
-              isOpen={socialDrp}
-              toggle={() => {
-                setsocialDrp(!socialDrp);
-              }}
-            >
-              <DropdownToggle
-                className="btn header-item noti-icon "
-                tag="button"
-              >
-                <FeatherIcon
-                  icon="grid"
-                  className="icon-lg"
-                />
-              </DropdownToggle>
-              <DropdownMenu className="dropdown-menu-lg dropdown-menu-end">
-                <div className="p-2">
-                  <Row className="g-0">
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={github} alt="Github" />
-                        <span>GitHub</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={bitbucket} alt="bitbucket" />
-                        <span>Bitbucket</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={dribbble} alt="dribbble" />
-                        <span>Dribbble</span>
-                      </Link>
-                    </Col>
-                  </Row>
-
-                  <Row className="g-0">
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={dropbox} alt="dropbox" />
-                        <span>Dropbox</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={mail_chimp} alt="mail_chimp" />
-                        <span>Mail Chimp</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={slack} alt="slack" />
-                        <span>Slack</span>
-                      </Link>
-                    </Col>
-                  </Row>
-                </div>
-              </DropdownMenu>
-            </Dropdown>
-
-            <NotificationDropdown />
-            <div
-              onClick={() => {
-                dispatch(showRightSidebarAction(!showRightSidebar));
-              }}
-              className="dropdown d-inline-block"
-            >
-              <button
-                type="button"
-                className="btn header-item noti-icon right-bar-toggle "
-              >
-                <FeatherIcon
-                  icon="settings"
-                  className="icon-lg"
-                />
-              </button>
-            </div>
-            <ProfileMenu />
-
           </div>
-        </div>
+        </div> {/* <--- INI YANG BARU */}
       </header>
-
     </React.Fragment>
   );
 };

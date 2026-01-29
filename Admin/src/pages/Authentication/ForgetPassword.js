@@ -22,7 +22,7 @@ import { createSelector } from "reselect";
 const ForgetPasswordPage = (history) => {
 
   //meta title
-  document.title = "Forget Password | Minia - React Admin & Dashboard Template";
+  document.title = "Forget Password | Dashboard Kemenag";
 
   const dispatch = useDispatch()
 
@@ -62,13 +62,13 @@ const ForgetPasswordPage = (history) => {
                   <div className="d-flex flex-column h-100">
                     <div className="mb-4 mb-md-5 text-center">
                       <Link to="/dashboard" className="d-block auth-logo">
-                        <img src={logo} alt="" height="28" /> <span className="logo-txt">Minia</span>
+                        <img src={logo} alt="" height="28" /> <span className="logo-txt">Dashboard Kemenag</span>
                       </Link>
                     </div>
                     <div className="auth-content my-auto">
                       <div className="text-center">
                         <h5 className="mb-0">Reset Password</h5>
-                        <p className="text-muted mt-2">Reset Password with Minia.</p>
+                        <p className="text-muted mt-2">Reset Password with Dashboard Kemenag.</p>
                       </div>
 
                       {forgetError && forgetError ? (
@@ -130,7 +130,7 @@ const ForgetPasswordPage = (history) => {
                       </div>
                     </div>
                     <div className="mt-4 mt-md-5 text-center">
-                      <p className="mb-0">© {new Date().getFullYear()} Minia   . Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                      <p className="mb-0">© {new Date().getFullYear()} Kementerian Agama   . Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand</p>
                     </div>
                   </div>
                 </div>

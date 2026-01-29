@@ -10,7 +10,7 @@ const PageRegister = () => {
 
     let year = new Date().getFullYear();
     //meta title
-    document.title = "Register | Minia - React Admin & Dashboard Template";
+    document.title = "Register | Dashboard Kemenag";
     return (
         <React.Fragment>
             <div className="auth-page">
@@ -22,7 +22,7 @@ const PageRegister = () => {
                                     <div className="d-flex flex-column h-100">
                                         <div className="mb-4 mb-md-5 text-center">
                                             <Link to="/dashboard" className="d-block auth-logo">
-                                                <img src={logo} alt="" height="28" /> <span className="logo-txt">Minia</span>
+                                                <img src={logo} alt="" height="28" /> <span className="logo-txt">Dashboard Kemenag</span>
                                             </Link>
                                         </div>
                                         <div className="auth-content my-auto">

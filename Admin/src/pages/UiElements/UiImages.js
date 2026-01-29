@@ -16,7 +16,7 @@ import avtar1 from "../../assets/images/users/avatar-1.jpg";
 
 const UiImages = () => {
     //meta title
-    document.title = "Images | Minia - React Admin & Dashboard Template";
+    document.title = "Images | Dashboard Kemenag";
     return (
         <React.Fragment>
             <div className="page-content">

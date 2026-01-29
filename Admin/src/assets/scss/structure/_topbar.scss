@@ -14,13 +14,13 @@
 }
 
 .navbar-header {
-    display: flex;
-    -ms-flex-pack: justify;
+ display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0 auto;
+    margin: 0;
     height: $header-height;
-    padding: 0 $grid-gutter-width 0 0;
+    padding: 0; /* Hapus padding bawaan agar rata dengan container */
+    width: 100%; /* Pastikan mengisi Container */
 
     .dropdown .show {
         &.header-item {
@@ -30,11 +30,12 @@
 }
 
 .navbar-brand-box {
-    padding: 0 1.5rem;
-    width: $navbar-brand-box-width;
-    background: var(--#{$prefix}sidebar-bg);
-    border-right: 1px solid $sidebar-border-color;
-    box-shadow: 0px 2px 2px var(--#{$prefix}sidebar-bg);
+    padding: 0;
+    width: auto; /* Ubah lebar jadi auto agar tidak memakan tempat kosong */
+    background: transparent !important; /* Ubah jadi transparan */
+    border-right: none !important;      /* Hilangkan garis batas */
+    box-shadow: none !important;        /* Hilangkan bayangan */
+    margin-right: 0;           /* Tambahkan jarak kanan ke menu */
 }
 
 .logo {
@@ -150,7 +151,7 @@ body[data-bs-theme ="dark"] {
 }
 
 .page-content {
-    padding: calc(#{$header-height} + #{$grid-gutter-width}) calc(#{$grid-gutter-width} * 0.75) $footer-height calc(#{$grid-gutter-width} * 0.75);
+    padding: 90px 0 60px 0 !important;
 }
 
 .header-item {
@@ -381,4 +382,16 @@ body[data-layout="horizontal"] {
             margin-top: 15px;
         }    
     }
+}
+
+/* --- PENGATURAN GLOBAL PADDING --- */
+$global-padding-x: 200px;  /* <--- GANTI ANGKA INI SESUKA HATI (misal 24px, 50px) */
+$global-max-width: 2000px; /* Lebar maksimal website */
+
+.custom-container {
+    width: 100%;
+    max-width: $global-max-width;
+    margin: 0 auto; /* Supaya tengah */
+    padding-left: $global-padding-x;
+    padding-right: $global-padding-x;
 }

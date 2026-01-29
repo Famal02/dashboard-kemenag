@@ -12,7 +12,7 @@ import image2 from "../../assets/images/small/img-2.jpg"
 
 const blogDetails = () => {
 
-  document.title = "Blog Details | Minia - React Admin & Dashboard Template";
+  document.title = "Blog Details | Dashboard Kemenag";
 
     return (
         <React.Fragment>

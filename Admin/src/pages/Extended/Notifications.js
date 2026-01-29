@@ -12,7 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const Notifications = () => {
 
     //meta title
-    document.title = "Notification | Minia - React Admin & Dashboard Template";
+    document.title = "Notification | Dashboard Kemenag";
 
     const toast1 = () => {
         document.getElementById("toast1").style.display = "none";
@@ -73,7 +73,7 @@ const Notifications = () => {
                                                 <div className="toast fade show" role="alert" id="toast1">
                                                     <div className="toast-header">
                                                         <img src={logo} alt="" className="me-2" height="18" />
-                                                        <strong className="me-auto">Minia</strong>
+                                                        <strong className="me-auto">Dashboard Kemenag</strong>
                                                         <small className="text-muted">11 mins ago</small>
                                                         <button onClick={toast1} type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                                                     </div>
@@ -98,7 +98,7 @@ const Notifications = () => {
                                                     <div className="toast fade show" role="alert" id="toast2">
                                                         <div className="toast-header">
                                                             <img src={logo} alt="" className="me-2" height="18" />
-                                                            <strong className="me-auto">Minia</strong>
+                                                            <strong className="me-auto">Dashboard Kemenag</strong>
                                                             <small className="text-muted">11 mins ago</small>
                                                             <button onClick={toast2} type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                                                         </div>
@@ -129,7 +129,7 @@ const Notifications = () => {
                                                             <div className="toast fade show" role="alert" id="toast3">
                                                                 <div className="toast-header">
                                                                     <img src={logo} alt="" className="me-2" height="18" />
-                                                                    <strong className="me-auto">Minia</strong>
+                                                                    <strong className="me-auto">Dashboard Kemenag</strong>
                                                                     <small className="text-muted">just now</small>
                                                                     <button onClick={toast3} type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                                                                 </div>
@@ -141,7 +141,7 @@ const Notifications = () => {
                                                             <div className="toast fade show" role="alert" id="toast4">
                                                                 <div className="toast-header">
                                                                     <img src={logo} alt="" className="me-2" height="18" />
-                                                                    <strong className="me-auto">Minia</strong>
+                                                                    <strong className="me-auto">Dashboard Kemenag</strong>
                                                                     <small className="text-muted">2 sec ago</small>
                                                                     <button onClick={toast4} type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                                                                 </div>
@@ -171,7 +171,7 @@ const Notifications = () => {
                                                         <div className="toast fade show" role="alert" id="toast5">
                                                             <div className="toast-header">
                                                                 <img src={logo} alt="" className="me-2" height="18" />
-                                                                <strong className="me-auto">Minia</strong>
+                                                                <strong className="me-auto">Dashboard Kemenag</strong>
                                                                 <small>9 min ago</small>
                                                                 <button onClick={toast5} type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                                                             </div>

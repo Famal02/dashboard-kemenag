@@ -16,7 +16,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 const UiCard = () => {
     //meta title
-    document.title = "Cards | Minia - React Admin & Dashboard Template";
+    document.title = "Cards | Dashboard Kemenag";
     return (
         <React.Fragment>
             <div className="page-content">

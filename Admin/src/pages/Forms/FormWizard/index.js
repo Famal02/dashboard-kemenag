@@ -8,7 +8,7 @@ import ProgressbarWizard from './ProgressbarWizard';
 
 const FormWizard = () => {
     //meta title
-    document.title = "Form Wizard | Minia - React Admin & Dashboard Template";
+    document.title = "Form Wizard | Dashboard Kemenag";
     return (
         <React.Fragment>
             <div className="page-content">

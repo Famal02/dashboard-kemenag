@@ -6,7 +6,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 const UiGrid = () => {
     //meta title
-    document.title = "Grid | Minia - React Admin & Dashboard Template";
+    document.title = "Grid | Dashboard Kemenag";
     return (
         <React.Fragment>
             <div className="page-content">

@@ -14,7 +14,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 const UiVideo = () => {
   //meta title
-  document.title = "Video | Minia - React Admin & Dashboard Template";
+  document.title = "Video | Dashboard Kemenag";
   return (
     <React.Fragment>
       <div className="page-content">

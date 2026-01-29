@@ -1,4 +1,5 @@
-import axios from "axios"
+// import axios from "axios"
+import { axiosApi as axios } from "../api_helper"
 import MockAdapter from "axios-mock-adapter"
 import * as url from "../url_helper"
 import accessToken from "../jwt-token-access/accessToken"
@@ -835,6 +836,64 @@ const fakeBackend = () => {
       })
     })
   })
+
+  // --- WAKAF MOCK DATA ---
+  mock.onGet(new RegExp(url.GET_WAKAF_MAP_DATA + ".*")).reply(config => {
+    // Mock Data per Province ID (Green Map)
+    const data = {
+      "ID-AC": 450, "ID-SU": 320, "ID-SB": 210, "ID-RI": 180, "ID-JA": 150, "ID-SS": 280, "ID-BE": 90, "ID-LA": 310, "ID-BB": 120, "ID-KR": 140,
+      "ID-JK": 400, "ID-JB": 850, "ID-JT": 720, "ID-YO": 180, "ID-JI": 690, "ID-BT": 350, "ID-BA": 220, "ID-NB": 150, "ID-NT": 170,
+      "ID-KB": 210, "ID-KT": 190, "ID-KS": 160, "ID-KI": 230, "ID-KU": 80, "ID-SA": 120, "ID-ST": 140, "ID-SN": 310, "ID-SG": 110,
+      "ID-GO": 70, "ID-SR": 90, "ID-MA": 100, "ID-MU": 80, "ID-PB": 90, "ID-PA": 150
+    };
+    return [200, data];
+  });
+
+  mock.onGet(new RegExp(url.GET_WAKAF_DETAILS + ".*")).reply(config => {
+    // Mock Details List
+    const details = [
+      { id: 1, loc: "Masjid Raya Al-Falah", area: "1,200 m2", wakif: "H. Abdullah", nazhir: "Yayasan Amanah", benefit: "Masjid" },
+      { id: 2, loc: "Tanah Kosong Jl. Merdeka", area: "500 m2", wakif: "Hj. Siti", nazhir: "KUA Setempat", benefit: "Sosial" },
+      { id: 3, loc: "Sekolah Islam Terpadu", area: "2,500 m2", wakif: "Keluarga Besar X", nazhir: "Yayasan Pendidikan", benefit: "Pendidikan" },
+      { id: 4, loc: "Klinik Pratama", area: "800 m2", wakif: "H. Fulan", nazhir: "Dompet Dhuafa", benefit: "Kesehatan" },
+      { id: 5, loc: "Lahan Produktif Sawit", area: "5 Ha", wakif: "PT. Sawit Jaya", nazhir: "BWI Pusat", benefit: "Ekonomi" },
+    ];
+    return [200, details];
+  });
+
+  // --- RUMAH IBADAH MOCK DATA ---
+  mock.onGet(new RegExp(url.GET_WORSHIP_SUMMARY + ".*")).reply(config => {
+    return [200, {
+      total_national: 54321,
+      growth_yoy_percentage: 4.5,
+      highest_province: { name: "Jawa Barat", value: 15400 },
+      lowest_province: { name: "Papua Barat", value: 120 },
+      historical_trend: [
+        { year: "2020", total: 48000 },
+        { year: "2021", total: 50000 },
+        { year: "2022", total: 52000 },
+        { year: "2023", total: 53000 },
+        { year: "2024", total: 54000 },
+        { year: "2025", total: 54321 }
+      ]
+    }];
+  });
+
+  mock.onGet(new RegExp(url.GET_WORSHIP_PROVINCES + ".*")).reply(config => {
+    const provinces = [
+      { province_id: "ID-JB", province_name: "Jawa Barat", total_units: 15400, growth_percentage: 2.1, national_contribution: 25 },
+      { province_id: "ID-JT", province_name: "Jawa Tengah", total_units: 12100, growth_percentage: 1.5, national_contribution: 20 },
+      { province_id: "ID-JI", province_name: "Jawa Timur", total_units: 11500, growth_percentage: 1.8, national_contribution: 18 },
+      { province_id: "ID-SU", province_name: "Sumatera Utara", total_units: 5400, growth_percentage: 0.5, national_contribution: 10 },
+      { province_id: "ID-AC", province_name: "Aceh", total_units: 3200, growth_percentage: 1.2, national_contribution: 6 },
+      { province_id: "ID-JK", province_name: "DKI Jakarta", total_units: 2100, growth_percentage: 0.8, national_contribution: 4 },
+      { province_id: "ID-BT", province_name: "Banten", total_units: 1800, growth_percentage: 1.1, national_contribution: 3 },
+      { province_id: "ID-SS", province_name: "Sumatera Selatan", total_units: 1500, growth_percentage: 0.9, national_contribution: 3 },
+      { province_id: "ID-RI", province_name: "Riau", total_units: 1200, growth_percentage: 1.0, national_contribution: 2 },
+      { province_id: "ID-SB", province_name: "Sumatera Barat", total_units: 1100, growth_percentage: 0.7, national_contribution: 2 },
+    ];
+    return [200, provinces];
+  });
 
 }
 

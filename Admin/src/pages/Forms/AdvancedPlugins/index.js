@@ -9,7 +9,7 @@ import Switcher from './Switcher';
 
 const AdvancedPlugins = () => {
     //meta title
-    document.title = "Advanced Plugins | Minia - React Admin & Dashboard Template";
+    document.title = "Advanced Plugins | Dashboard Kemenag";
     return (
         <React.Fragment>
             <div className="page-content">

@@ -1,237 +1,247 @@
-import React, { useState } from "react"
-import PropTypes from 'prop-types'
-import { connect } from "react-redux"
+import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
-import { Link } from "react-router-dom"
-
-//Import Icons
+// Import Icons
 import FeatherIcon from "feather-icons-react";
 
-// Redux Store
-import { showRightSidebarAction, toggleLeftmenu } from "../../store/actions"
-// reactstrap
-import { Row, Col, Dropdown, DropdownToggle, DropdownMenu } from "reactstrap"
+// Reactstrap
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
 
-// Import menuDropdown
+// Import Components
 import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
-import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDropdown";
 import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu";
 import LightDark from "../CommonForBoth/Menus/LightDark";
 
-// import images
-import logo from "../../assets/images/logo-sm.svg";
-import github from "../../assets/images/brands/github.png"
-import bitbucket from "../../assets/images/brands/bitbucket.png"
-import dribbble from "../../assets/images/brands/dribbble.png"
-import dropbox from "../../assets/images/brands/dropbox.png"
-import mail_chimp from "../../assets/images/brands/mail_chimp.png"
-import slack from "../../assets/images/brands/slack.png"
+// Import Images
+import logoSvg from "../../assets/images/logo-kemenag.png";
 
-//i18n
+// i18n
 import { withTranslation } from "react-i18next";
 
-//redux
-import { useDispatch } from "react-redux";
+// Redux
+import { useSelector, useDispatch } from "react-redux";
+import {
+  showRightSidebarAction,
+  toggleLeftmenu,
+  changeSidebarType,
+  changelayoutMode
+} from "../../store/actions";
+import { createSelector } from 'reselect';
 
 const Header = props => {
   const dispatch = useDispatch();
+
+  const headerData = createSelector(
+    (state) => state.Layout,
+    (layout) => ({
+      showRightSidebar: layout.showRightSide
+    })
+  );
+
+  const { showRightSidebar } = useSelector(headerData);
   const { onChangeLayoutMode } = props;
-  const [isSearch, setSearch] = useState(false)
-  const [socialDrp, setsocialDrp] = useState(false)
+
+  // --- STATE MANAGEMENT ---
+  const [search, setsearch] = useState(false);
+  const [isClick, setClick] = useState(true);
+
+  // State untuk Dropdown Rumah Ibadah
+  const [menuRumahIbadah, setMenuRumahIbadah] = useState(false);
+
+  /*** Fungsi Toggle Sidebar (Garis Tiga) */
+  function tToggle() {
+    var body = document.body;
+    setClick(!isClick);
+    if (isClick === true) {
+      body.classList.remove("sidebar-enable");
+      document.body.setAttribute("data-sidebar-size", "sm");
+    } else {
+      body.classList.add("sidebar-enable");
+      document.body.setAttribute("data-sidebar-size", "lg");
+    }
+  }
 
   return (
     <React.Fragment>
       <header id="page-topbar">
         <div className="navbar-header">
-          <div className="d-flex">
-            <div className="navbar-brand-box">
-              <Link to="/dashboard" className="logo logo-dark">
-                <span className="logo-sm">
-                  <img src={logo} alt="" height="24" />
-                </span>
-                <span className="logo-lg">
-                  <img src={logo} alt="" height="24" />
-                  <span className="logo-txt ms-2">Minia</span>
-                </span>
-              </Link>
 
-              <Link to="/dashboard" className="logo logo-light">
-                <span className="logo-sm">
-                  <img src={logo} alt="" height="24" />
-                </span>
-                <span className="logo-lg">
-                  <img src={logo} alt="" height="24" />
-                  <span className="logo-txt ms-2">Minia</span>
-                </span>
-              </Link>
-            </div>
-
+          {/* --- LEFT SIDE: LOGO & NAVIGATION --- */}
+          <div className="d-flex align-items-center gap-3">
+            {/* 1. TOGGLE BUTTON (Mobile Only or Minimalist) */}
             <button
-              type="button"
-              className="btn btn-sm px-3 font-size-16 d-lg-none header-item"
-              data-toggle="collapse"
               onClick={() => {
-                props.toggleLeftmenu(!props.leftMenu)
+                tToggle();
               }}
-              data-target="#topnav-menu-content"
+              type="button"
+              className="btn btn-sm px-3 font-size-16 header-item waves-effect d-lg-none"
+              id="custom-menu-btn-header"
             >
-              <i className="fa fa-fw fa-bars" />
+              <i className="fa fa-fw fa-bars"></i>
             </button>
 
-            <form className="app-search d-none d-lg-block">
-              <div className="position-relative">
-                <input type="text" className="form-control"
-                  placeholder="Search..." />
-                <button className="btn btn-primary" type="button"><i
-                  className="bx bx-search-alt align-middle"></i></button>
-              </div>
-            </form>
-          </div>
-
-          <div className="d-flex">
-            <div className="dropdown d-inline-block d-lg-none ms-2">
-              <button
-                type="button"
-                className="btn header-item noti-icon "
-                id="page-header-search-dropdown"
-                onClick={() => setSearch(!isSearch)}
-              >
-                <i className="mdi mdi-magnify" />
-              </button>
-              <div
-                className={
-                  isSearch
-                    ? "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0 show"
-                    : "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
-                }
-                aria-labelledby="page-header-search-dropdown"
-              >
-                <form className="p-3">
-                  <div className="form-group m-0">
-                    <div className="input-group">
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder={props.t("Search") + "..."}
-                        aria-label="Recipient's username"
-                      />
-                      <div className="input-group-append">
-                        <button className="btn btn-primary" type="submit">
-                          <i className="mdi mdi-magnify" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
+            {/* 2. LOGO */}
+            <div className="navbar-brand-box d-none d-lg-block">
+              <Link to="/dashboard" className="logo logo-dark">
+                <span className="logo-sm">
+                  <img src={logoSvg} alt="" height="25" />
+                </span>
+                <span className="logo-lg">
+                  <img src={logoSvg} alt="" height="35" className="me-2" />
+                  <span className="logo-txt text-dark font-size-18 fw-bold">Kemenag</span>
+                </span>
+              </Link>
             </div>
 
-            <LanguageDropdown />
-
-            {/* light / dark mode */}
-            <LightDark layoutMode={props['layoutMode']} onChangeLayoutMode={onChangeLayoutMode} />
-
-            <Dropdown
-              className="d-none d-lg-inline-block ms-1"
-              isOpen={socialDrp}
-              toggle={() => {
-                setsocialDrp(!socialDrp)
-              }}
-            >
-              <DropdownToggle
-                className="btn header-item noti-icon "
-                caret
-                tag="button"
+            {/* 3. NAVIGATION MENUS (Center-Left) */}
+            <div className="d-none d-lg-flex align-items-center ms-4">
+              {/* Menu ZIS */}
+              <Link
+                to="/Informasi-ZIS"
+                className="text-dark fw-medium font-size-15 px-3 py-2 text-decoration-none"
+                style={{ transition: '0.3s' }}
               >
-                <i className="bx bx-customize" />
-              </DropdownToggle>
-              <DropdownMenu className="dropdown-menu-lg dropdown-menu-end">
-                <div className="px-lg-2">
-                  <Row className="no-gutters">
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={github} alt="Github" />
-                        <span>GitHub</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={bitbucket} alt="bitbucket" />
-                        <span>Bitbucket</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={dribbble} alt="dribbble" />
-                        <span>Dribbble</span>
-                      </Link>
-                    </Col>
-                  </Row>
-                  <Row className="no-gutters">
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={dropbox} alt="dropbox" />
-                        <span>Dropbox</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={mail_chimp} alt="mail_chimp" />
-                        <span>Mail Chimp</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={slack} alt="slack" />
-                        <span>Slack</span>
-                      </Link>
-                    </Col>
-                  </Row>
-                </div>
-              </DropdownMenu>
-            </Dropdown>
+                ZIS
+              </Link>
 
-            <NotificationDropdown />
+              {/* Menu Wakaf */}
+              <Link
+                to="/Informasi-Wakaf"
+                className="text-dark fw-medium font-size-15 px-3 py-2 text-decoration-none"
+                style={{ transition: '0.3s' }}
+              >
+                Wakaf
+              </Link>
 
-            <div className="dropdown d-inline-block">
+              {/* Menu Rumah Ibadah (Dropdown) */}
+              <Dropdown
+                isOpen={menuRumahIbadah}
+                toggle={() => setMenuRumahIbadah(!menuRumahIbadah)}
+                className="d-inline-block"
+              >
+                <DropdownToggle
+                  className="text-dark fw-medium font-size-15 px-3 py-2 text-decoration-none bg-transparent border-0"
+                  tag="button"
+                >
+                  Rumah Ibadah
+                  <i className="mdi mdi-chevron-down ms-1"></i>
+                </DropdownToggle>
+
+                <DropdownMenu>
+                  <Link to="/Islam" className="dropdown-item">Islam</Link>
+                  <Link to="/Kristen" className="dropdown-item">Kristen</Link>
+                  <Link to="/Katolik" className="dropdown-item">Katolik</Link>
+                  <Link to="/Hindu" className="dropdown-item">Hindu</Link>
+                  <Link to="/Buddha" className="dropdown-item">Buddha</Link>
+                  <Link to="/Khonghucu" className="dropdown-item">Khonghucu</Link>
+                </DropdownMenu>
+              </Dropdown>
+            </div>
+          </div>
+
+
+          {/* --- RIGHT SIDE: ACTIONS & PROFILE --- */}
+          <div className="d-flex align-items-center gap-2">
+
+            {/* --- CUSTOM LANGUAGE SWITCHER --- */}
+            <div className="d-flex align-items-center bg-white border p-1" style={{ borderRadius: '10px', borderColor: '#EEE', height: '38px' }}>
               <button
-                onClick={() => {
-                  dispatch(showRightSidebarAction(!props.showRightSidebar));
-                }}
+                className="btn btn-sm text-white fw-bold px-3 shadow-none d-flex align-items-center justify-content-center"
+                style={{ backgroundColor: '#009054', borderRadius: '8px', height: '28px', fontSize: '12px' }}
+              >
+                ID
+              </button>
+              <button
+                className="btn btn-sm text-muted fw-bold px-3 shadow-none d-flex align-items-center justify-content-center"
+                style={{ backgroundColor: 'transparent', borderRadius: '8px', height: '28px', fontSize: '12px' }}
+              >
+                EN
+              </button>
+            </div>
+
+            {/* --- BUTTON: MULAI KAMPANYE --- */}
+            <div className="ms-3">
+              <button
                 type="button"
-                className="btn header-item noti-icon right-bar-toggle "
+                className="btn bg-white text-dark waves-effect shadow-sm fw-bold border d-flex align-items-center"
+                style={{ borderRadius: '10px', borderColor: '#DDD', padding: '0 20px', fontSize: '13px', height: '38px' }}
+              >
+                Mulai Kampanye
+              </button>
+            </div>
+
+            {/* --- BUTTON: HUBUNGKAN DOMPET --- */}
+            <div className="ms-3">
+              <button
+                type="button"
+                className="btn text-white waves-effect waves-light shadow-sm fw-bold d-flex align-items-center"
+                style={{ backgroundColor: '#009054', borderRadius: '10px', padding: '0 20px', border: 'none', fontSize: '13px', height: '38px' }}
+              >
+                <i className="bx bx-wallet me-2 font-size-16"></i> Hubungkan Dompet
+              </button>
+            </div>
+
+            {/* Light/Dark Toggle */}
+            <div className="ms-2">
+              <LightDark layoutMode={props['layoutMode']} onChangeLayoutMode={onChangeLayoutMode} />
+            </div>
+
+            {/* Profile Menu */}
+            <div className="ms-2">
+              <ProfileMenu />
+            </div>
+
+            {/* Settings Toggle */}
+            <div
+              onClick={() => {
+                dispatch(showRightSidebarAction(!showRightSidebar));
+              }}
+              className="dropdown d-inline-block"
+            >
+              <button
+                type="button"
+                className="btn header-item noti-icon right-bar-toggle"
               >
                 <FeatherIcon
                   icon="settings"
                   className="icon-lg"
                 />
-
               </button>
             </div>
-
-            <ProfileMenu />
 
           </div>
         </div>
       </header>
-
     </React.Fragment>
-  )
-}
+  );
+};
 
 Header.propTypes = {
+  changeSidebarType: PropTypes.func,
   leftMenu: PropTypes.any,
   showRightSidebar: PropTypes.any,
   showRightSidebarAction: PropTypes.func,
   t: PropTypes.any,
-  toggleLeftmenu: PropTypes.func
-}
+  toggleLeftmenu: PropTypes.func,
+  changelayoutMode: PropTypes.func,
+  layoutMode: PropTypes.any,
+};
 
 const mapStatetoProps = state => {
-  return { ...state.Layout }
-}
+  const {
+    layoutType,
+    showRightSidebar,
+    leftMenu,
+    layoutMode
+  } = state.Layout;
+  return { layoutType, showRightSidebar, leftMenu, layoutMode };
+};
 
 export default connect(mapStatetoProps, {
   showRightSidebarAction,
+  changelayoutMode,
   toggleLeftmenu,
-})(withTranslation()(Header))
+  changeSidebarType,
+})(withTranslation()(Header));

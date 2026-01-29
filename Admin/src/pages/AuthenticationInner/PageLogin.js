@@ -14,7 +14,7 @@ function    PageLogin(props) {
         navigate("/dashboard")
     }
     //meta title
-    document.title = "Login | Minia - React Admin & Dashboard Template";
+    document.title = "Login | Dashboard Kemenag";
     return (
         <React.Fragment>
             <div className="auth-page">
@@ -26,13 +26,13 @@ function    PageLogin(props) {
                                     <div className="d-flex flex-column h-100">
                                         <div className="mb-4 mb-md-5 text-center">
                                             <Link to="/dashboard" className="d-block auth-logo">
-                                                <img src={logo} alt="" height="28" /> <span className="logo-txt">Minia</span>
+                                                <img src={logo} alt="" height="28" /> <span className="logo-txt">Dashboard Kemenag</span>
                                             </Link>
                                         </div>
                                         <div className="auth-content my-auto">
                                             <div className="text-center">
                                                 <h5 className="mb-0">Welcome Back !</h5>
-                                                <p className="text-muted mt-2">Sign in to continue to Minia.</p>
+                                                <p className="text-muted mt-2">Sign in to continue to Dashboard Kemenag.</p>
                                             </div>
                                             <form className="custom-form mt-4 pt-2">
                                                 <div className="mb-3">
@@ -109,7 +109,7 @@ function    PageLogin(props) {
                                             </div>
                                         </div>
                                         <div className="mt-4 mt-md-5 text-center">
-                                            <p className="mb-0">© {new Date().getFullYear()} Minia   . Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                                            <p className="mb-0">© {new Date().getFullYear()} Kementerian Agama   . Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand</p>
                                         </div>
                                     </div>
                                 </div>

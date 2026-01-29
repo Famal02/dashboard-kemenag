@@ -180,7 +180,7 @@ function DatatableTables() {
 
         doc.setFontSize(15);
 
-        const title = "DataTables | Minia - Minimal Admin & Dashboard Template";
+        const title = "DataTables | Dashboard Kemenag";
         const headers = [["FirstName", "LastName", "Age", "Visits", "Progress", "Status"]];
 
         const Dataa = tableData.map(elt => [elt.firstName, elt.lastName, elt.age, elt.visits, elt.progress, elt.status]);
@@ -193,7 +193,7 @@ function DatatableTables() {
 
         doc.text(title, marginLeft, 40);
         doc.autoTable(content);
-        doc.save("DataTables Minia - Minimal Admin Dashboard Template.pdf.pdf")
+        doc.save("DataTables Dashboard Kemenag.pdf.pdf")
     }
 
     const columns = React.useMemo(
@@ -336,7 +336,7 @@ function DatatableTables() {
     ];
 
     //meta title
-    document.title = "Data Tables | Minia - React Admin & Dashboard Template";
+    document.title = "Data Tables | Dashboard Kemenag";
 
     return (
         <div className="page-content">
@@ -387,7 +387,7 @@ function DatatableTables() {
                                                     type="button"
                                                     // onClick={onCloseClick}
                                                     className="btn btn-secondary "
-                                                    filename="DataTables Minia - Minimal Admin Dashboard Template.pdf.csv"
+                                                    filename="DataTables Dashboard Kemenag.pdf.csv"
                                                 // id="delete-record"
                                                 >
                                                     <span>Excel</span>

@@ -164,27 +164,39 @@ const SidebarContent = props => {
                 <FeatherIcon
                   icon="grid"
                 />{" "}
-                <span>{props.t("Apps")}</span>
+                <span>{props.t("Informasi")}</span>
               </Link>
               <ul className="sub-menu">
                 <li>
-                  <Link to="/apps-calendar">{props.t("Calendar")}</Link>
+                  <Link to="/Informasi-ZIS">{props.t("ZIS")}</Link>
                 </li>
                 <li>
-                  <Link to="/apps-chat">
-                    {props.t("Chat")}
+                  <Link to="/Informasi-Wakaf">
+                    {props.t("Wakaf")}
                   </Link>
                 </li>
                 <li>
                   <Link to="/#" className="has-arrow">
-                    <span>{props.t("Email")}</span>
+                    <span>{props.t("Rumah Ibadah")}</span>
                   </Link>
                   <ul className="sub-menu">
                     <li>
-                      <Link to="/email-inbox">{props.t("Inbox")}</Link>
+                      <Link to="/Islam">{props.t("Islam")}</Link>
                     </li>
                     <li>
-                      <Link to="/email-read">{props.t("Read Email")} </Link>
+                      <Link to="/Kristen">{props.t("Kristen")} </Link>
+                    </li>
+                    <li>
+                      <Link to="/Katolik">{props.t("Katolik")}</Link>
+                    </li>
+                    <li>
+                      <Link to="/Hindu">{props.t("Hindu")} </Link>
+                    </li>
+                    <li>
+                      <Link to="/Buddha">{props.t("Buddha")}</Link>
+                    </li>
+                    <li>
+                      <Link to="/Khonghucu">{props.t("khonghucu")} </Link>
                     </li>
 
                   </ul>
@@ -199,42 +211,6 @@ const SidebarContent = props => {
                     </li>
                     <li>
                       <Link to="/invoices-detail">{props.t("Invoice Detail")}</Link>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <Link to="/#" className="has-arrow ">
-                    <span>{props.t("Contacts")}</span>
-                  </Link>
-                  <ul className="sub-menu">
-                    <li>
-                      <Link to="/contacts-grid">{props.t("User Grid")}</Link>
-                    </li>
-                    <li>
-                      <Link to="/contacts-list">{props.t("User List")}</Link>
-                    </li>
-                    <li>
-                      <Link to="/contacts-profile">{props.t("Profile")}</Link>
-                    </li>
-                  </ul>
-                </li>
-
-                <li>
-                  <Link to="/#" className="has-arrow ">
-                    {/* <span className="badge rounded-pill badge-soft-danger text-danger float-end">
-                      New
-                    </span> */}
-                    <span>{props.t("Blog")}</span>
-                  </Link>
-                  <ul className="sub-menu">
-                    <li>
-                      <Link to="/blog-grid">{props.t("Blog Grid")}</Link>
-                    </li>
-                    <li>
-                      <Link to="/blog-list">{props.t("Blog List")}</Link>
-                    </li>
-                    <li>
-                      <Link to="/blog-details">{props.t("Blog Details")}</Link>
                     </li>
                   </ul>
                 </li>

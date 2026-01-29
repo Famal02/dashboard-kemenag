@@ -18,7 +18,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 
 const Apexchart = () => {
   //meta title
-  document.title = "Apex Charts | Minia - React Admin & Dashboard Template";
+  document.title = "Apex Charts | Dashboard Kemenag";
   return (
     <React.Fragment>
       <div className="page-content">

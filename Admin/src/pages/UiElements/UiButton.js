@@ -19,7 +19,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 const UiButton = () => {
   //meta title
-  document.title = "Button | Minia - React Admin & Dashboard Template";
+  document.title = "Button | Dashboard Kemenag";
   return (
     <React.Fragment>
       <div className="page-content">

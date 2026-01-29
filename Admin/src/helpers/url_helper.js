@@ -122,3 +122,11 @@ export const GET_WALLENT_BALANCE = "GET_WALLENT_BALANCE"
 export const GET_WALLENT_BALANCE_ALL_DATA = "GET_MARKET_ALL_DATA"
 
 export const GET_Invested_Overview = "GET_Invested_Overview"
+
+// WAKAF ENDPOINTS
+export const GET_WAKAF_MAP_DATA = "/api/wakaf/distribution"
+export const GET_WAKAF_DETAILS = "/api/wakaf/details"
+
+// RUMAH IBADAH ENDPOINTS
+export const GET_WORSHIP_SUMMARY = "/api/worship/summary"
+export const GET_WORSHIP_PROVINCES = "/api/worship/provinces"

@@ -6,26 +6,31 @@ const ApexRadial = ({ InvestedData }) => {
     // const series = [80]
     const options = {
         chart: {
-            height: 270,
+            height: 380, // UBAH DISINI: Diperbesar dari 270 menjadi 380 agar chart lebih tinggi
             type: 'radialBar',
             offsetY: -10
         },
         plotOptions: {
             radialBar: {
                 startAngle: -130,
-                endAngle: 130,
+                endAngle: 150,
                 dataLabels: {
                     name: {
                         show: false
                     },
                     value: {
                         offsetY: 10,
-                        fontSize: '18px',
+                        fontSize: '32px', // UBAH DISINI: Diperbesar dari 18px menjadi 32px agar angka persen lebih besar
+                        fontWeight: 'bold', // Opsi tambahan: Menebalkan huruf
                         color: undefined,
                         formatter: function (val) {
                             return val + "%";
                         }
                     }
+                },
+                // Opsi tambahan: Memperbesar ukuran lingkaran dalam (hollow) agar terlihat lebih lebar
+                hollow: {
+                    size: '65%', 
                 }
             }
         },
@@ -56,7 +61,7 @@ const ApexRadial = ({ InvestedData }) => {
             options={options}
             series={InvestedData || []}
             type="radialBar"
-            height="263"
+            height="380" // UBAH DISINI: Samakan dengan chart.height di atas (sebelumnya 263)
             className="apex-charts"
         />
     );

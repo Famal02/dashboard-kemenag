@@ -14,7 +14,6 @@ import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 
 const Navbar = props => {
-
   const [ui, setui] = useState(false);
   const [app, setapp] = useState(false);
   const [email, setemail] = useState(false);
@@ -29,6 +28,9 @@ const Navbar = props => {
   const [invoice, setinvoice] = useState(false);
   const [auth, setauth] = useState(false);
   const [utility, setutility] = useState(false);
+  // TAMBAHKAN DUA STATE INI:
+  const [informasi, setinformasi] = useState(false);
+  const [rumahIbadah, setrumahIbadah] = useState(false);
 
   useEffect(() => {
     var matchingMenuItem = null;
@@ -109,6 +111,56 @@ const Navbar = props => {
                     <span>{props.t("Dashboard")}</span>
                   </Link>
                 </li>
+
+                {/* --- AWAL MENU INFORMASI (ZIS, Wakaf, Rumah Ibadah) --- */}
+                <li className="nav-item dropdown">
+                  <Link
+                    to="/#"
+                    className="nav-link dropdown-toggle arrow-none"
+                    onClick={e => {
+                      e.preventDefault();
+                      setinformasi(!informasi);
+                    }}
+                  >
+                    <FeatherIcon icon="grid" />
+                    <span>{props.t("Informasi")}</span> <div className="arrow-down"></div>
+                  </Link>
+                  <div className={classname("dropdown-menu", { show: informasi })}>
+                    
+                    {/* Menu ZIS */}
+                    <Link to="/Informasi-ZIS" className="dropdown-item">
+                      {props.t("ZIS")}
+                    </Link>
+                    
+                    {/* Menu Wakaf */}
+                    <Link to="/Informasi-Wakaf" className="dropdown-item">
+                      {props.t("Wakaf")}
+                    </Link>
+
+                    {/* Sub-Menu Rumah Ibadah */}
+                    <div className="dropdown">
+                      <Link
+                        to="/#"
+                        className="dropdown-item dropdown-toggle arrow-none"
+                        onClick={e => {
+                          e.preventDefault();
+                          setrumahIbadah(!rumahIbadah);
+                        }}
+                      >
+                        {props.t("Rumah Ibadah")} <div className="arrow-down"></div>
+                      </Link>
+                      <div className={classname("dropdown-menu", { show: rumahIbadah })}>
+                        <Link to="/Islam" className="dropdown-item">{props.t("Islam")}</Link>
+                        <Link to="/Kristen" className="dropdown-item">{props.t("Kristen")}</Link>
+                        <Link to="/Katolik" className="dropdown-item">{props.t("Katolik")}</Link>
+                        <Link to="/Hindu" className="dropdown-item">{props.t("Hindu")}</Link>
+                        <Link to="/Buddha" className="dropdown-item">{props.t("Buddha")}</Link>
+                        <Link to="/Khonghucu" className="dropdown-item">{props.t("Khonghucu")}</Link>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                {/* --- AKHIR MENU INFORMASI --- */}
 
                 <li className="nav-item dropdown">
                   <Link

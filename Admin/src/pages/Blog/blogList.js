@@ -20,7 +20,7 @@ const blogList = () => {
         setsearch_Menu(!search_Menu);
     };
 
-    document.title = "Blog List | Minia - React Admin & Dashboard Template";
+    document.title = "Blog List | Dashboard Kemenag";
 
 
     return (

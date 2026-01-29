@@ -31,7 +31,7 @@ import Pagination from "../../components/Common/Pagination";
 const ContactsGrid = () => {
 
   //meta title
-  document.title = "User Grid | Minia - React Admin & Dashboard Template";
+  document.title = "User Grid | Dashboard Kemenag";
 
   const dispatch = useDispatch();
 

@@ -20,7 +20,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 const UiCarousel = () => {
     //meta title
-    document.title = "Carousel | Minia - React Admin & Dashboard Template";
+    document.title = "Carousel | Dashboard Kemenag";
     return (
         <React.Fragment>
             <div className="page-content">

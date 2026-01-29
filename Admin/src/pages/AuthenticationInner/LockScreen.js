@@ -9,7 +9,7 @@ import CarouselPage from './CarouselPage';
 
 const LockScreen = () => {
     //meta title
-    document.title = "Lock Screen | Minia - React Admin & Dashboard Template";
+    document.title = "Lock Screen | Dashboard Kemenag";
     return (
         <React.Fragment>
             <div className="auth-page">
@@ -21,7 +21,7 @@ const LockScreen = () => {
                                     <div className="d-flex flex-column h-100">
                                         <div className="mb-4 mb-md-5 text-center">
                                             <Link to="/dashboard" className="d-block auth-logo">
-                                                <img src={logo} alt="" height="28" /> <span className="logo-txt">Minia</span>
+                                                <img src={logo} alt="" height="28" /> <span className="logo-txt">Dashboard Kemenag</span>
                                             </Link>
                                         </div>
                                         <div className="auth-content my-auto">
@@ -49,7 +49,7 @@ const LockScreen = () => {
                                             </div>
                                         </div>
                                         <div className="mt-4 mt-md-5 text-center">
-                                            <p className="mb-0">© {new Date().getFullYear()} Minia   . Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                                            <p className="mb-0">© {new Date().getFullYear()} Kementerian Agama   . Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand</p>
                                         </div>
                                     </div>
                                 </div>

@@ -1,7 +1,7 @@
 const WidgetsData = [
     {
         id: 1,
-        title: "My Wallet",
+        title: "Total Dana Zakat",
         price: 865.2,
         rank: "+$20.9k",
         isDoller: true,
@@ -11,7 +11,7 @@ const WidgetsData = [
     },
     {
         id: 2,
-        title: "Number of Trades",
+        title: "Jumlah Transaksi Zakat",
         price: 6258,
         rank: "-29 Trades",
         isDoller: false,
@@ -20,7 +20,7 @@ const WidgetsData = [
     },
     {
         id: 3,
-        title: "Invested Amount",
+        title: "Total Dana Wakaf",
         price: 432,
         rank: "+$2.8k",
         isDoller: true,
@@ -30,7 +30,7 @@ const WidgetsData = [
     },
     {
         id: 5,
-        title: "Profit Ration",
+        title: "Pertumbuhan Zakat",
         price: 1257,
         rank: "+$2.75%",
         isDoller: true,

@@ -44,7 +44,7 @@ const ProfileMenu = props => {
         className="d-inline-block"
       >
         <DropdownToggle
-          className="btn header-item bg-soft-light border-start border-end"
+          className="btn shadow-none bg-transparent ps-1 pe-2 py-0 border-0"
           id="page-header-user-dropdown"
           tag="button"
         >
@@ -64,16 +64,16 @@ const ProfileMenu = props => {
           </Link>{" "}
 
           <Link to="/page-lock-screen" className="dropdown-item">
-          <i className="mdi mdi-lock font-size-16 align-middle me-1"></i>
+            <i className="mdi mdi-lock font-size-16 align-middle me-1"></i>
             {props.t("Lock screen")}
           </Link>
 
           <div className="dropdown-divider" />
           <Link to="/logout" className="dropdown-item">
-          <i className="mdi mdi-logout font-size-16 align-middle me-1"></i>
+            <i className="mdi mdi-logout font-size-16 align-middle me-1"></i>
             <span>{props.t("Logout")}</span>
           </Link>
-          
+
         </DropdownMenu>
       </Dropdown>
     </React.Fragment>

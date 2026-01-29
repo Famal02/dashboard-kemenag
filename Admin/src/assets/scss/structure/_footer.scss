@@ -5,18 +5,14 @@
 .footer {
     bottom: 0;
     padding: 20px calc(#{$grid-gutter-width} / 2);
-    position: absolute;
-    right: 0;
+    position: relative; /* Ganti 'absolute' menjadi 'relative' agar mengalir di bawah konten */
+    width: 100%;
     color: $footer-color;
-    left: 250px;
-    height: $footer-height;
     background-color: $footer-bg;
-    border-top: 1px solid var(--#{$prefix}border-color);
-
-    @media (max-width: 991.98px) {
-        left: 0;
+    height: 60px; /* Sesuaikan tinggi */
+    
+    /* Hapus properti left/right/z-index jika tidak perlu */
     }
-}
   
 // Enlarge menu
 body[data-sidebar-size="sm"] {

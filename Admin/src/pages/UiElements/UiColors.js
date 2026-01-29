@@ -7,7 +7,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 const UiColors = () => {
   
   //meta title
-  document.title = "Colors | Minia - React Admin & Dashboard Template";
+  document.title = "Colors | Dashboard Kemenag";
 
   return (
     <React.Fragment>

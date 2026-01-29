@@ -21,7 +21,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 const UiDropdowns = () => {
 
   //meta title
-  document.title = "Dropdown | Minia - React Admin & Dashboard Template";
+  document.title = "Dropdown | Dashboard Kemenag";
 
   const [btnprimary1, setBtnprimary1] = useState(false);
   const [btnsecondary1, setBtnsecondary1] = useState(false);

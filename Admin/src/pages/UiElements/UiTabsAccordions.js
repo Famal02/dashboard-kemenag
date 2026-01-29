@@ -30,7 +30,7 @@ import classnames from "classnames";
 const UiTabsAccordions = () => {
 
   //meta title
-  document.title = "Tabs & Accordions | Minia - React Admin & Dashboard Template";
+  document.title = "Tabs & Accordions | Dashboard Kemenag";
 
   const [activeTab, setactiveTab] = useState("1");
   const [activeTab1, setactiveTab1] = useState("5");

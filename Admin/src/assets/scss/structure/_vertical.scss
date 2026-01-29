@@ -45,11 +45,11 @@
 }
 
 .main-content {
-    margin-left: $sidebar-width;
+    margin-left: 0 !important;
     overflow: hidden;
 
     .content {
-        padding: 0 15px 10px 15px;
+        padding: 0;
         margin-top: $header-height;
     }
 }

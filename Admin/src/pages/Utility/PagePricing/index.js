@@ -69,7 +69,7 @@ const yearData = [
 const PagePricing = () => {
 
     //meta title
-    document.title = "Pricing | Minia - React Admin & Dashboard Template";
+    document.title = "Pricing | Dashboard Kemenag";
 
     const [activeTab, toggleTab] = useState("1");
     const [activeTab2, toggleTab2] = useState("1");

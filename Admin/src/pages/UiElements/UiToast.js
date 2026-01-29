@@ -24,7 +24,7 @@ import logo from "../../assets/images/logo.svg";
 const UiToast = () => {
 
     //meta title
-    document.title = "Toast | Minia - React Admin & Dashboard Template";
+    document.title = "Toast | Dashboard Kemenag";
 
     const [toast, setToast] = useState(false);
     const [toast1, setToast1] = useState(true);
@@ -104,7 +104,7 @@ const UiToast = () => {
                                         <ToastHeader toggle={() => setToast1(!toast1)}>
                                             <img src={logo} className="me-2"
                                                 alt="..." height="20" />
-                                            <span className="fw-semibold me-auto">Minia</span>
+                                            <span className="fw-semibold me-auto">Dashboard Kemenag</span>
                                             <small className='text-muted' style={{ marginLeft: "165px" }}>06 mins ago</small>
                                         </ToastHeader>
                                         <ToastBody>
@@ -130,7 +130,7 @@ const UiToast = () => {
                                         <ToastHeader toggle={() => setToast2(!toast2)}>
                                             <img src={logo} className="rounded me-2"
                                                 alt="..." height="20" />
-                                            <span className="fw-semibold me-auto">Minia</span>
+                                            <span className="fw-semibold me-auto">Dashboard Kemenag</span>
                                             <small className='text-muted' style={{ marginLeft: "165px" }}>06 mins ago</small>
                                         </ToastHeader>
                                         <ToastBody>
@@ -160,7 +160,7 @@ const UiToast = () => {
                                                     <ToastHeader toggle={() => setToast3(!toast3)}>
                                                         <img src={logo} className="rounded me-2"
                                                             alt="..." height="20" />
-                                                        <span className="fw-semibold me-auto">Minia</span>
+                                                        <span className="fw-semibold me-auto">Dashboard Kemenag</span>
                                                         <small className='text-muted'  style={{ marginLeft: "175px" }}>Just now</small>
                                                     </ToastHeader>
                                                     <ToastBody>
@@ -172,7 +172,7 @@ const UiToast = () => {
                                                     <ToastHeader toggle={() => setToast4(!toast4)}>
                                                         <img src={logo} className="rounded me-2"
                                                             alt="..." height="20" />
-                                                        <span className="fw-semibold me-auto">Minia</span>
+                                                        <span className="fw-semibold me-auto">Dashboard Kemenag</span>
                                                         <small className='text-muted' style={{ marginLeft: "150px" }}>2 seconds ago</small>
                                                     </ToastHeader>
                                                     <ToastBody>
@@ -379,7 +379,7 @@ const UiToast = () => {
                                                 <ToastHeader toggle={() => setToast9(!toast9)}>
                                                     <img src={logo} className="rounded me-2"
                                                         alt="..." height="20" />
-                                                    <strong className="me-auto">Minia</strong>
+                                                    <strong className="me-auto">Dashboard Kemenag</strong>
                                                     <small className='text-muted' style={{ marginLeft: "165px" }}>11 mins ago</small>
                                                 </ToastHeader>
                                                 <ToastBody>

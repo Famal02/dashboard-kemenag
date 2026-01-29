@@ -10,7 +10,7 @@ const UiAlert = () => {
     const [show, setShow] = useState(false);
 
     //meta title
-    document.title = "Alert | Minia - React Admin & Dashboard Template";
+    document.title = "Alert | Dashboard Kemenag";
     return (
         <React.Fragment>
             <div className="page-content">

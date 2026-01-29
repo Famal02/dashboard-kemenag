@@ -43,7 +43,7 @@ import { Link } from "react-router-dom";
 const InvoiceList = () => {
 
   //meta title
-  document.title = "Invoice List | Minia - React Admin & Dashboard Template";
+  document.title = "Invoice List | Dashboard Kemenag";
 
   const dispatch = useDispatch();
 

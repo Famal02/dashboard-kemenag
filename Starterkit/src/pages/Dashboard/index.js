@@ -10,7 +10,7 @@ import {
 const Dashboard = () => {
 
     //meta title
-    document.title = "Dashboard | Minia - React Admin & Dashboard Template";
+    document.title = "Dashboard Kemenag";
 
     return (
         <React.Fragment>

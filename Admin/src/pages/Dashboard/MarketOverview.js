@@ -6,7 +6,7 @@ import { getMarketoverview } from '../../store/actions';
 import OverviewCharts from './OverviewCharts';
 import { createSelector } from 'reselect';
 
-const MarketOverview = () => {
+const MarketOverview = ({ isFullWidth, width }) => {
 
     const dispatch = useDispatch();
 
@@ -37,23 +37,33 @@ const MarketOverview = () => {
 
     return (
         <React.Fragment>
-            <Col xl={8}>
-                <Card>
-                    <CardBody>
-                        <div className="d-flex flex-wrap align-items-center mb-4">
-                            <h5 className="card-title me-2">Market Overview</h5>
-                            <div className="ms-auto">
+            <Col xl={width || (isFullWidth ? 12 : 8)}>
+                <Card className="border-0 shadow-sm" style={{ borderRadius: '12px' }}>
+                    <CardBody className="p-4">
+                        <div className="d-flex flex-wrap align-items-center mb-4 border-bottom pb-3">
+                            {isFullWidth ? (
+                                <>
+                                    <div className="d-none d-md-block flex-grow-0" style={{ width: '150px' }}></div> {/* Spacer to balance layout */}
+                                    <div className="text-center flex-grow-1">
+                                        <h5 className="card-title mb-0 fw-bold text-dark">Pengumpulan & Penyaluran Zakat</h5>
+                                    </div>
+                                </>
+                            ) : (
+                                <h5 className="card-title me-2">Pengumpulan & Penyaluran Zakat</h5>
+                            )}
+
+                            <div className={isFullWidth ? "ms-0 ms-md-auto" : "ms-auto"}>
                                 <div>
-                                    <button type="button" className="btn btn-soft-primary btn-sm" onClick={() => onChangeHandle("ALL")}>
+                                    <button type="button" className="btn btn-soft-primary btn-sm rounded-pill" onClick={() => onChangeHandle("ALL")}>
                                         ALL
                                     </button>{" "}
-                                    <button type="button" className="btn btn-soft-secondary btn-sm" onClick={() => onChangeHandle("1M")}>
+                                    <button type="button" className="btn btn-soft-secondary btn-sm rounded-pill" onClick={() => onChangeHandle("1M")}>
                                         1M
                                     </button>{" "}
-                                    <button type="button" className="btn btn-soft-secondary btn-sm" onClick={() => onChangeHandle("6M")}>
+                                    <button type="button" className="btn btn-soft-secondary btn-sm rounded-pill" onClick={() => onChangeHandle("6M")}>
                                         6M
                                     </button>{" "}
-                                    <button type="button" className="btn btn-soft-secondary btn-sm" onClick={() => onChangeHandle("1Y")}>
+                                    <button type="button" className="btn btn-soft-secondary btn-sm rounded-pill" onClick={() => onChangeHandle("1Y")}>
                                         1Y
                                     </button>{" "}
                                 </div>
@@ -61,107 +71,57 @@ const MarketOverview = () => {
                         </div>
 
                         <Row className="align-items-center">
-                            <Col xl={8}>
+                            <Col xl={isFullWidth ? 12 : 8}>
                                 <div>
-                                    <div id="market-overview" className="apex-charts">
+                                    <div id="Pengumpulan & Penyaluran Zakat" className="apex-charts">
                                         <OverviewCharts
                                             Marketoverview={Marketoverview.invoices} />
                                     </div>
                                 </div>
                             </Col>
-                            <Col xl={4}>
-                                <div className="p-4">
-                                    <div className="mt-0">
-                                        <div className="d-flex align-items-center">
-                                            <div className="avatar-sm m-auto">
-                                                <span className="avatar-title rounded-circle bg-light-subtle text-dark font-size-16">
-                                                    1
-                                                </span>
-                                            </div>
-                                            <div className="flex-grow-1 ms-3">
-                                                <span className="font-size-16">Coinmarketcap</span>
-                                            </div>
+                            {!isFullWidth && (
+                                <Col xl={4}>
+                                    <div className="px-2 py-2">
 
-                                            <div className="flex-shrink-0">
-                                                <span className="badge rounded-pill bg-success-subtle text-success font-size-12 fw-medium">+2.5%</span>
-                                            </div>
+                                        {/* Item 1 */}
+                                        <p className="mb-1">Coinmarketcap <span className="float-end text-success">+ 2.5%</span></p>
+                                        <div className="progress mt-2" style={{ height: "6px" }}>
+                                            <div className="progress-bar progress-bar-striped bg-success" role="progressbar" style={{ width: "25%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                    </div>
 
-                                    <div className="mt-3">
-                                        <div className="d-flex align-items-center">
-                                            <div className="avatar-sm m-auto">
-                                                <span className="avatar-title rounded-circle bg-light-subtle text-dark font-size-16">
-                                                    2
-                                                </span>
-                                            </div>
-                                            <div className="flex-grow-1 ms-3">
-                                                <span className="font-size-16">Binance</span>
-                                            </div>
-
-                                            <div className="flex-shrink-0">
-                                                <span className="badge rounded-pill bg-success-subtle text-success font-size-12 fw-medium">+8.3%</span>
-                                            </div>
+                                        {/* Item 2 */}
+                                        <p className="mt-3 mb-1">Binance <span className="float-end text-success">+ 8.3%</span></p>
+                                        <div className="progress mt-2" style={{ height: "6px" }}>
+                                            <div className="progress-bar progress-bar-striped bg-success" role="progressbar" style={{ width: "83%" }} aria-valuenow="83" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                    </div>
 
-                                    <div className="mt-3">
-                                        <div className="d-flex align-items-center">
-                                            <div className="avatar-sm m-auto">
-                                                <span className="avatar-title rounded-circle bg-light-subtle text-dark font-size-16">
-                                                    3
-                                                </span>
-                                            </div>
-                                            <div className="flex-grow-1 ms-3">
-                                                <span className="font-size-16">Coinbase</span>
-                                            </div>
-
-                                            <div className="flex-shrink-0">
-                                                <span className="badge rounded-pill bg-danger-subtle text-danger font-size-12 fw-medium">-3.6%</span>
-                                            </div>
+                                        {/* Item 3 */}
+                                        <p className="mt-3 mb-1">Coinbase <span className="float-end text-danger">- 3.6%</span></p>
+                                        <div className="progress mt-2" style={{ height: "6px" }}>
+                                            <div className="progress-bar progress-bar-striped bg-danger" role="progressbar" style={{ width: "36%" }} aria-valuenow="36" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                    </div>
 
-                                    <div className="mt-3">
-                                        <div className="d-flex align-items-center">
-                                            <div className="avatar-sm m-auto">
-                                                <span className="avatar-title rounded-circle bg-light-subtle text-dark font-size-16">
-                                                    4
-                                                </span>
-                                            </div>
-                                            <div className="flex-grow-1 ms-3">
-                                                <span className="font-size-16">Yobit</span>
-                                            </div>
-
-                                            <div className="flex-shrink-0">
-                                                <span className="badge rounded-pill bg-success-subtle text-success font-size-12 fw-medium">+7.1%</span>
-                                            </div>
+                                        {/* Item 4 */}
+                                        <p className="mt-3 mb-1">Yobit <span className="float-end text-success">+ 7.1%</span></p>
+                                        <div className="progress mt-2" style={{ height: "6px" }}>
+                                            <div className="progress-bar progress-bar-striped bg-success" role="progressbar" style={{ width: "71%" }} aria-valuenow="71" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                    </div>
 
-                                    <div className="mt-3">
-                                        <div className="d-flex align-items-center">
-                                            <div className="avatar-sm m-auto">
-                                                <span className="avatar-title rounded-circle bg-light-subtle text-dark font-size-16">
-                                                    5
-                                                </span>
-                                            </div>
-                                            <div className="flex-grow-1 ms-3">
-                                                <span className="font-size-16">Bitfinex</span>
-                                            </div>
-
-                                            <div className="flex-shrink-0">
-                                                <span className="badge rounded-pill bg-danger-subtle text-danger font-size-12 fw-medium">-0.9%</span>
-                                            </div>
+                                        {/* Item 5 */}
+                                        <p className="mt-3 mb-1">Bitfinex <span className="float-end text-danger">- 0.9%</span></p>
+                                        <div className="progress mt-2" style={{ height: "6px" }}>
+                                            <div className="progress-bar progress-bar-striped bg-danger" role="progressbar" style={{ width: "10%" }} aria-valuenow="9" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                    </div>
-                                    <div className="mt-4 pt-2">
-                                        <Link to="/invoices-list" className="btn btn-primary w-100">See All Balances <i
-                                            className="mdi mdi-arrow-right ms-1"></i></Link>
-                                    </div>
 
-                                </div>
-                            </Col>
+                                        <div className="mt-4 pt-2">
+                                            <Link to="/invoices-list" className="btn btn-primary w-100 btn-sm rounded-pill">
+                                                Lihat Semua Saldo <i className="mdi mdi-arrow-right ms-1"></i>
+                                            </Link>
+                                        </div>
+
+                                    </div>
+                                </Col>
+                            )}
                         </Row>
                     </CardBody>
 

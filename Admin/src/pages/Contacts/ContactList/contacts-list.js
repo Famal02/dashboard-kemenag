@@ -44,7 +44,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
 
 const ContactsList = () => {
-  document.title = "User List | Minia - React Admin & Dashboard Template";
+  document.title = "User List | Dashboard Kemenag";
 
   const dispatch = useDispatch();
   const [contact, setContact] = useState();

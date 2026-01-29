@@ -13,7 +13,7 @@ import TextualInputs from './Textual-inputs';
 
 const FormElements = () => {
      //meta title
-     document.title = "Basic Elements | Minia - React Admin & Dashboard Template";
+     document.title = "Basic Elements | Dashboard Kemenag";
     return (
         <React.Fragment>
             <div className="page-content">

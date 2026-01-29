@@ -9,7 +9,7 @@ import smallImage from "../../assets/images/small/img-1.jpg";
 
 const UiPlaceholders = () => {
     //meta title
-    document.title = "Placeholders | Minia - React Admin & Dashboard Template";
+    document.title = "Placeholders | Dashboard Kemenag";
     return (
         <React.Fragment>
             <div className="page-content">

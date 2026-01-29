@@ -6,7 +6,7 @@ import logo from "../../assets/images/logo-sm.svg";
 
 const Logout = () => {
 
-    document.title = "Log out | Minia - React Admin & Dashboard Template";
+    document.title = "Log out | Dashboard Kemenag";
 
     return (
         <div className="container-fluid p-0">
@@ -18,7 +18,7 @@ const Logout = () => {
                                 <div className="d-flex flex-column h-100">
                                     <div className="mb-4 mb-md-5 text-center">
                                         <Link to="index.html" className="d-block auth-logo">
-                                            <img src={logo} alt="" height="28" /> <span className="logo-txt">Minia</span>
+                                            <img src={logo} alt="" height="28" /> <span className="logo-txt">Dashboard Kemenag</span>
                                         </Link>
                                     </div>
                                     <div className="auth-content my-auto">
@@ -31,7 +31,7 @@ const Logout = () => {
 
                                             <div className="mt-4 pt-2">
                                                 <h5>You are Logged Out</h5>
-                                                <p className="text-muted font-size-15">Thank you for using <span className="fw-semibold text-dark">Minia</span></p>
+                                                <p className="text-muted font-size-15">Thank you for using <span className="fw-semibold text-dark">Dashboard Kemenag</span></p>
                                                 <div className="mt-4">
                                                     <Link to="/dashboard" className="btn btn-primary w-100 waves-effect waves-light">Sign In</Link>
                                                 </div>

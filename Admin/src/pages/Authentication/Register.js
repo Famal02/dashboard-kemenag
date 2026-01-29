@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import { Row, Col, Alert, Container, Input, Label, Form, FormFeedback  } from "reactstrap"
+import { Row, Col, Alert, Container, Input, Label, Form, FormFeedback } from "reactstrap"
 
 // Formik Validation
 import * as Yup from "yup";
@@ -21,7 +21,7 @@ import { createSelector } from "reselect";
 const Register = props => {
 
   //meta title
-  document.title = "Register | Minia - React Admin & Dashboard Template";
+  document.title = "Register | Dashboard Kemenag";
 
   const dispatch = useDispatch()
 
@@ -70,13 +70,13 @@ const Register = props => {
                   <div className="d-flex flex-column h-100">
                     <div className="mb-4 mb-md-5 text-center">
                       <Link to="/dashboard" className="d-block auth-logo">
-                        <img src={logo} alt="" height="28" /> <span className="logo-txt">Minia</span>
+                        <img src={logo} alt="" height="28" /> <span className="logo-txt">Dashboard Kemenag</span>
                       </Link>
                     </div>
                     <div className="auth-content my-auto">
                       <div className="text-center">
                         <h5 className="mb-0">Register Account</h5>
-                        <p className="text-muted mt-2">Get your free Minia account now.</p>
+                        <p className="text-muted mt-2">Get your free Dashboard Kemenag account now.</p>
                       </div>
 
                       <Form
@@ -152,7 +152,7 @@ const Register = props => {
                             <FormFeedback type="invalid">{validation.errors.password}</FormFeedback>
                           ) : null}
                         </div>
-                        
+
                         <div className="mb-4">
                           <p className="mb-0">
                             By registering you agree to the Minia{" "}
@@ -177,7 +177,7 @@ const Register = props => {
                       </div>
                     </div>
                     <div className="mt-4 mt-md-5 text-center">
-                      <p className="mb-0">© {new Date().getFullYear()} Minia . Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                      <p className="mb-0">© {new Date().getFullYear()} Kementerian Agama . Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand</p>
                     </div>
                   </div>
                 </div>

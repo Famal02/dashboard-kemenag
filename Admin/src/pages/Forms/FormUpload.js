@@ -18,7 +18,7 @@ import { Link } from "react-router-dom";
 const FormUpload = () => {
 
   //meta title
-  document.title = "Form File Upload | Minia - React Admin & Dashboard Template";
+  document.title = "Form File Upload | Dashboard Kemenag";
 
   const [selectedFiles, setselectedFiles] = useState([]);
 

@@ -14,7 +14,7 @@ import PolarChart from "../AllCharts/chartjs/polarchart";
 
 const ChartjsChart = () => {
    //meta title
-   document.title = "Chartjs | Minia - React Admin & Dashboard Template";
+   document.title = "Chartjs | Dashboard Kemenag";
   return (
     <React.Fragment>
       <div className="page-content">

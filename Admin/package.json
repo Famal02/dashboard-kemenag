@@ -1,5 +1,5 @@
 {
-  "name": "minia-react",
+  "name": "dashboard-kemenag",
   "version": "2.4.0",
   "private": true,
   "dependencies": {
@@ -16,6 +16,8 @@
     "@fullcalendar/list": "^6.1.15",
     "@fullcalendar/react": "^6.1.15",
     "@react-google-maps/api": "^2.19.3",
+    "@react-jvectormap/core": "^1.0.4",
+    "@react-jvectormap/indonesia": "^2.0.0",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",
@@ -92,7 +94,7 @@
     "yup": "^1.4.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts --max_old_space_size=8192 start",
     "build": "react-scripts --max_old_space_size=12000 build",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",

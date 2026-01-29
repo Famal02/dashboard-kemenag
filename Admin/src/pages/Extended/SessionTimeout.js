@@ -44,7 +44,7 @@ const SessionTimeout = () => {
     setShowWarning(false);
   };
   //meta title
-  document.title = "Session Timeout| Minia - React Admin & Dashboard Template";
+  document.title = "Session Timeout| Dashboard Kemenag";
   return (
     <React.Fragment>
       <div className="page-content">

@@ -35,7 +35,7 @@ const images = [img1, img2, img3, img4, img5, img6];
 const UiLightbox = () => {
 
   //meta title
-  document.title = "Lightbox | Minia - React Admin & Dashboard Template";
+  document.title = "Lightbox | Dashboard Kemenag";
   const [open, setOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isEffects, setisEffects] = useState(false);
@@ -71,7 +71,7 @@ const UiLightbox = () => {
                             setisFits(0);
                           }}
                           className="img-fluid"
-                          alt="Minia"
+                          alt="Dashboard Kemenag"
                           src={img1}
                         />
                         {open && (

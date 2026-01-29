@@ -7,7 +7,7 @@ import logo from "../../assets/images/logo-sm.svg";
 
 const PageMaintenance = () => {
 
-  document.title = "Maintenance | Minia - React Admin & Dashboard Template";
+  document.title = "Maintenance | Dashboard Kemenag";
 
     return (
         <React.Fragment>
@@ -19,7 +19,7 @@ const PageMaintenance = () => {
                                 <div className="text-center">
                                     <div className="mb-5">
                                         <Link to="/dashboard">
-                                            <img src={logo} alt="" height="30" className="me-1" /><span className="logo-txt text-dark font-size-22">Minia</span>
+                                            <img src={logo} alt="" height="30" className="me-1" /><span className="logo-txt text-dark font-size-22">Dashboard Kemenag</span>
                                         </Link>
                                     </div>
 

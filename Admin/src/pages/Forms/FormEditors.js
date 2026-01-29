@@ -19,7 +19,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 const FormEditors = () => {
     //meta title
-    document.title = "Form Editors | Minia - React Admin & Dashboard Template";
+    document.title = "Form Editors | Dashboard Kemenag";
 
     const editorRef = useRef();
     const [editor, setEditor] = useState(false);

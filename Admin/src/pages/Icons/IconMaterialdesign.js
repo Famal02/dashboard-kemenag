@@ -7806,7 +7806,7 @@ const IconMaterialdesign = (props) => {
   });
 
   //meta title
-  document.title = "Material Design | Minia - React Admin & Dashboard Template";
+  document.title = "Material Design | Dashboard Kemenag";
 
   return (
     <React.Fragment>

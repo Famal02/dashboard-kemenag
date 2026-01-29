@@ -26,7 +26,7 @@ import TooltipsValidation from "./TooltipsValidation";
 const FormValidation = () => {
 
   //meta title
-  document.title = "Form Validation | Minia - React Admin & Dashboard Template";
+  document.title = "Form Validation | Dashboard Kemenag";
 
     // Form validation 
   const validationType = useFormik({

@@ -10,7 +10,7 @@ import Pagination from "../../components/Common/Pagination"
 
 const ResponsiveTables = () => {
   //meta title
-  document.title = "Responsive Table | Minia - React Admin & Dashboard Template";
+  document.title = "Responsive Table | Dashboard Kemenag";
 
   return (
     <React.Fragment>

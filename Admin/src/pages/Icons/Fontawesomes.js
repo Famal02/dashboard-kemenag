@@ -14,7 +14,7 @@ var regular = "";
 var brand = "";
 
 const IconFontawesome = () => {
-  document.title = "Font awesome | Minia - React Admin & Dashboard Template";
+  document.title = "Font awesome | Dashboard Kemenag";
 
   useEffect(() => {
     for (let entry of icons.data) {

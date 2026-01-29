@@ -24,7 +24,6 @@ import Locations from './Locations';
 import Trading from './Trading';
 import Transactions from './Transactions';
 import RecentActivity from './RecentActivity';
-import NewSlider from './NewSlider';
 
 const options = {
     chart: {
@@ -79,14 +78,14 @@ const options = {
 const Dashboard = () => {
 
     //meta title
-    document.title = "Dashboard | Minia - React Admin & Dashboard Template";
+    document.title = "Dashboard Zakat Nasional";
 
     return (
         <React.Fragment>
             <div className="page-content">
-                <Container fluid>
+                <div className="custom-container"> {/* <--- INI YANG BARU */}
                     {/* Render Breadcrumbs */}
-                    <Breadcrumbs title="Dashboard" breadcrumbItem="Dashboard" />
+                    <Breadcrumbs title="" breadcrumbItem="Data Zakat" />
 
                     <Row>
                         {(WidgetsData || []).map((widget, key) => (
@@ -145,12 +144,8 @@ const Dashboard = () => {
                     </Row>
                     <Row>
                         <WalletBalance />
-                        <Col>
-                            <Row>
-                                <InvestedOverview />
-                                <NewSlider />
-                            </Row>
-                        </Col>
+                        <InvestedOverview />
+                        {/* <NewSlider /> */}
                     </Row>
                     <Row>
                         <MarketOverview />
@@ -161,7 +156,7 @@ const Dashboard = () => {
                         <Transactions />
                         <RecentActivity />
                     </Row>
-                </Container>
+                </div>
             </div>
         </React.Fragment>
     );

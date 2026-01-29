@@ -6,7 +6,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 const PageFaqs = () => {
     //meta title
-    document.title = "FAQs | Minia - React Admin & Dashboard Template";
+    document.title = "FAQs | Dashboard Kemenag";
     return (
         <React.Fragment>
             <div className="page-content">
