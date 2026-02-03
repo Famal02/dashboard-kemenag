@@ -229,7 +229,7 @@ const Dashboard = () => {
                                 key={idx}
                                 title={stat.title}
                                 value={stat.isCurrency ? stat.value / 1000000000 : stat.value} // Value simplified for display
-                                unit={stat.isCurrency ? "Rp (M) " : ""}
+                                unit={stat.isCurrency ? "Rp " : ""}
                                 icon={stat.icon}
                                 color={stat.color}
                             />
