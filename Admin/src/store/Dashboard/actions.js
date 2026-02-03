@@ -8,6 +8,9 @@ import {
     GET_Invested_Overview,
     GET_Invested_Overview_SUCCESS,
     GET_Invested_Overview_FAIL,
+    GET_DASHBOARD_KEMENAG_DATA,
+    GET_DASHBOARD_KEMENAG_DATA_SUCCESS,
+    GET_DASHBOARD_KEMENAG_DATA_FAIL,
 } from "./actiontype";
 
 export const getMarketoverview = (data) => ({
@@ -54,3 +57,18 @@ export const getInvestedOverviewFail = (actionType, error) => ({
     type: GET_Invested_Overview_FAIL,
     payload: { actionType, error },
 })
+
+export const getDashboardKemenagData = (data) => ({
+    type: GET_DASHBOARD_KEMENAG_DATA,
+    payload: data,
+});
+
+export const getDashboardKemenagDataSuccess = (data) => ({
+    type: GET_DASHBOARD_KEMENAG_DATA_SUCCESS,
+    payload: data,
+});
+
+export const getDashboardKemenagDataFail = (error) => ({
+    type: GET_DASHBOARD_KEMENAG_DATA_FAIL,
+    payload: error,
+});

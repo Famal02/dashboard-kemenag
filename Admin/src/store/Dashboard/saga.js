@@ -5,12 +5,22 @@ import {
     GET_MARKET_OVERVIEW,
     GET_WALLENT_BALANCE,
     GET_Invested_Overview,
+    GET_DASHBOARD_KEMENAG_DATA
 } from "./actiontype";
-import { getMarketoverviewSuccess, getMarketoverviewFail, getWalletBalanceFail, getWalletBalanceSuccess, getInvestedOverviewSuccess, getInvestedOverviewFail } from "./actions";
+import {
+    getMarketoverviewSuccess,
+    getMarketoverviewFail,
+    getWalletBalanceFail,
+    getWalletBalanceSuccess,
+    getInvestedOverviewSuccess,
+    getInvestedOverviewFail,
+    getDashboardKemenagDataSuccess,
+    getDashboardKemenagDataFail
+} from "./actions";
 
 //Include Both Helper File with needed methods
 import {
-    getMarketoverViewData, getWallentData, getInvestedData
+    getMarketoverViewData, getWallentData, getInvestedData, getDashboardKemenagData
 } from "../../helpers/fakebackend_helper";
 
 
@@ -83,10 +93,32 @@ function* getInvestedOverviewData({ payload: data }) {
     }
 }
 
+function* fetchDashboardKemenagData() {
+    try {
+        const response = yield call(getDashboardKemenagData);
+        yield put(getDashboardKemenagDataSuccess(response));
+    } catch (error) {
+        // Fallback to Mock Data if API fails (since API is not ready yet)
+        console.warn("API Call failed (expected if API not ready), using Mock Data");
+        const mockData = {
+            summary: {
+                zis: 1250000000,
+                wakaf: 4500,
+                rumahIbadah: 12500
+            },
+            trends: [10, 20, 15, 25, 30, 40, 35],
+            chartData: [44, 55, 41, 17, 15]
+        };
+        yield put(getDashboardKemenagDataSuccess(mockData));
+        // yield put(getDashboardKemenagDataFail(error)); // Uncomment this when API is real
+    }
+}
+
 export function* watchGetChartsData() {
     yield takeEvery(GET_MARKET_OVERVIEW, getChartsData);
     yield takeEvery(GET_WALLENT_BALANCE, getWalletBalance);
     yield takeEvery(GET_Invested_Overview, getInvestedOverviewData);
+    yield takeEvery(GET_DASHBOARD_KEMENAG_DATA, fetchDashboardKemenagData);
 }
 
 function* dashboardSaga() {

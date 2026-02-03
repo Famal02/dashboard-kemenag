@@ -11,5 +11,9 @@ export const GET_Invested_Overview = "GET_Invested_Overview"
 export const GET_Invested_Overview_SUCCESS = "GET_Invested_Overview_SUCCESS"
 export const GET_Invested_Overview_FAIL = "GET_Invested_Overview__FAIL"
 
+export const GET_DASHBOARD_KEMENAG_DATA = "GET_DASHBOARD_KEMENAG_DATA"
+export const GET_DASHBOARD_KEMENAG_DATA_SUCCESS = "GET_DASHBOARD_KEMENAG_DATA_SUCCESS"
+export const GET_DASHBOARD_KEMENAG_DATA_FAIL = "GET_DASHBOARD_KEMENAG_DATA_FAIL"
+
 
 

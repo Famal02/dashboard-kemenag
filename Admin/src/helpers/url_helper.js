@@ -130,3 +130,4 @@ export const GET_WAKAF_DETAILS = "/api/wakaf/details"
 // RUMAH IBADAH ENDPOINTS
 export const GET_WORSHIP_SUMMARY = "/api/worship/summary"
 export const GET_WORSHIP_PROVINCES = "/api/worship/provinces"
+export const GET_DASHBOARD_KEMENAG_DATA = "https://spl-satudata.kemenag.go.id/core/apidev/penerimaan-zm/zm"

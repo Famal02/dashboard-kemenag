@@ -4,6 +4,13 @@ import accessToken from "./jwt-token-access/accessToken"
 //pass new generated access token here
 const token = accessToken
 
+// --- KONFIGURASI API KEMENAG ---
+// TODO: Paste API KEY dari mentor di dalam tanda kutip di bawah ini
+const KEMENAG_API_KEY = ""
+// TODO: Pastikan nama headernya. Biasanya 'x-api-key' atau 'Authorization' atau 'token'
+// Tanyakan ke mentor: "Pak, nama header untuk key-nya apa ya?"
+const KEMENAG_HEADER_NAME = "X-API-Key"
+
 //apply base url for axios
 const API_URL = ""
 
@@ -12,6 +19,11 @@ export const axiosApi = axios.create({
 })
 
 axiosApi.defaults.headers.common["Authorization"] = token
+
+// Jika nanti API KEY sudah diisi, otomatis ditambahkan ke header
+if (KEMENAG_API_KEY) {
+  axiosApi.defaults.headers.common[KEMENAG_HEADER_NAME] = KEMENAG_API_KEY
+}
 
 axiosApi.interceptors.response.use(
   response => response,

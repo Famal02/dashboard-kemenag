@@ -112,7 +112,7 @@ const AssetsByPurposeChart = () => {
     const colors = ['#34c38f', '#556ee6', '#f46a6a', '#f1b44c', '#50a5f1'];
 
     const options = {
-        chart: { type: 'donut' },
+        chart: { type: 'pie' },
         labels: labels,
         colors: colors,
         legend: { show: false },
@@ -123,7 +123,6 @@ const AssetsByPurposeChart = () => {
             },
             style: { fontSize: '10px' }
         },
-        plotOptions: { donut: { size: '70%' } },
         stroke: { show: true, width: 0 },
         tooltip: {
             y: { formatter: (val) => val + " Aset" }
@@ -139,6 +138,7 @@ const AssetsByPurposeChart = () => {
             colors={colors}
             unit="Aset"
             totalValue="1.350 Aset"
+            chartType="pie"
         />
     );
 };
@@ -155,7 +155,7 @@ const MoneyWaqfPermanentChart = () => {
     const colors = ['#556ee6', '#34c38f', '#f46a6a', '#f1b44c', '#50a5f1'];
 
     const options = {
-        chart: { type: 'donut' },
+        chart: { type: 'pie' },
         labels: labels,
         colors: colors,
         legend: { show: false },
@@ -166,7 +166,6 @@ const MoneyWaqfPermanentChart = () => {
             },
             style: { fontSize: '10px' }
         },
-        plotOptions: { donut: { size: '65%' } },
         stroke: { show: true, width: 0 },
         tooltip: {
             y: { formatter: (val) => formatCurrency(val) }
@@ -180,6 +179,7 @@ const MoneyWaqfPermanentChart = () => {
             series={series}
             labels={labels}
             colors={colors}
+            chartType="pie"
         />
     );
 };
@@ -198,7 +198,7 @@ const MoneyWaqfTemporaryChart = () => {
     const colors = ['#34c38f', '#556ee6', '#f46a6a', '#f1b44c', '#50a5f1', '#343a40', '#999999'];
 
     const options = {
-        chart: { type: 'donut' },
+        chart: { type: 'pie' },
         labels: labels,
         colors: colors,
         legend: { show: false },
@@ -209,7 +209,6 @@ const MoneyWaqfTemporaryChart = () => {
             },
             style: { fontSize: '10px' }
         },
-        plotOptions: { donut: { size: '65%' } },
         stroke: { show: true, width: 0 },
         tooltip: {
             y: { formatter: (val) => formatCurrency(val) }
@@ -223,6 +222,7 @@ const MoneyWaqfTemporaryChart = () => {
             series={series}
             labels={labels}
             colors={colors}
+            chartType="pie"
         />
     );
 };

@@ -7,13 +7,21 @@ import {
     GET_WALLENT_BALANCE,
     GET_Invested_Overview,
     GET_Invested_Overview_SUCCESS,
-    GET_Invested_Overview_FAIL, } from "./actiontype"
+    GET_Invested_Overview_FAIL,
+    GET_DASHBOARD_KEMENAG_DATA_SUCCESS,
+    GET_DASHBOARD_KEMENAG_DATA_FAIL
+} from "./actiontype"
 
 const INIT_STATE = {
     Marketoverview: [],
     error: {},
     WallentBalanceData: [],
     InvestedData: [],
+    dashboardKemenagData: {
+        summary: { zis: 0, wakaf: 0, rumahIbadah: 0 },
+        trends: [],
+        chartData: []
+    }
 }
 
 const dashboard = (state = INIT_STATE, action) => {
@@ -49,6 +57,18 @@ const dashboard = (state = INIT_STATE, action) => {
             }
 
         case GET_Invested_Overview_FAIL:
+            return {
+                ...state,
+                error: action.payload,
+            }
+
+        case GET_DASHBOARD_KEMENAG_DATA_SUCCESS:
+            return {
+                ...state,
+                dashboardKemenagData: action.payload,
+            }
+
+        case GET_DASHBOARD_KEMENAG_DATA_FAIL:
             return {
                 ...state,
                 error: action.payload,

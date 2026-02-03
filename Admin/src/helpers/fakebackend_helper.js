@@ -1,4 +1,4 @@
-  import axios from "axios"
+import axios from "axios"
 import { del, get, post, put } from "./api_helper"
 import * as url from "./url_helper"
 
@@ -297,6 +297,8 @@ export const getWallentData = (data) =>
 
 export const getInvestedData = (data) =>
   get(`${url.GET_Invested_Overview}/${data}`, { params: { data } });
+
+export const getDashboardKemenagData = () => get(url.GET_DASHBOARD_KEMENAG_DATA);
 
 export {
   getLoggedInUser,

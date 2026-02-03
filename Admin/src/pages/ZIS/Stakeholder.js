@@ -62,7 +62,8 @@ const Stakeholder = () => {
 
     return (
         <div className="page-content bg-light">
-            <Container fluid>
+            <div className="custom-container">
+                {/* Removed Container fluid as custom-container handles layout */}
                 <style>{`
            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
            .page-content { font-family: 'Inter', sans-serif; background-color: #f8fafc !important; }
@@ -332,7 +333,7 @@ const Stakeholder = () => {
                         </Card>
                     </Col>
                 </Row>
-            </Container>
+            </div>
         </div>
     )
 }
