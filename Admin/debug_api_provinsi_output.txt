@@ -1,0 +1,27 @@
+Analysis of Provinsi APIs
+=========================
+
+--- Penerimaan Provinsi ---
+URL: https://spl-satudata.kemenag.go.id/core/apidev/penerimaan-zm/penerimaan-provinsi
+✅ Status: 200
+✅ Items Found: 10
+
+📋 Found 10 Provinces:
+Riau, Sulawesi Barat, Sulawesi Selatan, Sulawesi Tengah, Sulawesi Tenggara, Sulawesi Utara, Sumatera Barat, Sumatera Selatan, Sumatera Utara, Yogyakarta
+
+📦 Sample Item Keys:
+provinsi, total_csr, total_dskl, total_fidyah, total_infak_penyaluran, total_is_ops, total_ist, total_istt, total_zakat_badan, total_zakat_perorangan, zakat_fitrah
+
+
+--- Penyaluran Provinsi ---
+URL: https://spl-satudata.kemenag.go.id/core/apidev/penerimaan-zm/penyaluran-prov
+✅ Status: 200
+✅ Items Found: 10
+
+📋 Found 10 Provinces:
+Riau, Sulawesi Barat, Sulawesi Selatan, Sulawesi Tengah, Sulawesi Tenggara, Sulawesi Utara, Sumatera Barat, Sumatera Selatan, Sumatera Utara, Yogyakarta
+
+📦 Sample Item Keys:
+provinsi, total_asnaf_amil, total_asnaf_fakir, total_asnaf_fisabilillah, total_asnaf_gharimin, total_asnaf_ibnusabil, total_asnaf_miskin, total_asnaf_muallaf, total_asnaf_riqab, total_csr, total_dskl, total_infak_amil, total_infak_penyaluran, total_ist, total_istt, total_kurban, total_zakat_fitrah
+
+

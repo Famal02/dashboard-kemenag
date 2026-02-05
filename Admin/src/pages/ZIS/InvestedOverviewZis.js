@@ -1,85 +1,95 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { Col, Card, CardBody, Row } from "reactstrap";
 import ReactApexChart from "react-apexcharts";
+import axios from 'axios';
+import { GET_PENERIMAAN_PROVINSI, GET_PENYALURAN_PROVINSI } from "../../helpers/url_helper";
 
 const InvestedOverviewZis = ({ title }) => {
-    const [selectedYear, setSelectedYear] = useState("2025");
+    const [loading, setLoading] = useState(true);
     const [yearData, setYearData] = useState(null);
 
-    // Kategori Dana Utama
-    const categories = ["Zakat", "Infaq", "DSKL", "Fidyah", "Qurban"];
+    // --- CHART CATEGORIES (Dynamic based on API) ---
+    // Chart 1: Sources (Penerimaan)
+    const sourceCategories = ["Zakat Maal", "Zakat Fitrah", "Infaq", "Lainnya"];
 
-    // Kategori Breakdown Detail
-    const breakdownCategories = [
-        "Infaq", "Qurban", "DSKL", "Zakat Maal",
-        "Asnaf Fakir", "Asnaf Miskin", "Asnaf Amil",
-        "Asnaf Muallaf", "Asnaf Riqab", "Asnaf Gharimin",
-        "Asnaf Fisabilillah", "Asnaf Ibnu Sabil", "Zakat Fitrah"
+    // Chart 2: Distribution (Penyaluran Asnaf)
+    const asnafCategories = [
+        "Fakir", "Miskin", "Amil", "Muallaf",
+        "Riqab", "Gharimin", "Fisabilillah", "Ibnu Sabil"
     ];
 
-    // Data Dummy
-    const database = {
-        "2022": {
-            values: [
-                [50000000, 45000000], [30000000, 25000000], [20000000, 15000000],
-                [10000000, 10000000], [110000000, 110000000]
-            ],
-            breakdownValues: [15, 25, 10, 20, 5, 5, 2, 2, 2, 2, 5, 2, 5]
-        },
-        "2023": {
-            values: [
-                [60000000, 50000000], [35000000, 30000000], [25000000, 20000000],
-                [12000000, 11000000], [130000000, 130000000]
-            ],
-            breakdownValues: [18, 22, 12, 18, 5, 6, 2, 3, 2, 2, 5, 2, 3]
-        },
-        "2024": {
-            values: [
-                [75000000, 60000000], [42000000, 35000000], [30000000, 25000000],
-                [15000000, 14000000], [150000000, 150000000]
-            ],
-            breakdownValues: [20, 20, 10, 15, 6, 8, 3, 3, 2, 2, 6, 2, 3]
-        },
-        "2025": {
-            values: [
-                [90000000, 70000000], [55000000, 40000000], [40000000, 30000000],
-                [18000000, 15000000], [175000000, 175000000]
-            ],
-            breakdownValues: [22, 18, 8, 12, 8, 10, 4, 3, 2, 2, 6, 2, 3]
-        }
-    };
-
-    const calculateTotals = (year) => {
-        const data = database[year];
-        let totalTerkumpul = 0;
-        let totalTersalurkan = 0;
-
-        const terkumpulPerCat = [];
-        const tersalurkanPerCat = [];
-
-        data.values.forEach(([terkumpul, tersalurkan]) => {
-            totalTerkumpul += terkumpul;
-            totalTersalurkan += tersalurkan;
-            terkumpulPerCat.push(terkumpul);
-            tersalurkanPerCat.push(tersalurkan);
-        });
-
-        return {
-            totalTerkumpul,
-            totalTersalurkan,
-            sisaDana: totalTerkumpul - totalTersalurkan,
-            terkumpulPerCat,
-            tersalurkanPerCat,
-            breakdownValues: data.breakdownValues
-        };
-    };
-
+    // --- FETCH & PROCESS DATA ---
     useEffect(() => {
-        if (database[selectedYear]) {
-            setYearData(calculateTotals(selectedYear));
-        }
-    }, [selectedYear]);
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                const [resRecv, resDist] = await Promise.all([
+                    axios.get(GET_PENERIMAAN_PROVINSI, { headers: { "x-api-key": "prod-b533376f-f659-42c3-af49-92b03d468cf1" } }),
+                    axios.get(GET_PENYALURAN_PROVINSI, { headers: { "x-api-key": "prod-b533376f-f659-42c3-af49-92b03d468cf1" } })
+                ]);
+
+                const itemsRecv = resRecv.data?.data?.items || resRecv.data?.data || [];
+                const itemsDist = resDist.data?.data?.items || resDist.data?.data || [];
+
+                // 1. Calculate Collection Totals
+                let totalZakatMaal = 0;
+                let totalZakatFitrah = 0;
+                let totalInfaq = 0;
+                let totalLainnya = 0; // If any other fields exist
+
+                itemsRecv.forEach(item => {
+                    totalZakatMaal += (item.total_zakat_perorangan || 0) + (item.total_zakat_badan || 0);
+                    totalZakatFitrah += (item.zakat_fitrah || 0);
+                    totalInfaq += (item.total_infak_penyaluran || 0); // Assuming this maps to collection infaq based on pattern, or use another field if available. Usually 'total_infak'
+                });
+
+                const totalTerkumpul = totalZakatMaal + totalZakatFitrah + totalInfaq + totalLainnya;
+
+                // 2. Calculate Distribution Totals (By Asnaf)
+                const asnafTotals = {
+                    fakir: 0, miskin: 0, amil: 0, muallaf: 0,
+                    riqab: 0, gharimin: 0, fisabilillah: 0, ibnusabil: 0
+                };
+
+                itemsDist.forEach(item => {
+                    asnafTotals.fakir += (item.total_asnaf_fakir || 0);
+                    asnafTotals.miskin += (item.total_asnaf_miskin || 0);
+                    asnafTotals.amil += (item.total_asnaf_amil || 0);
+                    asnafTotals.muallaf += (item.total_asnaf_muallaf || 0);
+                    asnafTotals.riqab += (item.total_asnaf_riqab || 0);
+                    asnafTotals.gharimin += (item.total_asnaf_gharimin || 0);
+                    asnafTotals.fisabilillah += (item.total_asnaf_fisabilillah || 0);
+                    asnafTotals.ibnusabil += (item.total_asnaf_ibnusabil || 0);
+                });
+
+                const totalTersalurkan = Object.values(asnafTotals).reduce((a, b) => a + b, 0);
+
+                // 3. Prepare Chart Series
+                const sourceSeries = [totalZakatMaal, totalZakatFitrah, totalInfaq, totalLainnya];
+
+                const distributionSeries = [
+                    asnafTotals.fakir, asnafTotals.miskin, asnafTotals.amil, asnafTotals.muallaf,
+                    asnafTotals.riqab, asnafTotals.gharimin, asnafTotals.fisabilillah, asnafTotals.ibnusabil
+                ];
+
+                setYearData({
+                    totalTerkumpul,
+                    totalTersalurkan,
+                    sisaDana: totalTerkumpul - totalTersalurkan,
+                    sourceSeries,
+                    distributionSeries
+                });
+
+                setLoading(false);
+
+            } catch (err) {
+                console.error("Error fetching Dashboard ZIS data:", err);
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const formatRupiah = (number) => {
         return new Intl.NumberFormat("id-ID", {
@@ -90,119 +100,92 @@ const InvestedOverviewZis = ({ title }) => {
         }).format(number || 0);
     }
 
-    // --- CHART OPTIONS ---
+    const formatShort = (val) => {
+        if (val >= 1000000000000) return (val / 1000000000000).toFixed(1) + "T";
+        if (val >= 1000000000) return (val / 1000000000).toFixed(1) + "M";
+        if (val >= 1000000) return (val / 1000000).toFixed(0) + "Jt";
+        return val;
+    };
 
+    // --- CHART OPTIONS ---
     const pieCommonOptions = {
         chart: { type: 'pie', height: 350, toolbar: { show: false } },
         legend: { show: true, position: 'bottom', fontSize: '13px', fontFamily: 'Inter, sans-serif' },
         dataLabels: {
             enabled: true,
-            formatter: (val) => val.toFixed(0) + "%",
+            formatter: (val) => val.toFixed(1) + "%",
             style: { fontSize: '12px', fontWeight: 'bold' },
             dropShadow: { enabled: false }
         },
-        stroke: { show: true, width: 2, colors: ['#ffffff'] }, // Outline putih biar bersih
-        tooltip: {
-            y: { formatter: (val) => typeof val === 'number' ? val + "%" : val } // Fallback simple
-        }
-    };
-
-    const mainPieOptions = {
-        ...pieCommonOptions,
-        labels: categories,
-        colors: ['#34c38f', '#556ee6', '#f46a6a', '#f1b44c', '#50a5f1'],
-        tooltip: { y: { formatter: (val) => formatRupiah(val) } } // Tooltip rupiah untuk pie utama
-    };
-
-    const breakdownPieOptions = {
-        ...pieCommonOptions,
-        labels: breakdownCategories,
-        colors: [
-            '#34c38f', '#556ee6', '#f46a6a', '#50a5f1', '#f1b44c',
-            '#74788d', '#343a40', '#e83e8c', '#6f42c1', '#20c997',
-            '#ffc107', '#fd7e14', '#0dcaf0'
-        ],
-        tooltip: { y: { formatter: (val) => val + "% Share" } }
-    };
-
-    const barOptions = {
-        chart: {
-            type: 'bar',
-            height: 380,
-            toolbar: { show: false },
-            fontFamily: 'Inter, sans-serif'
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                columnWidth: '55%',
-                borderRadius: 4, // Modern rounded bars
-                dataLabels: {
-                    position: 'top', // Labels on top
-                },
-            },
-        },
-        dataLabels: {
-            enabled: true,
-            formatter: function (val) {
-                if (val >= 1000000000) return (val / 1000000000).toFixed(1) + "M";
-                if (val >= 1000000) return (val / 1000000).toFixed(0) + "Jt";
-                return val;
-            },
-            offsetY: -20,
-            style: {
-                fontSize: '11px',
-                colors: ["#304758"]
-            }
-        },
-        stroke: { show: true, width: 3, colors: ['transparent'] },
-        xaxis: {
-            categories: categories,
-            axisBorder: { show: false },
-            axisTicks: { show: false }
-        },
-        yaxis: {
-            title: { text: 'Nominal (Rupiah)', style: { fontWeight: 500 } },
-            labels: { formatter: (val) => val / 1000000 + " Jt" }
-        },
-        fill: { opacity: 1 },
-        colors: ['#34c38f', '#f46a6a'], // Konsisten Hijau & Merah
-        grid: {
-            borderColor: '#f1f1f1',
-            strokeDashArray: 4
-        },
-        legend: { position: 'top', horizontalAlign: 'right' },
+        stroke: { show: true, width: 2, colors: ['#ffffff'] },
         tooltip: {
             y: { formatter: (val) => formatRupiah(val) }
         }
     };
 
+    const sourcePieOptions = {
+        ...pieCommonOptions,
+        labels: sourceCategories,
+        colors: ['#34c38f', '#f1b44c', '#556ee6', '#f46a6a'],
+    };
+
+    const distPieOptions = {
+        ...pieCommonOptions,
+        labels: asnafCategories,
+        colors: [
+            '#e74c3c', '#e67e22', '#f1c40f', '#2ecc71',
+            '#1abc9c', '#3498db', '#9b59b6', '#34495e'
+        ],
+    };
+
+    // Bar Chart: Perbandingan Sources vs Distribution (Aggregated)
+    // Since structures are different, let's show separate bars for Collection vs Distribution
+    // or maybe Top 5 Provinces if we had that data here.
+    // For now, let's use a Simple Bar comparing Collection vs Distribution per Province IS NOT available here since we aggregated.
+    // Let's change the Bar Chart to: "Komposisi Penyaluran per Asnaf" (Vertical Bar) as it's more readable than Pie for many categories
+    const barAsnafOptions = {
+        chart: { type: 'bar', height: 380, toolbar: { show: false } },
+        plotOptions: {
+            bar: { borderRadius: 4, horizontal: true, barHeight: '70%' }
+        },
+        dataLabels: {
+            enabled: true,
+            formatter: function (val) { return formatShort(val) },
+            style: { colors: ["#fff"] }
+        },
+        xaxis: {
+            categories: asnafCategories,
+            labels: { formatter: (val) => formatShort(val) }
+        },
+        colors: ['#556ee6'],
+        tooltip: {
+            y: { formatter: (val) => formatRupiah(val) }
+        }
+    };
+
+    if (loading) {
+        return (
+            <Card className="border-0 shadow-sm" style={{ minHeight: '200px' }}>
+                <CardBody className="d-flex justify-content-center align-items-center">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                </CardBody>
+            </Card>
+        );
+    }
+
     return (
         <React.Fragment>
-            {/* --- HERO SECTION: TITLE & FILTER --- */}
+            {/* --- HERO SECTION: TITLE --- */}
             <Row className="mb-4 align-items-center">
-                <Col md={8}>
+                <Col md={12}>
                     <h5 className="fw-bold mb-1 text-dark" style={{ fontSize: '1.25rem' }}>
-                        {title || "Penyaluran Zakat & Dana Lainnya"}
+                        {title || "Dashboard Nasional ZIS"}
                     </h5>
                     <p className="text-muted mb-0">
-                        Laporan kinerja keuangan & distribusi ZISAS (Zakat, Infaq, Sedekah, & Amal Sosial)
+                        Laporan real-time akumulasi data nasional dari seluruh provinsi.
                     </p>
-                </Col>
-                <Col md={4} className="d-flex justify-content-md-end mt-3 mt-md-0">
-                    <div className="d-flex align-items-center bg-white shadow-sm rounded-pill px-3 py-2 border">
-                        <span className="text-muted font-size-13 me-2 fw-medium">Periode:</span>
-                        <select
-                            className="form-select form-select-sm border-0 bg-transparent shadow-none py-0 fw-bold text-primary"
-                            style={{ width: 'auto', cursor: 'pointer' }}
-                            value={selectedYear}
-                            onChange={(e) => setSelectedYear(e.target.value)}
-                        >
-                            {Object.keys(database).map(year => (
-                                <option key={year} value={year}>{year}</option>
-                            ))}
-                        </select>
-                    </div>
                 </Col>
             </Row>
 
@@ -215,7 +198,7 @@ const InvestedOverviewZis = ({ title }) => {
                                 <CardBody className="p-4">
                                     <div className="d-flex justify-content-between align-items-start">
                                         <div>
-                                            <p className="text-muted text-uppercase fw-bold font-size-12 mb-1">Total Terkumpul</p>
+                                            <p className="text-muted text-uppercase fw-bold font-size-12 mb-1">Total Terkumpul (Nasional)</p>
                                             <h3 className="text-dark fw-bold mb-0">{formatRupiah(yearData.totalTerkumpul)}</h3>
                                         </div>
                                         <div className="avatar-sm">
@@ -226,7 +209,7 @@ const InvestedOverviewZis = ({ title }) => {
                                     </div>
                                     <div className="mt-3">
                                         <span className="badge bg-success-subtle text-success">
-                                            <i className="mdi mdi-arrow-up me-1"></i> +12%
+                                            LIVE DATA
                                         </span>
                                     </div>
                                 </CardBody>
@@ -238,7 +221,7 @@ const InvestedOverviewZis = ({ title }) => {
                                 <CardBody className="p-4 d-flex flex-column justify-content-center">
                                     <div className="d-flex justify-content-between align-items-start">
                                         <div>
-                                            <p className="text-muted text-uppercase fw-bold font-size-12 mb-1">Total Tersalurkan</p>
+                                            <p className="text-muted text-uppercase fw-bold font-size-12 mb-1">Total Tersalurkan (Nasional)</p>
                                             <h3 className="text-dark fw-bold mb-0">{formatRupiah(yearData.totalTersalurkan)}</h3>
                                         </div>
                                         <div className="avatar-sm">
@@ -248,8 +231,8 @@ const InvestedOverviewZis = ({ title }) => {
                                         </div>
                                     </div>
                                     <div className="mt-3">
-                                        <span className="badge bg-success-subtle text-success">
-                                            <i className="mdi mdi-arrow-up me-1"></i> Optimal
+                                        <span className="badge bg-primary-subtle text-primary">
+                                            LIVE DATA
                                         </span>
                                     </div>
                                 </CardBody>
@@ -271,26 +254,27 @@ const InvestedOverviewZis = ({ title }) => {
                                         </div>
                                     </div>
                                     <div className="mt-3">
-                                        <span className="badge bg-warning-subtle text-warning">
-                                            Dana Cadangan
-                                        </span>
+                                        {yearData.sisaDana >= 0 ?
+                                            <span className="badge bg-success-subtle text-success">Surplus</span> :
+                                            <span className="badge bg-danger-subtle text-danger">Defisit</span>
+                                        }
                                     </div>
                                 </CardBody>
                             </Card>
                         </Col>
                     </Row>
 
-                    {/* --- SECTION 2: PIE CHARTS (Side-by-Side Rapi) --- */}
+                    {/* --- SECTION 2: CHARTS --- */}
                     <Row className="mb-4">
                         <Col lg={6}>
                             <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '12px' }}>
                                 <CardBody className="p-4">
                                     <h6 className="fw-bold text-dark mb-4 border-bottom pb-3">
-                                        Komposisi Dana Utama
+                                        Sumber Dana (Pengumpulan)
                                     </h6>
                                     <ReactApexChart
-                                        options={mainPieOptions}
-                                        series={yearData.terkumpulPerCat}
+                                        options={sourcePieOptions}
+                                        series={yearData.sourceSeries}
                                         type="pie"
                                         height={320}
                                         className="d-flex justify-content-center"
@@ -303,41 +287,14 @@ const InvestedOverviewZis = ({ title }) => {
                             <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '12px' }}>
                                 <CardBody className="p-4">
                                     <h6 className="fw-bold text-dark mb-4 border-bottom pb-3">
-                                        Breakdown Penerima Manfaat (Asnaf)
+                                        Detail Penyaluran per Asnaf
                                     </h6>
                                     <ReactApexChart
-                                        options={breakdownPieOptions}
-                                        series={yearData.breakdownValues}
+                                        options={distPieOptions}
+                                        series={yearData.distributionSeries}
                                         type="pie"
                                         height={320}
                                         className="d-flex justify-content-center"
-                                    />
-                                </CardBody>
-                            </Card>
-                        </Col>
-                    </Row>
-
-                    {/* --- SECTION 3: FULL WIDTH BAR CHART --- */}
-                    <Row>
-                        <Col xs={12}>
-                            <Card className="border-0 shadow-sm" style={{ borderRadius: '12px' }}>
-                                <CardBody className="p-4">
-                                    <div className="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
-                                        <h6 className="fw-bold text-dark mb-0">
-                                            Perbandingan Perolehan vs Penyaluran per Kategori
-                                        </h6>
-                                        <div className="text-muted font-size-12">
-                                            <i className="bx bx-info-circle me-1"></i> Data dalam Rupiah
-                                        </div>
-                                    </div>
-                                    <ReactApexChart
-                                        options={barOptions}
-                                        series={[
-                                            { name: 'Terkumpul', data: yearData.terkumpulPerCat },
-                                            { name: 'Tersalurkan', data: yearData.tersalurkanPerCat }
-                                        ]}
-                                        type="bar"
-                                        height={400}
                                     />
                                 </CardBody>
                             </Card>

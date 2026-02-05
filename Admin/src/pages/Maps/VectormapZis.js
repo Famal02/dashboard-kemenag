@@ -14,7 +14,6 @@ const VectormapZis = props => {
             <VectorMap
                 map={idnMerc}
                 backgroundColor="transparent"
-                ref={mapRef}
                 containerStyle={{
                     width: "100%",
                     height: "100%",
@@ -44,6 +43,8 @@ const VectormapZis = props => {
                 }}
                 containerClassName="map"
                 onRegionTipShow={props.onRegionTipShow}
+                onRegionClick={props.onRegionClick}
+                selectedRegions={props.selectedRegions}
             />
         </div>
     )

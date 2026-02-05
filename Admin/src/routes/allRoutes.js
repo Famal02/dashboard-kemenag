@@ -12,6 +12,9 @@ import Stakeholder from "../pages/ZIS/Stakeholder";
 // Import Wakaf Page
 import WakafPage from "../pages/Wakaf/index";
 
+// Import AppTestKey (API Key Generator)
+import AppTestKey from "../AppTestKey";
+
 // Import Pages Rumah Ibadah
 import IslamPage from "../pages/RumahIbadah/Islam";
 import KristenPage from "../pages/RumahIbadah/Kristen";
@@ -139,6 +142,7 @@ const userRoutes = [
   { path: "/Informasi-ZIS/Stakeholder", component: <Stakeholder /> },
 
   // Tambahkan baris ini:
+  { path: "/generate-api-key", component: <AppTestKey /> },
   { path: "/Informasi-Wakaf", component: <WakafPage /> },
 
   // Route Rumah Ibadah

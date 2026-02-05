@@ -61,34 +61,19 @@ const App = props => {
     <React.Fragment>
       {/* <Router> */}
       <Routes>
-        {authRoutes.map((route, idx) => (
-          <Route
-            path={route.path}
-            element={
-              <NonAuthLayout>
-                {route.component}
-              </NonAuthLayout>
-            }
-            key={idx}
-            exact={true}
-          />
-
-        ))}
-
         {userRoutes.map((route, idx) => (
-
           <Route
             path={route.path}
             element={
-              <Authmiddleware>
+              <React.Fragment>
                 <Layout>{route.component}</Layout>
-              </Authmiddleware>}
+              </React.Fragment>}
             key={idx}
             exact={true}
           />
         ))}
       </Routes>
-    </React.Fragment>
+    </React.Fragment >
   )
 }
 

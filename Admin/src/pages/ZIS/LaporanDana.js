@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container } from 'reactstrap';
+import ZisDistributionMap from './ZisDistributionMap';
 
 const LaporanDana = () => {
     document.title = "Laporan Dana | ZIS";
@@ -8,8 +9,8 @@ const LaporanDana = () => {
         <React.Fragment>
             <div className="page-content">
                 <Container fluid>
-                    <h1>Laporan Dana</h1>
-                    <p>Halaman ini sedang dalam pengembangan.</p>
+                    {/* <h1>Laporan Dana</h1> */}
+                    <ZisDistributionMap />
                 </Container>
             </div>
         </React.Fragment>

@@ -1,0 +1,36 @@
+Analysis of https://spl-satudata.kemenag.go.id/core/apidev/penerimaan-zm/penyaluran
+
+✅ API Response Status: 200
+✅ Data Type: object
+✅ 'data.items' is an Array with 1 items.
+
+📦 Sample Item Structure (from data.items):
+{
+  "id": 1,
+  "terakhir_diperbarui": "2026-02-02T15:27:14.237122Z",
+  "total_asnaf_amil": 1215834453356,
+  "total_asnaf_fakir": 1687162039297,
+  "total_asnaf_fisabilillah": 2991548091338,
+  "total_asnaf_gharimin": 124282330261,
+  "total_asnaf_ibnusabil": 220143096455,
+  "total_asnaf_miskin": 6867310499215,
+  "total_asnaf_muallaf": 64232840680,
+  "total_asnaf_riqab": 6858063167,
+  "total_bidang_dakwah": 597167290384389,
+  "total_bidang_ekonomi": 1878639172667,
+  "total_bidang_kemanusiaan": 8508919830734,
+  "total_bidang_kesehatan": 1443678829803,
+  "total_bidang_pendidikan": 3936786272903,
+  "total_csr": 403842314595,
+  "total_dskl": 601473349129,
+  "total_infak_amil": 1080737168481,
+  "total_infak_penyaluran": 157189591959,
+  "total_ist": 3517535184783,
+  "total_istt": 4062417046751,
+  "total_kurban": 3791903296519,
+  "total_penyaluran_all": null,
+  "total_zakat_fitrah": 732891479641
+}
+
+🔑 Keys:
+id, terakhir_diperbarui, total_asnaf_amil, total_asnaf_fakir, total_asnaf_fisabilillah, total_asnaf_gharimin, total_asnaf_ibnusabil, total_asnaf_miskin, total_asnaf_muallaf, total_asnaf_riqab, total_bidang_dakwah, total_bidang_ekonomi, total_bidang_kemanusiaan, total_bidang_kesehatan, total_bidang_pendidikan, total_csr, total_dskl, total_infak_amil, total_infak_penyaluran, total_ist, total_istt, total_kurban, total_penyaluran_all, total_zakat_fitrah

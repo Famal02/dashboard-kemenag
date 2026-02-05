@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Row, Col, Card, CardBody, Input, Badge, Table, Modal, ModalHeader, ModalBody, Button } from "reactstrap";
-import Vectormap from "../../pages/Maps/Vectormap";
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Card, CardBody, Col, Row, Table, Button, Modal, ModalHeader, ModalBody, Input } from "reactstrap";
+// Keep Leaflet Only for Modal Detail
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
-import { get } from "../../helpers/api_helper";
-import { GET_WAKAF_MAP_DATA, GET_WAKAF_DETAILS } from "../../helpers/url_helper";
+// Import VectorMap
+import VectormapZis from "../Maps/VectormapZis";
+import { idnMerc } from "@react-jvectormap/indonesia";
+
+import { GET_WAKAF_TANAH_DATA } from "../../helpers/url_helper";
+import axios from "axios";
 
 // Fix Leaflet Default Icon
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -20,98 +24,196 @@ let DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
-// --- MOCK DATA FOR MAP KEYS ONLY (To map API response to Map IDs) ---
-const PROVINCE_KEYS = {
-    "ID-AC": "Aceh", "ID-SU": "Sumatera Utara", "ID-SB": "Sumatera Barat", "ID-RI": "Riau", "ID-JA": "Jambi",
-    "ID-SS": "Sumatera Selatan", "ID-BE": "Bengkulu", "ID-LA": "Lampung", "ID-BB": "Kep. Bangka Belitung", "ID-KR": "Kepulauan Riau",
-    "ID-JK": "DKI Jakarta", "ID-JB": "Jawa Barat", "ID-JT": "Jawa Tengah", "ID-YO": "DI Yogyakarta", "ID-JI": "Jawa Timur", "ID-BT": "Banten",
-    "ID-BA": "Bali", "ID-NB": "Nusa Tenggara Barat", "ID-NT": "Nusa Tenggara Timur", "ID-KB": "Kalimantan Barat",
-    "ID-KT": "Kalimantan Tengah", "ID-KS": "Kalimantan Selatan", "ID-KI": "Kalimantan Timur", "ID-KU": "Kalimantan Utara",
-    "ID-SA": "Sulawesi Utara", "ID-ST": "Sulawesi Tengah", "ID-SN": "Sulawesi Selatan", "ID-SG": "Sulawesi Tenggara",
-    "ID-GO": "Gorontalo", "ID-SR": "Sulawesi Barat", "ID-MA": "Maluku", "ID-MU": "Maluku Utara", "ID-PB": "Papua Barat",
-    "ID-PA": "Papua"
+// --- NORMALIZATION HELPER ---
+const normalizeName = (name) => {
+    if (!name) return "";
+    return name.toString().toLowerCase()
+        .replace("provinsi", "")
+        .replace("di ", "")
+        .replace("dka ", "")
+        .replace("kepulauan", "")
+        .trim();
 };
 
 const WakafDistributionMap = () => {
     const [selectedYear, setSelectedYear] = useState("2025");
-    const [selectedProvince, setSelectedProvince] = useState(null);
-    const [tableData, setTableData] = useState([]);
+    const [selectedProvince, setSelectedProvince] = useState(null); // Province Code (e.g., ID-AC)
+    const [selectedProvinceName, setSelectedProvinceName] = useState(null); // Province Name (e.g., Aceh)
+
+    // Data States
+    const [tableData, setTableData] = useState([]); // Raw List Data
+    const [mapData, setMapData] = useState({}); // { "ID-AC": 1500, ... } (Count for Coloring)
+    const [fullData, setFullData] = useState({}); // { "ID-AC": { count: 1500, totalArea: 50000, name: "Aceh" } }
+
+    const fullDataRef = useRef({}); // Ref for tooltip access
+
+    // Modal State
     const [modalData, setModalData] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     // API State
-    const [mapData, setMapData] = useState({});
+    const [totalApiCount, setTotalApiCount] = useState(0);
     const [loadingMap, setLoadingMap] = useState(false);
     const [loadingDetail, setLoadingDetail] = useState(false);
 
-    // --- FETCH MAP DATA ---
+    // Filter & Search
+    const [searchQuery, setSearchQuery] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+
+    // --- DYNAMIC MAPPING STATE ---
+    const [nameToCodeMap, setNameToCodeMap] = useState({});
+    const [codeToNameMap, setCodeToNameMap] = useState({}); // Reverse map for filtering
+
+    // --- 1. BUILD DYNAMIC MAPPING FROM MAP DEFINITION ---
+    useEffect(() => {
+        try {
+            const paths = idnMerc.paths || idnMerc.content?.paths || {};
+            const mapping = {};
+            const reverseMapping = {};
+
+            Object.entries(paths).forEach(([code, details]) => {
+                const mapName = details.name;
+                if (mapName) {
+                    mapping[normalizeName(mapName)] = code;
+                    mapping[mapName.toLowerCase()] = code;
+
+                    reverseMapping[code] = mapName;
+                }
+            });
+            setNameToCodeMap(mapping);
+            setCodeToNameMap(reverseMapping);
+        } catch (e) {
+            console.error("Error building map mapping:", e);
+        }
+    }, []);
+
+    // Update Ref
+    useEffect(() => {
+        fullDataRef.current = fullData;
+    }, [fullData]);
+
+    // --- FETCH & PROCESS MAP DATA ---
     useEffect(() => {
         const fetchMapData = async () => {
+            // Wait for mapping
+            if (Object.keys(nameToCodeMap).length === 0) return;
+
             setLoadingMap(true);
             try {
-                // Call API: /api/wakaf/distribution?year=2025
-                const response = await get(`${GET_WAKAF_MAP_DATA}?year=${selectedYear}`);
-                setMapData(response.data || {});
+                const response = await axios.get(GET_WAKAF_TANAH_DATA, {
+                    headers: { "x-api-key": "prod-b533376f-f659-42c3-af49-92b03d468cf1" },
+                    params: { limit: 50000 }
+                });
+
+                const items = response.data?.data?.items || [];
+                const total = response.data?.data?.total || response.data?.total || items.length;
+                console.log('Wakaf API Loaded:', items.length);
+
+                setTotalApiCount(total);
+                setTableData(items);
+
+                // --- AGGREGATE PER PROVINCE ---
+                const processedMapData = {};
+                const processedFullData = {};
+
+                items.forEach(item => {
+                    const provName = item.provinsi_nama;
+                    if (!provName) return;
+
+                    const norm = normalizeName(provName);
+                    const code = nameToCodeMap[norm] || nameToCodeMap[provName.toLowerCase()];
+
+                    if (code) {
+                        if (!processedFullData[code]) {
+                            processedFullData[code] = {
+                                code: code,
+                                name: codeToNameMap[code] || provName, // Prefer Map Name
+                                originalName: provName, // Keep original for table filtering fallback
+                                count: 0,
+                                totalArea: 0
+                            };
+                        }
+
+                        // Parse Area
+                        const area = parseFloat(item.tanah_luas) || 0;
+                        processedFullData[code].count += 1;
+                        processedFullData[code].totalArea += area;
+
+                        // Map Value (Coloring by Count of Assets)
+                        processedMapData[code] = processedFullData[code].count;
+                    }
+                });
+
+                setMapData(processedMapData);
+                setFullData(processedFullData);
+
             } catch (error) {
-                console.error("Gagal mengambil data peta:", error);
-                // Fallback / Silent fail for now
-                setMapData({});
+                console.error("Gagal mengambil data wakaf:", error);
             } finally {
                 setLoadingMap(false);
             }
         };
 
         fetchMapData();
-    }, [selectedYear]);
+    }, [selectedYear, nameToCodeMap]); // Re-run when mapping is ready
 
-    // --- AUTO SCROLL TO DETAIL ---
+    // --- SCROLL TO TABLE ---
     const detailSectionRef = useRef(null);
-
     useEffect(() => {
         if (selectedProvince && detailSectionRef.current) {
-            setTimeout(() => {
-                // Scroll agar title pas di bawah header (asumsi header ~70px)
-                const yOffset = -70;
-                const element = detailSectionRef.current;
-                const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-
-                window.scrollTo({ top: y, behavior: 'smooth' });
-            }, 100);
+            const element = detailSectionRef.current;
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     }, [selectedProvince]);
 
-    // Handlers
-    const handleRegionClick = async (e, code) => {
-        const name = PROVINCE_KEYS[code] || code;
-        const count = mapData[code] || 0;
-
-        // 1. Set Header langsung (optimistic UI)
-        setSelectedProvince({ code, name, count });
-        setTableData([]); // Reset table
-        setLoadingDetail(true);
-
-        // 2. Fetch Detail Data API
-        try {
-            // Call API: /api/wakaf/details/ID-JB?year=2025
-            const response = await get(`${GET_WAKAF_DETAILS}/${code}?year=${selectedYear}`);
-            setTableData(response.data || []);
-        } catch (error) {
-            console.error("Gagal mengambil detail provinsi:", error);
-            setTableData([]); // Empty on error
-        } finally {
-            setLoadingDetail(false);
+    // --- HANDLERS ---
+    const handleRegionClick = (e, code) => {
+        setSelectedProvince(code);
+        // Find name for filter
+        const data = fullDataRef.current[code];
+        if (data) {
+            setSelectedProvinceName(data.originalName || data.name);
+        } else {
+            // Fallback if data missing but region clicked (unlikely with this logic)
+            setSelectedProvinceName(codeToNameMap[code]);
         }
+        setCurrentPage(1);
     };
 
-    const handleRegionTipShow = (e, label, code) => {
-        const count = mapData[code] || 0;
-        label.html(`${label.html()} <br> Aset Wakaf: ${count} Unit`);
+    const handleResetFilter = () => {
+        setSelectedProvince(null);
+        setSelectedProvinceName(null);
+        setCurrentPage(1);
     };
 
     const handleViewLocation = (item) => {
         setModalData(item);
         setIsModalOpen(true);
     };
+
+    // --- FILTERED TABLE DATA ---
+    const filteredTableData = tableData.filter(item => {
+        let match = true;
+        // Filter by Province Name (Matches what we aggregated)
+        if (selectedProvinceName) {
+            // We compare normalized to handle slight variations
+            const itemNorm = normalizeName(item.provinsi_nama);
+            const selectedNorm = normalizeName(selectedProvinceName);
+            // Also check actual code if possible, but item doesn't have code directly. 
+            // Name matching is safest given we derived code from name.
+            if (itemNorm !== selectedNorm && !item.provinsi_nama.toLowerCase().includes(selectedProvinceName.toLowerCase())) {
+                match = false;
+            }
+        }
+
+        if (match && searchQuery) {
+            const query = searchQuery.toLowerCase();
+            const text = ((item.nazhir_nama || "") + " " + (item.kabupaten_nama || "") + " " + (item.provinsi_nama || "") + " " + (item.peruntukan_keterangan || "")).toLowerCase();
+            if (!text.includes(query)) match = false;
+        }
+        return match;
+    });
 
     return (
         <React.Fragment>
@@ -134,46 +236,54 @@ const WakafDistributionMap = () => {
                                         className="form-select-sm"
                                         style={{ width: '100px', fontWeight: 'bold' }}
                                         value={selectedYear}
-                                        onChange={(e) => {
-                                            setSelectedYear(e.target.value);
-                                            setSelectedProvince(null);
-                                        }}
+                                        onChange={(e) => setSelectedYear(e.target.value)}
+                                        disabled
                                     >
-                                        {[2020, 2021, 2022, 2023, 2024, 2025].map(y => (
-                                            <option key={y} value={y}>{y}</option>
-                                        ))}
+                                        <option value="2025">2025</option>
                                     </Input>
                                 </div>
                             </div>
 
                             <Row>
                                 <Col lg={9}>
-                                    <div style={{ height: '500px', width: '100%', position: 'relative' }}>
-                                        {loadingMap && (
-                                            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}>
-                                                Loading Peta...
+                                    <div style={{ height: '500px', width: '100%', position: 'relative', background: '#f8f9fa', borderRadius: '8px', overflow: 'hidden' }}>
+                                        {loadingMap ? (
+                                            <div className="d-flex justify-content-center align-items-center h-100">
+                                                <div className="spinner-border text-primary" role="status">
+                                                    <span className="sr-only">Loading...</span>
+                                                </div>
                                             </div>
+                                        ) : (
+                                            <VectormapZis
+                                                key={selectedYear + JSON.stringify(mapData)}
+                                                value={mapData}
+                                                width="100%"
+                                                colorScale={["#e6fffa", "#0f4833"]} // Green Theme
+                                                selectedRegions={selectedProvince ? [selectedProvince] : []}
+                                                onRegionClick={handleRegionClick}
+                                                onRegionTipShow={(e, label, code) => {
+                                                    const data = fullDataRef.current[code];
+                                                    let details = "<br><hr style='margin:5px 0; border-top:1px solid #fff'>";
+                                                    if (data) {
+                                                        details += `<b>Total Aset: ${data.count.toLocaleString()}</b><br>`;
+                                                        details += `<small>Luas: ${data.totalArea.toLocaleString()} m²</small>`;
+                                                    } else {
+                                                        details += `<i>Belum ada data</i>`;
+                                                    }
+                                                    label.html(`
+                                                        <div style="text-align:left;">
+                                                            <h6 style="margin:0; font-size:14px;">${label.html()}</h6>
+                                                            ${details}
+                                                        </div>
+                                                    `);
+                                                }}
+                                            />
                                         )}
-                                        <Vectormap
-                                            value={mapData}
-                                            width="100%"
-                                            color="#34c38f" // Green Theme
-                                            onRegionClick={handleRegionClick}
-                                            onRegionTipShow={handleRegionTipShow}
-                                        />
-                                    </div>
-                                    <div className="d-flex align-items-center mt-3 gap-3 justify-content-center">
-                                        <div className="d-flex align-items-center font-size-12">
-                                            <span style={{ width: 12, height: 12, backgroundColor: '#c5eadd', marginRight: 5, borderRadius: 2 }}></span>
-                                            Sedikit
-                                        </div>
-                                        <div className="d-flex align-items-center font-size-12">
-                                            <span style={{ width: 12, height: 12, backgroundColor: '#34c38f', marginRight: 5, borderRadius: 2 }}></span>
-                                            Menengah
-                                        </div>
-                                        <div className="d-flex align-items-center font-size-12">
-                                            <span style={{ width: 12, height: 12, backgroundColor: '#0f4833', marginRight: 5, borderRadius: 2 }}></span>
-                                            Banyak
+
+                                        {/* Simple Legend */}
+                                        <div className="bg-white p-2 shadow-sm rounded" style={{ position: 'absolute', bottom: '10px', left: '10px', zIndex: 5, fontSize: '11px', border: '1px solid #eee' }}>
+                                            <div className="d-flex align-items-center mb-1"><span style={{ width: 10, height: 10, background: '#e6fffa', border: '1px solid #ccc', marginRight: 5 }}></span> Sedikit</div>
+                                            <div className="d-flex align-items-center"><span style={{ width: 10, height: 10, background: '#0f4833', marginRight: 5 }}></span> Banyak</div>
                                         </div>
                                     </div>
                                 </Col>
@@ -185,19 +295,16 @@ const WakafDistributionMap = () => {
                                             <div className="mb-4">
                                                 <h6 className="font-size-13">Total Aset Tanah</h6>
                                                 <h3 className="fw-bold font-size-22 text-primary">
-                                                    {(Object.values(mapData).reduce((a, b) => a + b, 0)).toLocaleString()} Unit
+                                                    {totalApiCount > 0 ? totalApiCount.toLocaleString() : tableData.length.toLocaleString()} Titik
                                                 </h3>
+                                                <small className="text-muted">Terdata di SIWAK</small>
                                             </div>
                                             <div className="mb-4">
                                                 <h6 className="font-size-13">Status Data</h6>
-                                                <h4 className="fw-bold font-size-16">
-                                                    {loadingMap ? "Memuat..." : "Terkoneksi API"}
+                                                <h4 className="fw-bold font-size-16 text-success">
+                                                    <i className="bx bx-check-circle me-1"></i> Terkoneksi API
                                                 </h4>
                                                 <small className="text-muted">Realtime</small>
-                                            </div>
-                                            <div className="alert alert-info font-size-12 mb-0">
-                                                <i className="bx bx-info-circle me-1"></i>
-                                                Arahkan kursor ke peta untuk melihat detail per provinsi.
                                             </div>
                                         </CardBody>
                                     </Card>
@@ -209,135 +316,190 @@ const WakafDistributionMap = () => {
                 </Col>
             </Row>
 
-            {/* --- DETAIL PROVINCE SECTION (Shows on Click) --- */}
-            {selectedProvince && (
-                <Row className="mb-4 fade-in-animation" ref={detailSectionRef}>
-                    <Col xs={12}>
-                        <Card className="border-0 shadow-sm rounded-3">
-                            <CardBody>
-                                <div className="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
-                                    <div>
-                                        <h4 className="card-title mb-1 text-primary">
-                                            <i className="bx bx-map-pin me-2"></i>
-                                            Detail Aset Wakaf Tanah: {selectedProvince.name}
-                                        </h4>
-                                        <p className="text-muted mb-0">Tahun {selectedYear} • {selectedProvince.count} Aset Terdata</p>
-                                    </div>
-                                    <Button
-                                        color="light"
-                                        size="sm"
-                                        onClick={() => setSelectedProvince(null)}
-                                        className="rounded-pill"
-                                    >
-                                        <i className="bx bx-x me-1"></i> Tutup Detail
-                                    </Button>
+            {/* --- DETAIL DATA TABLE --- */}
+            <Row className="mb-4 fade-in-animation" ref={detailSectionRef}>
+                <Col xs={12}>
+                    <Card className="border-0 shadow-sm rounded-3">
+                        <CardBody>
+                            <div className="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+                                <div>
+                                    <h4 className="card-title mb-1 text-primary">
+                                        <i className="bx bx-list-ul me-2"></i>
+                                        Daftar Aset Wakaf {selectedProvinceName ? (" - " + selectedProvinceName) : ""}
+                                    </h4>
+                                    <p className="text-muted mb-0">
+                                        Menampilkan {filteredTableData.length} data {selectedProvinceName ? '(Difilter)' : ''}
+                                    </p>
                                 </div>
+                                <div className="d-flex gap-2">
+                                    <Input
+                                        type="text"
+                                        placeholder="Cari Nazhir / Lokasi..."
+                                        className="rounded-pill border-1"
+                                        style={{ width: '350px' }}
+                                        value={searchQuery}
+                                        onChange={(e) => {
+                                            setSearchQuery(e.target.value);
+                                            setCurrentPage(1);
+                                        }}
+                                    />
+                                    {selectedProvince && (
+                                        <Button
+                                            color="danger"
+                                            size="sm"
+                                            onClick={handleResetFilter}
+                                            className="rounded-pill"
+                                        >
+                                            <i className="bx bx-x me-1"></i> Reset Filter
+                                        </Button>
+                                    )}
+                                </div>
+                            </div>
 
-                                <Row className="mb-4">
-                                    <Col md={12}>
-                                        <h5 className="font-size-14 mb-3 fw-bold">Daftar Aset Wakaf</h5>
-                                        {loadingDetail ? (
-                                            <div className="text-center p-4">Loading Data Detail...</div>
-                                        ) : (
-                                            <div className="table-responsive">
-                                                <Table hover className="align-middle table-nowrap mb-0">
-                                                    <thead className="table-light">
-                                                        <tr>
-                                                            <th>Lokasi</th>
-                                                            <th>Luas</th>
-                                                            <th>Wakif</th>
-                                                            <th>Nazhir</th>
-                                                            <th>Manfaat</th>
-                                                            <th>Aksi</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {tableData.length > 0 ? tableData.map((item, index) => (
-                                                            <tr key={index}>
-                                                                <td>
-                                                                    <h6 className="font-size-13 mb-0 text-truncate" style={{ maxWidth: 200 }} title={item.loc}>{item.loc}</h6>
-                                                                </td>
-                                                                <td>{item.area}</td>
-                                                                <td>{item.wakif}</td>
-                                                                <td>{item.nazhir}</td>
-                                                                <td>
-                                                                    <Badge color="primary" className="bg-opacity-25 text-primary">
-                                                                        {item.benefit}
-                                                                    </Badge>
-                                                                </td>
-                                                                <td>
-                                                                    <Button
-                                                                        color="primary"
-                                                                        size="sm"
-                                                                        className="btn-rounded"
-                                                                        onClick={() => handleViewLocation(item)}
-                                                                    >
-                                                                        <i className="bx bx-map-alt me-1"></i> Lihat Lokasi
-                                                                    </Button>
-                                                                </td>
-                                                            </tr>
-                                                        )) : (
-                                                            <tr>
-                                                                <td colSpan="6" className="text-center py-4">
-                                                                    Tidak ada data aset untuk provinsi ini.
-                                                                </td>
-                                                            </tr>
-                                                        )}
-                                                    </tbody>
-                                                </Table>
-                                            </div>
+                            <div className="table-responsive">
+                                <Table hover className="align-middle table-nowrap mb-0">
+                                    <thead className="table-light">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nazhir</th>
+                                            <th>Lokasi</th>
+                                            <th>Luas (m²)</th>
+                                            <th>Manfaat</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {filteredTableData
+                                            .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+                                            .map((item, index) => (
+                                                <tr key={index}>
+                                                    <td style={{ width: '50px' }}>{(currentPage - 1) * itemsPerPage + index + 1}</td>
+                                                    <td>
+                                                        <h6 className="font-size-13 mb-0 text-truncate" style={{ maxWidth: 200 }} title={item.nazhir_nama}>
+                                                            {item.nazhir_nama}
+                                                        </h6>
+                                                    </td>
+                                                    <td>{item.kabupaten_nama || item.provinsi_nama}</td>
+                                                    <td>{item.tanah_luas}</td>
+                                                    <td>
+                                                        <div className="text-truncate" style={{ maxWidth: '250px' }} title={item.peruntukan_keterangan}>
+                                                            {item.peruntukan_keterangan || "-"}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <Button
+                                                            color="primary"
+                                                            size="sm"
+                                                            className="btn-rounded"
+                                                            onClick={() => {
+                                                                // Convert to modal item format
+                                                                const modalItem = {
+                                                                    loc: (item.kabupaten_nama || "") + ", " + (item.provinsi_nama || ""),
+                                                                    area: item.tanah_luas + " m²",
+                                                                    wakif: item.wakif_nama || "-",
+                                                                    nazhir: item.nazhir_nama,
+                                                                    benefit: item.peruntukan_keterangan,
+                                                                    lat: parseFloat(item.latitudes),
+                                                                    lng: parseFloat(item.longitudes)
+                                                                };
+                                                                handleViewLocation(modalItem);
+                                                            }}
+                                                        >
+                                                            <i className="bx bx-map-alt me-1"></i> Lihat
+                                                        </Button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        {filteredTableData.length === 0 && (
+                                            <tr>
+                                                <td colSpan="6" className="text-center py-4">
+                                                    <div className="text-muted">Tidak ada data ditemukan</div>
+                                                </td>
+                                            </tr>
                                         )}
-                                    </Col>
-                                </Row>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                </Row>
-            )}
+                                    </tbody>
+                                </Table>
+                            </div>
+
+                            {/* PAGINATION */}
+                            {filteredTableData.length > 0 && (
+                                <div className="d-flex justify-content-between align-items-center mt-3">
+                                    <span className="text-muted font-size-13">
+                                        Halaman <b>{currentPage}</b> dari <b>{Math.ceil(filteredTableData.length / itemsPerPage)}</b>
+                                    </span>
+                                    <ul className="pagination pagination-rounded mb-0">
+                                        <li className={`page-item ${currentPage === 1 ? 'disabled' : ''} `}>
+                                            <button className="page-link" onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}>
+                                                <i className="mdi mdi-chevron-left" />
+                                            </button>
+                                        </li>
+                                        <li className={`page-item ${currentPage >= Math.ceil(filteredTableData.length / itemsPerPage) ? 'disabled' : ''} `}>
+                                            <button className="page-link" onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(filteredTableData.length / itemsPerPage)))}>
+                                                <i className="mdi mdi-chevron-right" />
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            )}
+                        </CardBody>
+                    </Card>
+                </Col>
+            </Row>
 
             {/* --- LOCATION MODAL --- */}
             <Modal isOpen={isModalOpen} toggle={() => setIsModalOpen(!isModalOpen)} size="lg" centered>
                 <ModalHeader toggle={() => setIsModalOpen(!isModalOpen)}>
-                    Lokasi Aset Wakaf
+                    Detail Aset Wakaf
                 </ModalHeader>
                 <ModalBody>
                     {modalData && (
                         <Row>
-                            <Col md={4}>
-                                <div className="mb-3">
-                                    <h6 className="font-size-12 text-muted text-uppercase">Lokasi</h6>
-                                    <p className="fw-bold">{modalData.loc}</p>
+                            <Col md={5}>
+                                <div className="mb-3 border-bottom pb-2">
+                                    <h6 className="font-size-11 text-muted text-uppercase mb-1">Lokasi</h6>
+                                    <p className="fw-bold mb-0 text-dark">{modalData.loc}</p>
+                                </div>
+                                <div className="mb-3 border-bottom pb-2">
+                                    <h6 className="font-size-11 text-muted text-uppercase mb-1">Luas Tanah</h6>
+                                    <p className="fw-bold mb-0 text-dark">{modalData.area}</p>
+                                </div>
+                                <div className="mb-3 border-bottom pb-2">
+                                    <h6 className="font-size-11 text-muted text-uppercase mb-1">Nazhir (Pengelola)</h6>
+                                    <p className="fw-bold mb-0 text-dark">{modalData.nazhir}</p>
                                 </div>
                                 <div className="mb-3">
-                                    <h6 className="font-size-12 text-muted text-uppercase">Luas</h6>
-                                    <p className="fw-bold">{modalData.area}</p>
-                                </div>
-                                <div className="mb-3">
-                                    <h6 className="font-size-12 text-muted text-uppercase">Peruntukan</h6>
-                                    <p>{modalData.benefit}</p>
-                                </div>
-                                <div>
-                                    <h6 className="font-size-12 text-muted text-uppercase">Pengelola</h6>
-                                    <p className="mb-0">{modalData.nazhir}</p>
+                                    <h6 className="font-size-11 text-muted text-uppercase mb-1">Peruntukan</h6>
+                                    <span className="badge bg-success bg-opacity-10 text-success p-2" style={{ whiteSpace: 'normal', textAlign: 'left' }}>
+                                        {modalData.benefit || "Tidak disebutkan"}
+                                    </span>
                                 </div>
                             </Col>
-                            <Col md={8}>
-                                <div style={{ height: '350px', borderRadius: '8px', overflow: 'hidden' }}>
-                                    <MapContainer
-                                        center={[modalData.lat || -6.2, modalData.lng || 106.8]}
-                                        zoom={15}
-                                        style={{ height: '100%', width: '100%' }}
-                                    >
-                                        <TileLayer
-                                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                                        />
-                                        <Marker position={[modalData.lat || -6.2, modalData.lng || 106.8]}>
-                                            <Popup>
-                                                <b>Aset Wakaf</b><br />{modalData.loc}
-                                            </Popup>
-                                        </Marker>
-                                    </MapContainer>
+                            <Col md={7}>
+                                <div style={{ height: '300px', borderRadius: '8px', overflow: 'hidden', border: '1px solid #eee' }}>
+                                    {(!isNaN(modalData.lat) && !isNaN(modalData.lng) && modalData.lat !== 0) ? (
+                                        <MapContainer
+                                            center={[modalData.lat, modalData.lng]}
+                                            zoom={15}
+                                            style={{ height: '100%', width: '100%' }}
+                                        >
+                                            <TileLayer
+                                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                                attribution='&copy; OpenStreetMap'
+                                            />
+                                            <Marker position={[modalData.lat, modalData.lng]}>
+                                                <Popup>
+                                                    Point Location
+                                                </Popup>
+                                            </Marker>
+                                        </MapContainer>
+                                    ) : (
+                                        <div className="d-flex justify-content-center align-items-center h-100 bg-light text-muted">
+                                            <div className="text-center">
+                                                <i className="bx bx-map-off font-size-24 mb-2"></i><br />
+                                                Koordinat tidak tersedia
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </Col>
                         </Row>

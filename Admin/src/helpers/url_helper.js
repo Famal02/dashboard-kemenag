@@ -96,7 +96,16 @@ export const ADD_NEW_USER = "/add/user"
 export const UPDATE_USER = "/update/user"
 export const DELETE_USER = "/delete/user"
 
-//dashboard charts data
+// DASHBOARD
+export const GET_CHARTS_DATA = "/dashboard/charts"
+export const GET_DASHBOARD_DATA = "https://spl-satudata.kemenag.go.id/core/api/penerimaan-zm/total";
+export const GET_WAKAF_TANAH_DATA = "https://spl-satudata.kemenag.go.id/core/api/wakaf/tanah-wakaf";
+export const GET_PENYALURAN_ZM_DATA = "https://spl-satudata.kemenag.go.id/core/apidev/penerimaan-zm/penyaluran";
+export const GET_PENERIMAAN_PROVINSI = "https://spl-satudata.kemenag.go.id/core/apidev/penerimaan-zm/penerimaan-provinsi";
+export const GET_PENYALURAN_PROVINSI = "https://spl-satudata.kemenag.go.id/core/apidev/penerimaan-zm/penyaluran-prov";
+export const GET_USERS_DATA = "/users"
+
+//dashboard charts data (Restored)
 export const GET_WEEKLY_DATA = "/weekly-data"
 export const GET_YEARLY_DATA = "/yearly-data"
 export const GET_MONTHLY_DATA = "/monthly-data"

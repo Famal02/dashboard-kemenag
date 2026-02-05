@@ -204,16 +204,7 @@ const Header = props => {
                 </button>
               </div>
 
-              {/* PROFILE CARD TERPISAH */}
-              <div className="ms-3 shadow-sm d-flex align-items-center"
-                style={{
-                  backgroundColor: '#ffffff',
-                  borderRadius: '50px',
-                  padding: '2px 5px 2px 0',
-                  height: '42px' // Menyesuaikan tinggi agar proporsional
-                }}>
-                <ProfileMenu />
-              </div>
+
             </div>
 
           </div>

@@ -1,18 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Col, Card, CardBody, Row } from "reactstrap";
-import ReactApexChart from "react-apexcharts"; // Import ReactApexChart langsung
+import ReactApexChart from "react-apexcharts";
+import axios from 'axios';
+import { GET_DASHBOARD_DATA } from '../../helpers/url_helper';
 
 const InvestedOverview = () => {
-    // State untuk filter bulan (contoh fungsionalitas UI saja)
     const [selectedMonth, setSelectedMonth] = useState("AP");
+    const [zakatData, setZakatData] = useState({
+        totalTerkumpul: 0,
+        totalTersalurkan: 0,
+        sisaDana: 0,
+    });
+    const [loading, setLoading] = useState(true);
 
-    // Data Dummy Zakat
-    const zakatData = {
-        totalTerkumpul: 150000000, // Rp 150 Juta
-        totalTersalurkan: 120000000, // Rp 120 Juta
-        sisaDana: 30000000, // Rp 30 Juta
-    };
+    // Fetch data from API
+    useEffect(() => {
+        const fetchZakatData = async () => {
+            setLoading(true);
+            try {
+                const response = await axios.get(GET_DASHBOARD_DATA, {
+                    headers: {
+                        "x-api-key": "prod-b533376f-f659-42c3-af49-92b03d468cf1"
+                    }
+                });
+
+                console.log('API Penerimaan ZM Response:', response.data);
+
+                // Extract data from API response (data is in items array)
+                const items = response.data?.data?.items || [];
+                const apiData = items.length > 0 ? items[0] : {};
+
+                console.log('Extracted API Data:', apiData);
+                console.log('Available Fields:', Object.keys(apiData));
+
+                // Get totals from API (based on actual API structure from screenshot)
+                const terkumpul = parseFloat(apiData.total_penerimaan_all || apiData.total_penerimaan || 0);
+                const infakPenyaluran = parseFloat(apiData.total_infak_penyaluran || 0);
+                const tersalurkan = infakPenyaluran;
+                const sisa = terkumpul - tersalurkan;
+
+                console.log('Calculated Values:', { terkumpul, tersalurkan, sisa });
+
+                setZakatData({
+                    totalTerkumpul: terkumpul,
+                    totalTersalurkan: tersalurkan,
+                    sisaDana: sisa > 0 ? sisa : 0,
+                });
+            } catch (error) {
+                console.error("Error fetching ZIS data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchZakatData();
+    }, []);
 
     // Helper currency format IDR
     const formatRupiah = (number) => {
@@ -94,13 +137,21 @@ const InvestedOverview = () => {
                         <Row className="align-items-center">
                             <div className="col-xl-5 col-sm-6">
                                 <div id="invested-overview" className="apex-charts">
-                                    {/* RENDER PIE CHART DI SINI */}
-                                    <ReactApexChart
-                                        options={options}
-                                        series={series}
-                                        type="pie"
-                                        height={280}
-                                    />
+                                    {loading ? (
+                                        <div className="text-center p-5">
+                                            <div className="spinner-border text-primary" role="status">
+                                                <span className="sr-only">Loading...</span>
+                                            </div>
+                                            <p className="mt-2 text-muted">Memuat data...</p>
+                                        </div>
+                                    ) : (
+                                        <ReactApexChart
+                                            options={options}
+                                            series={series}
+                                            type="pie"
+                                            height={280}
+                                        />
+                                    )}
                                 </div>
                             </div>
                             <div className="col-xl-7 col-sm-6 align-self-center">
@@ -141,7 +192,7 @@ const InvestedOverview = () => {
                 </Card>
             </Col>
 
-            
+
         </React.Fragment>
     );
 }

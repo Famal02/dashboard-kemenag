@@ -188,10 +188,7 @@ const Header = props => {
               <LightDark layoutMode={props['layoutMode']} onChangeLayoutMode={onChangeLayoutMode} />
             </div>
 
-            {/* Profile Menu */}
-            <div className="ms-2">
-              <ProfileMenu />
-            </div>
+
 
             {/* Settings Toggle */}
             <div
