@@ -7,12 +7,11 @@ import { Link } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 
 // Reactstrap
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Row, Col, Container } from "reactstrap";
+import { Dropdown, DropdownToggle, DropdownMenu, Row, Col, Container } from "reactstrap";
 
 // Import menuDropdown
 // import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
 // import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDropdown";
-import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu";
 import LightDark from "../CommonForBoth/Menus/LightDark";
 
 // import images
@@ -52,7 +51,7 @@ const Header = props => {
 
   const { onChangeLayoutMode } = props;
   const [search, setsearch] = useState(false);
-  const [socialDrp, setsocialDrp] = useState(false);
+  // const [socialDrp, setsocialDrp] = useState(false);
   const [isClick, setClick] = useState(true);
   const [menuRumahIbadah, setMenuRumahIbadah] = useState(false);
   const [menuZis, setMenuZis] = useState(false);
@@ -100,6 +99,34 @@ const Header = props => {
             color: #34c38f !important; /* Teks Hijau */
             border-radius: 6px; /* Agar item list cantik tidak kotak kaku */
           }
+
+          /* --- FIX LOGO VISIBILITY --- */
+          /* Default Desktop (Layar Besar): Tampilkan Logo Besar, Sembunyikan Kecil */
+          @media (min-width: 992px) {
+            .navbar-brand-box .logo-sm { display: none !important; }
+            .navbar-brand-box .logo-lg { display: flex !important; align-items: center; }
+          }
+          
+          /* Mobile/Tablet (Layar Kecil) atau Sidebar Collapsed: Tampilkan Logo Kecil, Sembunyikan Besar */
+          @media (max-width: 991.98px), body[data-sidebar-size="sm"] .navbar-brand-box {
+            .navbar-brand-box .logo-sm { display: inline-block !important; }
+            .navbar-brand-box .logo-lg { display: none !important; }
+          }
+
+
+          /* --- FIX FULL WIDTH LAYOUT (NO SIDEBAR) --- */
+          .vertical-menu { display: none !important; }
+          .main-content { margin-left: 0 !important; }
+          .footer { left: 0 !important; }
+
+          /* --- CONTAINER GLOBAL --- */
+          .custom-container {
+              width: 100%;
+              max-width: 1440px;
+              margin: 0 auto;
+              padding: 0 24px;
+          }
+          
         `}</style>
         {/* WRAPPER UTAMA: Container membatasi lebar konten (±1200px) agar berada di tengah */}
         <div className="custom-container"> {/* <--- INI YANG BARU */}
@@ -134,7 +161,7 @@ const Header = props => {
 
             {/* === 2. BAGIAN TENGAH: MENU NAVIGASI (Absolute Center) === */}
             {/* Posisi Absolute membuat elemen ini lepas dari aliran flexbox dan bisa ditaruh tepat di tengah layar */}
-            <div className="d-none d-lg-flex align-items-center position-absolute start-50 translate-middle-x">
+            <div className="d-none d-lg-flex align-items-center position-absolute start-50 translate-middle-x gap-3">
 
               <Dropdown className="d-inline-block" isOpen={menuZis} toggle={() => setMenuZis(!menuZis)}>
                 <DropdownToggle
@@ -151,11 +178,11 @@ const Header = props => {
                 </DropdownMenu>
               </Dropdown>
 
-              <Link to="/Informasi-Wakaf" className="btn header-menu-hover waves-effect d-inline-flex align-items-center justify-content-center px-3 py-2 ms-1">
+              <Link to="/Informasi-Wakaf" className="btn header-menu-hover waves-effect d-inline-flex align-items-center justify-content-center px-3 py-2">
                 <span className="fw-bold font-size-15">Wakaf</span>
               </Link>
 
-              <Dropdown className="d-inline-block ms-1" isOpen={menuRumahIbadah} toggle={() => setMenuRumahIbadah(!menuRumahIbadah)}>
+              <Dropdown className="d-inline-block" isOpen={menuRumahIbadah} toggle={() => setMenuRumahIbadah(!menuRumahIbadah)}>
                 <DropdownToggle
                   className={`btn header-menu-hover waves-effect d-inline-flex align-items-center justify-content-center px-3 py-2 ${menuRumahIbadah ? 'menu-active-green' : ''}`}
                   tag="button"
@@ -164,7 +191,7 @@ const Header = props => {
                   <i className={`mdi mdi-chevron-down d-inline-block ms-1 transition-all ${menuRumahIbadah ? 'rotate-180' : ''}`}></i>
                 </DropdownToggle>
 
-                <DropdownMenu className="dropdown-menu-end border-0 shadow-lg rounded-3 p-2 mt-2" style={{ minWidth: '200px' }}>
+                <DropdownMenu className="border-0 shadow-lg rounded-3 p-2 mt-2" style={{ minWidth: '200px' }}>
                   <Link to="/Islam" className="dropdown-item fw-medium font-size-14 py-2 rounded">Islam</Link>
                   <Link to="/Kristen" className="dropdown-item fw-medium font-size-14 py-2 rounded">Kristen</Link>
                   <Link to="/Katolik" className="dropdown-item fw-medium font-size-14 py-2 rounded">Katolik</Link>
@@ -177,33 +204,8 @@ const Header = props => {
 
             {/* === 3. BAGIAN KANAN: PROFILE & TOOLS === */}
             <div className="d-flex align-items-center">
-              {/* Search Mobile */}
-              <div className="dropdown d-inline-block d-lg-none ms-2">
-                <button onClick={() => setsearch(!search)} type="button" className="btn header-item noti-icon" id="page-header-search-dropdown">
-                  <i className="mdi mdi-magnify" />
-                </button>
-                <div className={search ? "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0 show" : "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"}>
-                  <form className="p-3">
-                    <div className="form-group m-0">
-                      <div className="input-group">
-                        <input type="text" className="form-control" placeholder="Search ..." />
-                        <div className="input-group-append">
-                          <button className="btn btn-primary" type="submit"><i className="mdi mdi-magnify" /></button>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
 
               <LightDark layoutMode={props['layoutMode']} onChangeLayoutMode={onChangeLayoutMode} />
-
-              <div onClick={() => dispatch(showRightSidebarAction(!showRightSidebar))} className="dropdown d-inline-block">
-                <button type="button" className="btn header-item noti-icon right-bar-toggle">
-                  <FeatherIcon icon="settings" className="icon-lg" />
-                </button>
-              </div>
-
 
             </div>
 

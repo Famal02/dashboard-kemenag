@@ -1,9 +1,9 @@
+
 import React from 'react';
-import WorshipShared from './WorshipShared';
+import DataRumahIbadah from './DataRumahIbadah';
 
-const BuddhaPage = () => {
-    document.title = "Data Rumah Ibadah (Buddha) | Dashboard Nasional";
-    return <WorshipShared religionName="Buddha" color="#f1b44c" />;
-}
+const Buddha = () => {
+    return <DataRumahIbadah religion="Buddha" color="info" />;
+};
 
-export default BuddhaPage;
+export default Buddha;

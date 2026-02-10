@@ -44,34 +44,13 @@ File: Main Css File
 
 // Plugins
 @import "plugins/custom-scrollbar";
-@import "plugins/calendar";
-@import "plugins/session-timeout";
-@import "plugins/range-slider";
 @import "plugins/sweatalert2";
-@import "plugins/alertify";
-@import "plugins/pristinejs";
-@import "plugins/choices";
-@import "plugins/switch";
-@import "plugins/colorpicker";
 @import "plugins/datepicker";
-@import "plugins/form-editors";
-@import "plugins/form-upload";
-@import "plugins/form-wizard";
-@import "plugins/datatable";
-@import "plugins/responsive-table";
-@import "plugins/table-editable";
 @import "plugins/apexcharts";
-@import "plugins/echarts";
-@import "plugins/sparkline-chart";
-@import "plugins/google-map";
 @import "plugins/vector-maps";
 @import "plugins/leaflet-maps";
 
-
 // Pages
 @import "pages/authentication";
-@import "pages/email";
-@import "pages/chat";
 @import "pages/coming-soon";
-@import "pages/timeline";
 @import "pages/extras-pages";

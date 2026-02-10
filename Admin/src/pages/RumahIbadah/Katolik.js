@@ -1,9 +1,9 @@
+
 import React from 'react';
-import WorshipShared from './WorshipShared';
+import DataRumahIbadah from './DataRumahIbadah';
 
-const KatolikPage = () => {
-    document.title = "Data Rumah Ibadah (Katolik) | Dashboard Nasional";
-    return <WorshipShared religionName="Katolik" color="#6f42c1" />;
-}
+const Katolik = () => {
+    return <DataRumahIbadah religion="Katolik" color="warning" />;
+};
 
-export default KatolikPage;
+export default Katolik;

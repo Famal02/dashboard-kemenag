@@ -1,9 +1,9 @@
+
 import React from 'react';
-import WorshipShared from './WorshipShared';
+import DataRumahIbadah from './DataRumahIbadah';
 
-const KristenPage = () => {
-    document.title = "Data Rumah Ibadah (Kristen) | Dashboard Nasional";
-    return <WorshipShared religionName="Kristen" color="#556ee6" />;
-}
+const Kristen = () => {
+    return <DataRumahIbadah religion="Kristen" color="primary" />;
+};
 
-export default KristenPage;
+export default Kristen;

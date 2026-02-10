@@ -2,40 +2,16 @@ import { combineReducers } from "redux"
 
 // Front
 import Layout from "./layout/reducer"
-
-// Authentication
-import Login from "./auth/login/reducer"
-import Account from "./auth/register/reducer"
-import ForgetPassword from "./auth/forgetpwd/reducer"
-import Profile from "./auth/profile/reducer"
-
-//Calendar
-import calendar from "./calendar/reducer"
-
-//chat
-import chat from "./chat/reducer"
-
-//invoices
-import invoices from "./invoices/reducer"
-
-//contacts
-import contacts from "./contacts/reducer"
-
-//dashboard
+// Dashboard
 import dashboard from "./Dashboard/reducer"
 
+// Keep Login reducer if needed for state.Login checks (optional, but safer to keep empty or default)
+// import Login from "./auth/login/reducer" 
+// Since we removed the Saga, the Login reducer won't receive success actions, but Layout might check it.
+// However, since we removed ProfileMenu from Header, nothing should check auth state.
 
 const rootReducer = combineReducers({
-  // public
   Layout,
-  Login,
-  Account,
-  ForgetPassword,
-  Profile,
-  calendar,
-  chat,
-  invoices,
-  contacts,
   dashboard
 })
 

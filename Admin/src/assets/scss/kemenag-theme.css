@@ -1,0 +1,741 @@
+/* ========================================
+   KEMENAG DASHBOARD - GLOBAL THEME
+   Color Palette:
+   - Primary (Blue Fusion): #375673
+   - Background (Cloud Dancer): #f0eee9
+   - Accent (Golden Mist): #d5cd94
+   ======================================== */
+
+:root {
+    --kemenag-primary: #375673;
+    --kemenag-primary-rgb: 55, 86, 115;
+    --kemenag-background: #f0eee9;
+    --kemenag-accent: #d5cd94;
+    --kemenag-accent-dark: #c5b884;
+    --kemenag-white: #ffffff;
+    --kemenag-text: #375673;
+    --kemenag-text-light: rgba(55, 86, 115, 0.8);
+    --kemenag-text-lighter: rgba(55, 86, 115, 0.6);
+}
+
+/* ========================================
+   GLOBAL PAGE STYLES
+   ======================================== */
+
+/* Ensure body and html use theme background */
+html,
+body {
+    background-color: var(--kemenag-background) !important;
+}
+
+/* Override default page-content styling */
+.page-content {
+    /* Gunakan padding default template: 90px top, 60px bottom */
+    /* Horizontal padding 0 karena sudah ada di custom-container/kemenag-container */
+    padding: 90px 0 60px 0 !important;
+    background: transparent !important;
+}
+
+/* Override main-content if exists */
+.main-content {
+    background: transparent !important;
+}
+
+.kemenag-page {
+    background-color: var(--kemenag-background);
+    min-height: 100vh;
+    padding: 90px 0 60px 0;
+    /* Sama seperti page-content: 90px top, 60px bottom */
+    width: 100%;
+}
+
+.kemenag-container {
+    max-width: 2000px;
+    /* Sesuai dengan custom-container */
+    margin: 0 auto;
+    padding-left: 200px;
+    /* Sesuai dengan custom-container */
+    padding-right: 200px;
+    /* Sesuai dengan custom-container */
+}
+
+/* Responsive untuk layar kecil */
+@media (max-width: 1600px) {
+    .kemenag-container {
+        padding-left: 100px;
+        padding-right: 100px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .kemenag-container {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+}
+
+@media (max-width: 768px) {
+    .kemenag-container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+/* ========================================
+   TYPOGRAPHY
+   ======================================== */
+
+.kemenag-title {
+    color: var(--kemenag-primary);
+    font-weight: 700;
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.kemenag-subtitle {
+    color: var(--kemenag-text-light);
+    font-size: 14px;
+    margin-bottom: 24px;
+}
+
+.kemenag-breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+.kemenag-breadcrumb .breadcrumb-item {
+    color: var(--kemenag-text-light);
+    font-size: 14px;
+}
+
+.kemenag-breadcrumb .breadcrumb-item.active {
+    color: var(--kemenag-primary);
+    font-weight: 600;
+}
+
+/* ========================================
+   CARDS - GENERAL
+   ======================================== */
+
+.kemenag-card {
+    background: var(--kemenag-white);
+    border: 1px solid rgba(213, 205, 148, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(var(--kemenag-primary-rgb), 0.08);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.kemenag-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(var(--kemenag-primary-rgb), 0.12);
+    border-color: rgba(213, 205, 148, 0.4);
+}
+
+.kemenag-card .card-body {
+    padding: 28px;
+}
+
+.kemenag-card .card-title {
+    color: var(--kemenag-primary);
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 0;
+}
+
+/* ========================================
+   STATS CARDS
+   ======================================== */
+
+.kemenag-stats-card {
+    background: var(--kemenag-white);
+    border: 1px solid rgba(213, 205, 148, 0.3);
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(var(--kemenag-primary-rgb), 0.08);
+    transition: all 0.3s ease;
+    border-left: 4px solid var(--kemenag-accent);
+    overflow: hidden;
+}
+
+.kemenag-stats-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(var(--kemenag-primary-rgb), 0.15);
+    border-color: var(--kemenag-accent);
+}
+
+.kemenag-stats-card .card-body {
+    padding: 24px;
+}
+
+.kemenag-stats-card .text-muted {
+    color: var(--kemenag-text-light) !important;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.kemenag-stats-card h4,
+.kemenag-stats-card .stats-number {
+    color: var(--kemenag-primary);
+    font-weight: 700;
+    font-size: 32px;
+    margin: 12px 0 8px 0;
+}
+
+.kemenag-stats-card small {
+    color: var(--kemenag-text);
+    opacity: 0.6;
+    font-size: 12px;
+}
+
+.kemenag-stats-icon {
+    background: linear-gradient(135deg, var(--kemenag-accent) 0%, var(--kemenag-accent-dark) 100%) !important;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+}
+
+.kemenag-stats-icon i {
+    color: var(--kemenag-primary);
+    font-size: 28px;
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+
+.kemenag-btn-primary {
+    background: var(--kemenag-primary);
+    border: 2px solid var(--kemenag-primary);
+    color: var(--kemenag-background);
+    padding: 8px 24px;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.kemenag-btn-primary:hover {
+    background: #2d4659;
+    border-color: #2d4659;
+    color: var(--kemenag-background);
+    transform: scale(1.05);
+}
+
+.kemenag-btn-secondary {
+    background: transparent;
+    border: 2px solid var(--kemenag-accent);
+    color: var(--kemenag-primary);
+    padding: 6px 20px;
+    border-radius: 24px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.kemenag-btn-secondary:hover {
+    background: var(--kemenag-accent);
+    color: var(--kemenag-primary);
+    transform: scale(1.05);
+}
+
+.kemenag-btn-accent {
+    background: var(--kemenag-accent);
+    border: 2px solid var(--kemenag-accent);
+    color: var(--kemenag-primary);
+    padding: 8px 24px;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.kemenag-btn-accent:hover {
+    background: var(--kemenag-accent-dark);
+    border-color: var(--kemenag-accent-dark);
+    color: var(--kemenag-primary);
+    transform: scale(1.05);
+}
+
+/* ========================================
+   MAP COMPONENTS
+   ======================================== */
+
+.kemenag-map-container {
+    background: var(--kemenag-background);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(213, 205, 148, 0.3);
+    position: relative;
+}
+
+.kemenag-map-legend {
+    background: var(--kemenag-white);
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(var(--kemenag-primary-rgb), 0.12);
+    border: 1px solid rgba(213, 205, 148, 0.4);
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    z-index: 10;
+}
+
+.kemenag-map-legend-item {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: var(--kemenag-primary);
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.kemenag-map-legend-item:last-child {
+    margin-bottom: 0;
+}
+
+.kemenag-map-legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    margin-right: 8px;
+    border: 1px solid rgba(var(--kemenag-primary-rgb), 0.2);
+}
+
+/* ========================================
+   TABLES
+   ======================================== */
+
+.kemenag-table-card {
+    background: var(--kemenag-white);
+    border: 1px solid rgba(213, 205, 148, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(var(--kemenag-primary-rgb), 0.08);
+}
+
+.kemenag-table-card .card-body {
+    padding: 28px;
+}
+
+.kemenag-table-card .card-title {
+    color: var(--kemenag-primary);
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.kemenag-table-responsive {
+    border-radius: 8px;
+    border: 1px solid rgba(213, 205, 148, 0.2);
+    overflow: hidden;
+}
+
+.kemenag-table {
+    margin-bottom: 0;
+}
+
+.kemenag-table thead {
+    background: var(--kemenag-primary);
+}
+
+.kemenag-table thead th {
+    color: var(--kemenag-background) !important;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 16px 12px;
+    border: none;
+}
+
+.kemenag-table tbody tr {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(213, 205, 148, 0.15);
+}
+
+.kemenag-table tbody tr:hover {
+    background-color: rgba(213, 205, 148, 0.15);
+    transform: scale(1.005);
+}
+
+.kemenag-table tbody tr.table-active {
+    background-color: rgba(213, 205, 148, 0.25);
+    border-left: 3px solid var(--kemenag-accent);
+}
+
+.kemenag-table tbody td {
+    color: var(--kemenag-text);
+    font-size: 14px;
+    padding: 14px 12px;
+    vertical-align: middle;
+}
+
+.kemenag-table tbody h6 {
+    color: var(--kemenag-primary);
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 0;
+}
+
+/* Sticky Table Header */
+.kemenag-table thead.sticky-top {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+}
+
+/* ========================================
+   SCROLLBAR STYLING
+   ======================================== */
+
+.kemenag-scrollbar::-webkit-scrollbar,
+.kemenag-table-responsive::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.kemenag-scrollbar::-webkit-scrollbar-track,
+.kemenag-table-responsive::-webkit-scrollbar-track {
+    background: var(--kemenag-background);
+    border-radius: 4px;
+}
+
+.kemenag-scrollbar::-webkit-scrollbar-thumb,
+.kemenag-table-responsive::-webkit-scrollbar-thumb {
+    background: var(--kemenag-accent);
+    border-radius: 4px;
+}
+
+.kemenag-scrollbar::-webkit-scrollbar-thumb:hover,
+.kemenag-table-responsive::-webkit-scrollbar-thumb:hover {
+    background: var(--kemenag-accent-dark);
+}
+
+/* ========================================
+   SEARCH & FILTER
+   ======================================== */
+
+.kemenag-search-input {
+    border: 2px solid rgba(213, 205, 148, 0.3);
+    border-radius: 24px;
+    padding: 8px 20px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.kemenag-search-input:focus {
+    border-color: var(--kemenag-accent);
+    box-shadow: 0 0 0 3px rgba(213, 205, 148, 0.1);
+    outline: none;
+}
+
+/* ========================================
+   BADGES & TAGS
+   ======================================== */
+
+.kemenag-badge {
+    background: rgba(213, 205, 148, 0.15);
+    color: var(--kemenag-primary);
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid rgba(213, 205, 148, 0.3);
+}
+
+.kemenag-badge-primary {
+    background: rgba(var(--kemenag-primary-rgb), 0.1);
+    color: var(--kemenag-primary);
+    border-color: rgba(var(--kemenag-primary-rgb), 0.2);
+}
+
+.kemenag-badge-accent {
+    background: rgba(213, 205, 148, 0.2);
+    color: var(--kemenag-primary);
+    border-color: var(--kemenag-accent);
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.kemenag-fade-in {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.kemenag-fade-in-delay-1 {
+    animation: fadeInUp 0.5s ease-out 0.1s both;
+}
+
+.kemenag-fade-in-delay-2 {
+    animation: fadeInUp 0.5s ease-out 0.2s both;
+}
+
+.kemenag-fade-in-delay-3 {
+    animation: fadeInUp 0.5s ease-out 0.3s both;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+    .kemenag-title {
+        font-size: 22px;
+    }
+
+    .kemenag-stats-card h4,
+    .kemenag-stats-card .stats-number {
+        font-size: 26px;
+    }
+
+    .kemenag-stats-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .kemenag-stats-icon i {
+        font-size: 24px;
+    }
+
+    .kemenag-card .card-body,
+    .kemenag-table-card .card-body {
+        padding: 20px;
+    }
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+.text-kemenag-primary {
+    color: var(--kemenag-primary) !important;
+}
+
+.text-kemenag-accent {
+    color: var(--kemenag-accent) !important;
+}
+
+.bg-kemenag-primary {
+    background-color: var(--kemenag-primary) !important;
+}
+
+.bg-kemenag-accent {
+    background-color: var(--kemenag-accent) !important;
+}
+
+.bg-kemenag-background {
+    background-color: var(--kemenag-background) !important;
+}
+
+.border-kemenag-accent {
+    border-color: var(--kemenag-accent) !important;
+}
+
+.border-kemenag-primary {
+    border-color: var(--kemenag-primary) !important;
+}
+
+/* ========================================
+   GLOBAL CONSISTENCY RULES
+   Auto-apply ke semua halaman
+   ======================================== */
+
+/* --- SPACING KONSISTEN --- */
+
+/* Semua Row di dalam kemenag-page/kemenag-container */
+.kemenag-page .row,
+.kemenag-container .row {
+    margin-bottom: 24px;
+    /* Konsisten 24px antar row */
+}
+
+.kemenag-page .row:last-child,
+.kemenag-container .row:last-child {
+    margin-bottom: 0;
+    /* Hapus margin di row terakhir */
+}
+
+/* Override mb-3 jadi mb-4 untuk konsistensi */
+.kemenag-page .mb-3 {
+    margin-bottom: 24px !important;
+}
+
+/* --- CARD KONSISTEN --- */
+
+/* Semua card punya min-height yang sama dalam 1 row */
+.kemenag-page .row .card,
+.kemenag-container .row .card {
+    min-height: 100%;
+    /* Card dalam row yang sama akan sama tinggi */
+    display: flex;
+    flex-direction: column;
+}
+
+.kemenag-page .row .card .card-body,
+.kemenag-container .row .card .card-body {
+    flex: 1;
+    /* Card body mengisi ruang yang tersisa */
+}
+
+/* Card dengan chart/table punya min-height 400px */
+.kemenag-page .card:has(.apexcharts-canvas),
+.kemenag-page .card:has(.table),
+.kemenag-page .card:has(.jvectormap-container) {
+    min-height: 400px;
+}
+
+/* --- TABLE KONSISTEN --- */
+
+/* Semua table di dalam card */
+.kemenag-page .card .table-responsive {
+    max-height: 400px;
+    /* Tinggi maksimal table */
+    overflow-y: auto;
+}
+
+/* Table header sticky */
+.kemenag-page .card .table thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--kemenag-primary);
+}
+
+.kemenag-page .card .table thead th {
+    color: var(--kemenag-background) !important;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 16px 12px;
+    border: none;
+}
+
+.kemenag-page .card .table tbody tr {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(213, 205, 148, 0.15);
+}
+
+.kemenag-page .card .table tbody tr:hover {
+    background-color: rgba(213, 205, 148, 0.1);
+}
+
+.kemenag-page .card .table tbody td {
+    color: var(--kemenag-primary);
+    font-size: 14px;
+    padding: 14px 12px;
+    vertical-align: middle;
+}
+
+/* --- SECTION TITLE KONSISTEN --- */
+
+/* Title di dalam row */
+.kemenag-page h5.kemenag-title,
+.kemenag-page h5.fw-bold {
+    font-size: 20px !important;
+    margin-bottom: 16px !important;
+    color: var(--kemenag-primary);
+}
+
+/* --- GRID ALIGNMENT --- */
+
+/* Pastikan col dalam row sejajar */
+.kemenag-page .row>[class*="col-"] {
+    display: flex;
+    flex-direction: column;
+}
+
+.kemenag-page .row>[class*="col-"]>.card {
+    flex: 1;
+    /* Card mengisi tinggi kolom */
+}
+
+/* --- ALERT/INFO KONSISTEN --- */
+
+/* Alert di dalam card */
+.kemenag-page .card .alert {
+    margin: 0 0 16px 0;
+    border-radius: 8px;
+}
+
+.kemenag-page .card .alert:last-child {
+    margin-bottom: 0;
+}
+
+/* --- MAP CONTAINER KONSISTEN --- */
+
+/* Map container punya tinggi yang sama */
+.kemenag-page .jvectormap-container {
+    min-height: 400px;
+    background: var(--kemenag-background);
+    border-radius: 8px;
+}
+
+/* --- STATS CARD KONSISTEN --- */
+
+/* Stats card punya tinggi yang sama */
+.kemenag-page .kemenag-stats-card {
+    min-height: 140px;
+}
+
+/* --- RESPONSIVE CONSISTENCY --- */
+
+@media (max-width: 1200px) {
+
+    /* Kurangi min-height di tablet */
+    .kemenag-page .card:has(.apexcharts-canvas),
+    .kemenag-page .card:has(.table),
+    .kemenag-page .card:has(.jvectormap-container) {
+        min-height: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    /* Hapus min-height di mobile */
+    .kemenag-page .card:has(.apexcharts-canvas),
+    .kemenag-page .card:has(.table),
+    .kemenag-page .card:has(.jvectormap-container) {
+        min-height: auto;
+    }
+
+    /* Spacing lebih kecil di mobile */
+    .kemenag-page .row,
+    .kemenag-container .row {
+        margin-bottom: 16px;
+    }
+}
+
+/* --- FIX UNTUK HALAMAN TERTENTU --- */
+
+/* Rumah Ibadah - samakan dengan global */
+.rumah-ibadah-page .row {
+    margin-bottom: 24px;
+}
+
+.rumah-ibadah-page .row:last-child {
+    margin-bottom: 0;
+}
+
+/* PetaSebaranWakaf & PetaSebaranZis - samakan spacing */
+.kemenag-page .mb-4 {
+    margin-bottom: 24px !important;
+}

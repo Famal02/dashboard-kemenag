@@ -1,9 +1,9 @@
+
 import React from 'react';
-import WorshipShared from './WorshipShared';
+import DataRumahIbadah from './DataRumahIbadah';
 
-const IslamPage = () => {
-    document.title = "Data Rumah Ibadah (Islam) | Dashboard Nasional";
-    return <WorshipShared religionName="Islam" color="#34c38f" />;
-}
+const Islam = () => {
+    return <DataRumahIbadah religion="Islam" color="success" />;
+};
 
-export default IslamPage;
+export default Islam;

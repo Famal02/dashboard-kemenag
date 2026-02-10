@@ -1,142 +1,29 @@
-//REGISTER
-export const POST_FAKE_REGISTER = "/post-fake-register"
+// --- ZIS & WAKAF ENDPOINTS (REAL KEMENAG API) ---
 
-//LOGIN
-export const POST_FAKE_LOGIN = "/post-fake-login"
-export const POST_FAKE_JWT_LOGIN = "/post-jwt-login"
-export const POST_FAKE_PASSWORD_FORGET = "/fake-forget-pwd"
-export const POST_FAKE_JWT_PASSWORD_FORGET = "/jwt-forget-pwd"
-export const SOCIAL_LOGIN = "/social-login"
-
-//PROFILE
-export const POST_EDIT_JWT_PROFILE = "/post-jwt-profile"
-export const POST_EDIT_PROFILE = "/post-fake-profile"
-
-//PRODUCTS
-export const GET_PRODUCTS = "/products"
-export const GET_PRODUCTS_DETAIL = "/product"
-
-//Mails
-export const GET_INBOX_MAILS = "/inboxmails"
-export const ADD_NEW_INBOX_MAIL = "/add/inboxmail"
-export const DELETE_INBOX_MAIL = "/delete/inboxmail"
-
-//starred mail
-export const GET_STARRED_MAILS = "/starredmails"
-
-//important mails
-export const GET_IMPORTANT_MAILS = "/importantmails"
-
-//Draft mail
-export const GET_DRAFT_MAILS = "/draftmails"
-
-//Send mail
-export const GET_SENT_MAILS = "/sentmails"
-
-//Trash mail
-export const GET_TRASH_MAILS = "/trashmails"
-
-//CALENDER
-export const GET_EVENTS = "/events"
-export const ADD_NEW_EVENT = "/add/event"
-export const UPDATE_EVENT = "/update/event"
-export const DELETE_EVENT = "/delete/event"
-export const GET_CATEGORIES = "/categories"
-
-//CHATS
-export const GET_CHATS = "/chats"
-export const GET_GROUPS = "/groups"
-export const GET_CONTACTS = "/contacts"
-export const GET_MESSAGES = "/messages"
-export const ADD_MESSAGE = "/add/messages"
-
-//ORDERS
-export const GET_ORDERS = "/orders"
-export const ADD_NEW_ORDER = "/add/order"
-export const UPDATE_ORDER = "/update/order"
-export const DELETE_ORDER = "/delete/order"
-
-//CART DATA
-export const GET_CART_DATA = "/cart"
-
-//CUSTOMERS
-export const GET_CUSTOMERS = "/customers"
-export const ADD_NEW_CUSTOMER = "/add/customer"
-export const UPDATE_CUSTOMER = "/update/customer"
-export const DELETE_CUSTOMER = "/delete/customer"
-
-//SHOPS
-export const GET_SHOPS = "/shops"
-
-//CRYPTO
-export const GET_WALLET = "/wallet"
-export const GET_CRYPTO_ORDERS = "/crypto/orders"
-
-//INVOICES
-export const GET_INVOICES = "/invoices"
-export const GET_INVOICE_DETAIL = "/invoice"
-export const ADD_INVOICE = "/add/invoice"
-export const DELETE_INVOICE = "/delete/invoice"
-export const UPDATE_INVOICE = "/update/invoice"
-
-//PROJECTS
-export const GET_PROJECTS = "/projects"
-export const GET_PROJECT_DETAIL = "/project"
-export const ADD_NEW_PROJECT = "/add/project"
-export const UPDATE_PROJECT = "/update/project"
-export const DELETE_PROJECT = "/delete/project"
-
-//TASKS
-export const GET_TASKS = "/tasks"
-
-//CONTACTS
-export const GET_USERS = "/users"
-export const GET_USER_PROFILE = "/user"
-export const ADD_NEW_USER = "/add/user"
-export const UPDATE_USER = "/update/user"
-export const DELETE_USER = "/delete/user"
-
-// DASHBOARD
-export const GET_CHARTS_DATA = "/dashboard/charts"
+// 1. ZIS DATA (Penerimaan & Total)
 export const GET_DASHBOARD_DATA = "https://spl-satudata.kemenag.go.id/core/api/penerimaan-zm/total";
+// Fungsi: Mengambil total penerimaan Zakat, Infaq, Sedekah Nasional
+
+// 2. WAKAF DATA (Tanah Wakaf)
 export const GET_WAKAF_TANAH_DATA = "https://spl-satudata.kemenag.go.id/core/api/wakaf/tanah-wakaf";
+// Fungsi: Mengambil data lokasi dan peruntukan tanah wakaf
+
+// 3. PENYALURAN ZIS (Asnaf)
 export const GET_PENYALURAN_ZM_DATA = "https://spl-satudata.kemenag.go.id/core/apidev/penerimaan-zm/penyaluran";
+// Fungsi: Mengambil data penyaluran dana berdasarkan asnaf (Fakir, Miskin, dll)
+
+// 4. PENERIMAAN PROVINSI (Top 5)
 export const GET_PENERIMAAN_PROVINSI = "https://spl-satudata.kemenag.go.id/core/apidev/penerimaan-zm/penerimaan-provinsi";
+// Fungsi: Mengambil data peringkat perolehan ZIS per provinsi
+
+// 5. PENYALURAN PROVINSI (Sebaran)
 export const GET_PENYALURAN_PROVINSI = "https://spl-satudata.kemenag.go.id/core/apidev/penerimaan-zm/penyaluran-prov";
-export const GET_USERS_DATA = "/users"
+// Fungsi: Mengambil sebaran penyaluran dana ZIS per provinsi
 
-//dashboard charts data (Restored)
-export const GET_WEEKLY_DATA = "/weekly-data"
-export const GET_YEARLY_DATA = "/yearly-data"
-export const GET_MONTHLY_DATA = "/monthly-data"
+// 6. DASHBOARD KEMENAG (Cadangan / Detail)
+export const GET_DASHBOARD_KEMENAG_DATA = "https://spl-satudata.kemenag.go.id/core/apidev/penerimaan-zm/zm";
+// Fungsi: Data detail penerimaan Zakat Mal
 
-export const TOP_SELLING_DATA = "/top-selling-data"
-
-export const GET_EARNING_DATA = "/earning-charts-data"
-
-export const GET_PRODUCT_COMMENTS = "/comments-product"
-
-export const ON_LIKNE_COMMENT = "/comments-product-action"
-
-export const ON_ADD_REPLY = "/comments-product-add-reply"
-
-export const ON_ADD_COMMENT = "/comments-product-add-comment"
-
-export const GET_MARKET_OVERVIEW = "GET_MARKET_OVERVIEW"
-export const GET_MARKET_OVERVIEW_SUCCESS = "GET_MARKET_OVERVIEW_SUCCESS"
-export const GET_MARKET_OVERVIEW_FAIL = "GET_MARKET_OVERVIEW_FAIL"
-
-export const GET_WALLENT_BALANCE = "GET_WALLENT_BALANCE"
-
-export const GET_WALLENT_BALANCE_ALL_DATA = "GET_MARKET_ALL_DATA"
-
-export const GET_Invested_Overview = "GET_Invested_Overview"
-
-// WAKAF ENDPOINTS
-export const GET_WAKAF_MAP_DATA = "/api/wakaf/distribution"
-export const GET_WAKAF_DETAILS = "/api/wakaf/details"
-
-// RUMAH IBADAH ENDPOINTS
-export const GET_WORSHIP_SUMMARY = "/api/worship/summary"
-export const GET_WORSHIP_PROVINCES = "/api/worship/provinces"
-export const GET_DASHBOARD_KEMENAG_DATA = "https://spl-satudata.kemenag.go.id/core/apidev/penerimaan-zm/zm"
+// --- OTHER NECESSARY ENDPOINTS ---
+// (Tetap disimpan jika ada logika internal yang membutuhkannya, namun bisa dihapus jika 100% yakin tidak dipakai)
+// Saat ini dikosongkan karena fokus hanya ke API Publik Kemenag.

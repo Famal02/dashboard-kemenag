@@ -4,14 +4,10 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 // Import Icons
-import FeatherIcon from "feather-icons-react";
-
 // Reactstrap
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
 
 // Import Components
-import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
-import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu";
 import LightDark from "../CommonForBoth/Menus/LightDark";
 
 // Import Images
@@ -145,67 +141,9 @@ const Header = props => {
           {/* --- RIGHT SIDE: ACTIONS & PROFILE --- */}
           <div className="d-flex align-items-center gap-2">
 
-            {/* --- CUSTOM LANGUAGE SWITCHER --- */}
-            <div className="d-flex align-items-center bg-white border p-1" style={{ borderRadius: '10px', borderColor: '#EEE', height: '38px' }}>
-              <button
-                className="btn btn-sm text-white fw-bold px-3 shadow-none d-flex align-items-center justify-content-center"
-                style={{ backgroundColor: '#009054', borderRadius: '8px', height: '28px', fontSize: '12px' }}
-              >
-                ID
-              </button>
-              <button
-                className="btn btn-sm text-muted fw-bold px-3 shadow-none d-flex align-items-center justify-content-center"
-                style={{ backgroundColor: 'transparent', borderRadius: '8px', height: '28px', fontSize: '12px' }}
-              >
-                EN
-              </button>
-            </div>
-
-            {/* --- BUTTON: MULAI KAMPANYE --- */}
-            <div className="ms-3">
-              <button
-                type="button"
-                className="btn bg-white text-dark waves-effect shadow-sm fw-bold border d-flex align-items-center"
-                style={{ borderRadius: '10px', borderColor: '#DDD', padding: '0 20px', fontSize: '13px', height: '38px' }}
-              >
-                Mulai Kampanye
-              </button>
-            </div>
-
-            {/* --- BUTTON: HUBUNGKAN DOMPET --- */}
-            <div className="ms-3">
-              <button
-                type="button"
-                className="btn text-white waves-effect waves-light shadow-sm fw-bold d-flex align-items-center"
-                style={{ backgroundColor: '#009054', borderRadius: '10px', padding: '0 20px', border: 'none', fontSize: '13px', height: '38px' }}
-              >
-                <i className="bx bx-wallet me-2 font-size-16"></i> Hubungkan Dompet
-              </button>
-            </div>
-
             {/* Light/Dark Toggle */}
             <div className="ms-2">
               <LightDark layoutMode={props['layoutMode']} onChangeLayoutMode={onChangeLayoutMode} />
-            </div>
-
-
-
-            {/* Settings Toggle */}
-            <div
-              onClick={() => {
-                dispatch(showRightSidebarAction(!showRightSidebar));
-              }}
-              className="dropdown d-inline-block"
-            >
-              <button
-                type="button"
-                className="btn header-item noti-icon right-bar-toggle"
-              >
-                <FeatherIcon
-                  icon="settings"
-                  className="icon-lg"
-                />
-              </button>
             </div>
 
           </div>

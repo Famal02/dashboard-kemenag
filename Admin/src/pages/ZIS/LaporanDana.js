@@ -1,19 +1,16 @@
 import React from 'react';
-import { Container } from 'reactstrap';
-import ZisDistributionMap from './ZisDistributionMap';
+import PetaSebaranZis from './PetaSebaranZis';
 
 const LaporanDana = () => {
     document.title = "Laporan Dana | ZIS";
 
     return (
-        <React.Fragment>
-            <div className="page-content">
-                <Container fluid>
-                    {/* <h1>Laporan Dana</h1> */}
-                    <ZisDistributionMap />
-                </Container>
+        <div className="kemenag-page">
+            <div className="kemenag-container">
+                {/* <h1>Laporan Dana</h1> */}
+                <PetaSebaranZis />
             </div>
-        </React.Fragment>
+        </div>
     );
 };
 

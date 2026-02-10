@@ -9,12 +9,10 @@ import {
 //i18n
 import { withTranslation } from "react-i18next";
 // Redux
-import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 // users
 import user1 from "../../../assets/images/users/avatar-1.jpg";
-
 const ProfileMenu = props => {
   // Declare a new state variable, which we'll call "menu"
   const [menu, setMenu] = useState(false);
@@ -34,7 +32,7 @@ const ProfileMenu = props => {
         setusername(obj.username);
       }
     }
-  }, [props.success]);
+  }, []);
 
   return (
     <React.Fragment>
@@ -63,11 +61,6 @@ const ProfileMenu = props => {
             {props.t("Profile")}{" "}
           </Link>{" "}
 
-          <Link to="/page-lock-screen" className="dropdown-item">
-            <i className="mdi mdi-lock font-size-16 align-middle me-1"></i>
-            {props.t("Lock screen")}
-          </Link>
-
           <div className="dropdown-divider" />
           <Link to="/logout" className="dropdown-item">
             <i className="mdi mdi-logout font-size-16 align-middle me-1"></i>
@@ -81,15 +74,7 @@ const ProfileMenu = props => {
 };
 
 ProfileMenu.propTypes = {
-  success: PropTypes.any,
   t: PropTypes.any
 };
 
-const mapStatetoProps = state => {
-  const { error, success } = state.Profile;
-  return { error, success };
-};
-
-export default
-  connect(mapStatetoProps, {})(withTranslation()(ProfileMenu)
-  );
+export default withTranslation()(ProfileMenu);

@@ -1,9 +1,9 @@
+
 import React from 'react';
-import WorshipShared from './WorshipShared';
+import DataRumahIbadah from './DataRumahIbadah';
 
-const KhonghucuPage = () => {
-    document.title = "Data Rumah Ibadah (Khonghucu) | Dashboard Nasional";
-    return <WorshipShared religionName="Khonghucu" color="#e83e8c" />;
-}
+const Khonghucu = () => {
+    return <DataRumahIbadah religion="Khonghucu" color="secondary" />;
+};
 
-export default KhonghucuPage;
+export default Khonghucu;

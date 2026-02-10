@@ -1,70 +1,99 @@
-# Getting Started with Create React App
+# Dashboard Kemenag RI
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Dashboard eksekutif untuk monitoring data Zakat, Infaq, Sedekah (ZIS), Wakaf, dan Rumah Ibadah secara nasional.
 
-## Available Scripts
+## 🚀 Quick Start
 
-In the project directory, you can run:
+```bash
+# Install dependencies
+npm install
 
-### `yarn start`
+# Run development server
+npm start
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# Build for production
+npm run build
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 📊 Fitur Utama
 
-### `yarn test`
+### 1. Dashboard Eksekutif
+- Ringkasan data ZIS, Wakaf, dan Rumah Ibadah
+- Statistik real-time
+- Visualisasi data interaktif
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 2. Menu ZIS (Zakat, Infaq, Sedekah)
+- Dashboard Nasional ZIS
+- Laporan Dana (Peta Sebaran Penerimaan & Penyaluran)
+- Komposisi penerimaan & penyaluran
 
-### `yarn build`
+### 3. Menu Wakaf
+- Dashboard Wakaf Nasional
+- Peta Sebaran Aset Wakaf Tanah
+- Daftar Aset Wakaf dengan detail lengkap
+- Pertumbuhan aset wakaf
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 4. Menu Rumah Ibadah
+- Data Rumah Ibadah per provinsi
+- Peta sebaran rumah ibadah
+- Statistik nasional
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🎨 Theme
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**Kemenag Color Palette:**
+- Primary: Blue Fusion `#375673`
+- Background: Cloud Dancer `#f0eee9`
+- Accent: Golden Mist `#d5cd94`
 
-### `yarn eject`
+## 📁 Struktur Project
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```
+Admin/
+├── public/              # Static files
+├── src/
+│   ├── assets/          # Images, CSS, data
+│   ├── components/      # Reusable components
+│   ├── pages/           # Page components
+│   │   ├── Dashboard/   # Dashboard utama
+│   │   ├── ZIS/         # Menu ZIS
+│   │   ├── Wakaf/       # Menu Wakaf
+│   │   └── RumahIbadah/ # Menu Rumah Ibadah
+│   ├── helpers/         # API helpers
+│   └── routes/          # Route configuration
+└── .docs/               # Dokumentasi teknis (untuk developer)
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🔧 Teknologi
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- **React** - UI Framework
+- **Reactstrap** - Bootstrap components
+- **ApexCharts** - Data visualization
+- **React Vector Maps** - Interactive maps
+- **Leaflet** - Detailed location maps
+- **Axios** - HTTP client
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## 📱 Responsive Design
 
-## Learn More
+Dashboard fully responsive:
+- Desktop: 200px horizontal padding
+- Tablet: 100px horizontal padding
+- Mobile: 20px horizontal padding
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🌐 API Integration
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+API endpoints configured in `src/helpers/url_helper.js`:
+- ZIS Data: Penerimaan & Penyaluran
+- Wakaf Data: Aset tanah wakaf
+- Rumah Ibadah Data: Data per provinsi
 
-### Code Splitting
+## 📝 Dokumentasi Lengkap
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Dokumentasi teknis tersedia di folder `.docs/` (untuk developer).
 
-### Analyzing the Bundle Size
+## 👥 Support
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Untuk pertanyaan atau bantuan, hubungi tim developer.
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**© 2026 Kementerian Agama Republik Indonesia**

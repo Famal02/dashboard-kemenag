@@ -74,13 +74,13 @@ const Layout = props => {
   useEffect(() => {
     // init body click event for toggle rightbar
     document.body.addEventListener("click", hideRightbar, true);
-  
+
     const preloaderElement = document.getElementById("preloader");
-  
+
     if (preloaderElement) {
       if (isPreloader === true) {
         preloaderElement.style.display = "block";
-  
+
         setTimeout(function () {
           preloaderElement.style.display = "none";
         }, 2500);
@@ -164,7 +164,6 @@ const Layout = props => {
           <Footer />
         </div>
       </div>
-      {showRightSidebar ? <RightSidebar onChangeLayoutMode={onChangeLayoutMode} /> : ''}
     </React.Fragment>
   );
 };

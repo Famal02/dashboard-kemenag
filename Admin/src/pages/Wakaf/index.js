@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Col, Card, CardBody, Row } from "reactstrap";
 import ReactApexChart from "react-apexcharts";
 import CountUp from "react-countup";
-import WakafDistributionMap from "./WakafDistributionMap";
+import PetaSebaranWakaf from "./PetaSebaranWakaf";
 import axios from "axios";
 import { GET_WAKAF_TANAH_DATA } from "../../helpers/url_helper";
 
@@ -36,7 +36,7 @@ const ChartWithDetails = ({ title, options, series, labels, colors, totalValue, 
     }
 
     return (
-        <Card className="card-h-100 border-0 shadow-sm rounded-3">
+        <Card className="kemenag-card">
             <CardBody>
                 <h5 className="card-title mb-4">{title}</h5>
                 <Row className="align-items-center">
@@ -335,54 +335,52 @@ const WakafPage = () => {
     ];
 
     return (
-        <React.Fragment>
-            <div className="page-content bg-light bg-opacity-10">
-                <div className="custom-container">
+        <div className="kemenag-page">
+            <div className="kemenag-container">
 
-                    {/* Header */}
-                    <Row className="mb-4">
-                        <Col xs={12}>
-                            <div className="d-flex align-items-center justify-content-between">
-                                <div>
-                                    <h4 className="mb-1 font-size-18 fw-bold text-dark">Dashboard Wakaf Nasional</h4>
-                                    <p className="text-muted mb-0 font-size-13">Data Real-time Sistem Informasi Wakaf (SIWAK)</p>
-                                </div>
-                                <div className="text-end">
-                                    <span className="badge bg-soft-success text-success font-size-12 p-2">
-                                        <i className="bx bx-check-circle me-1"></i> Terhubung API
-                                    </span>
-                                </div>
+                {/* Header */}
+                <Row className="mb-4">
+                    <Col xs={12}>
+                        <div className="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h4 className="kemenag-title">Dashboard Wakaf Nasional</h4>
+                                <p className="kemenag-subtitle">Data Real-time Sistem Informasi Wakaf (SIWAK)</p>
                             </div>
-                        </Col>
-                    </Row>
+                            <div className="text-end">
+                                <span className="badge bg-soft-success text-success font-size-12 p-2">
+                                    <i className="bx bx-check-circle me-1"></i> Terhubung API
+                                </span>
+                            </div>
+                        </div>
+                    </Col>
+                </Row>
 
-                    {/* Section Ringkasan Stats */}
-                    <Row className="g-3 mb-4">
-                        {statCards.map((stat, idx) => (
-                            <StatCard key={idx} {...stat} isLoading={loading} />
-                        ))}
-                    </Row>
+                {/* Section Ringkasan Stats */}
+                <Row className="g-3 mb-4">
+                    {statCards.map((stat, idx) => (
+                        <StatCard key={idx} {...stat} isLoading={loading} />
+                    ))}
+                </Row>
 
-                    {/* Section Charts Row 2: Aset Breakdown (Dynamic) */}
-                    <Row className="g-3 mb-4">
-                        <Col xl={6}>
-                            <AssetsByPurposeChart data={purposeData} />
-                        </Col>
-                        <Col xl={6}>
-                            {growthData.years.length > 0 ? (
-                                <AssetsGrowthChart years={growthData.years} data={growthData.counts} />
-                            ) : (
-                                <AssetsGrowthChart years={['No Data']} data={[0]} />
-                            )}
-                        </Col>
-                    </Row>
+                {/* Section Charts Row 2: Aset Breakdown (Dynamic) */}
+                <Row className="g-3 mb-4">
+                    <Col xl={6}>
+                        <AssetsByPurposeChart data={purposeData} />
+                    </Col>
+                    <Col xl={6}>
+                        {growthData.years.length > 0 ? (
+                            <AssetsGrowthChart years={growthData.years} data={growthData.counts} />
+                        ) : (
+                            <AssetsGrowthChart years={['No Data']} data={[0]} />
+                        )}
+                    </Col>
+                </Row>
 
-                    {/* Section Sebaran Aset Wakaf (Peta Interaktif) */}
-                    <WakafDistributionMap />
+                {/* Section Sebaran Aset Wakaf (Peta Interaktif) */}
+                <PetaSebaranWakaf />
 
-                </div>
             </div>
-        </React.Fragment>
+        </div>
     );
 }
 

@@ -16,10 +16,8 @@ import CountUp from "react-countup";
 
 /** Import Components dari folder Dashboard */
 import { WidgetsData } from "../../common/data/dashboard";
-import InvestedOverviewZis from './InvestedOverviewZis'; // <-- Menggunakan komponen khusus ZIS
-import MarketOverview from '../Dashboard/MarketOverview';   // <-- Import dari Dashboard
-// import Locations from '../Dashboard/Locations';             // <-- Import dari Dashboard (Disabled to fix Map Conflict)
-import ZisDistributionMap from './ZisDistributionMap'; // <-- Import Peta Sebaran
+import RingkasanZis from './RingkasanZis'; // <-- Menggunakan komponen khusus ZIS
+import PetaSebaranZis from './PetaSebaranZis'; // <-- Import Peta Sebaran
 
 // Opsi Chart Kecil (Sparkline)
 const options = {
@@ -36,31 +34,28 @@ const ZisPage = () => {
     document.title = "ZIS | Zakat Nasional";
 
     return (
-        <React.Fragment>
-            <div className="page-content">
-                <div className="custom-container">
-                    {/* Render Breadcrumbs */}
-                    {/* <Breadcrumbs title="Informasi" breadcrumbItem="ZIS (Zakat, Infaq, Sedekah)" /> */}
+        <div className="kemenag-page">
+            <div className="kemenag-container">
+                {/* Render Breadcrumbs */}
+                {/* <Breadcrumbs title="Informasi" breadcrumbItem="ZIS (Zakat, Infaq, Sedekah)" /> */}
 
-                    {/* Bagian Utama (Pie Chart & Tabel Zakat) */}
-                    {/* Bagian Utama (Pie Chart & Tabel Zakat) */}
-                    {/* <WalletBalance /> */}
-                    <InvestedOverviewZis />
+                {/* Bagian Utama (Pie Chart & Tabel Zakat) */}
+                {/* Bagian Utama (Pie Chart & Tabel Zakat) */}
+                {/* <WalletBalance /> */}
+                <RingkasanZis />
 
 
-                    {/* Bagian Bawah (Section Market Overview & Locations) */}
-                    <Row>
-                        <MarketOverview width={12} />
-                        {/* <Locations /> */}
-                    </Row>
+                {/* Bagian Bawah (Section Market Overview & Locations) */}
+                <Row>
+                    {/* Market Overview Removed */}
+                </Row>
 
-                    {/* Bagian Peta Sebaran (Diletakkan di paling bawah) */}
-                    <Row className="mt-4">
-                        <ZisDistributionMap />
-                    </Row>
-                </div>
+                {/* Bagian Peta Sebaran (Diletakkan di paling bawah) */}
+                <Row className="mt-4">
+                    <PetaSebaranZis />
+                </Row>
             </div>
-        </React.Fragment>
+        </div>
     );
 }
 
