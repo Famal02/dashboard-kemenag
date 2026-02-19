@@ -1,0 +1,95 @@
+/* ==============================================
+   RESPONSIVE LAYOUT PATCH
+   Solusi untuk membuat layout menyesuaikan di semua device
+   tanpa mengubah file komponen inti.
+   ============================================== */
+
+/* 1. Prevent Horizontal Scroll (Mencegah scroll ke samping yang tidak perlu) */
+html,
+body {
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
+/* 2. Fix Table Scrolling on Mobile (Agar tabel bisa digeser di HP) */
+.kemenag-table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* 3. FIX VISUAL BUG: LOGO KEKECILAN DI MOBILE */
+/* Mengubah tinggi logo icon dari 10px menjadi 30px agar terlihat */
+.navbar-brand-box .logo-sm img {
+    height: 30px !important;
+    width: auto !important;
+}
+
+/* 4. FIX VISUAL BUG: TOMBOL DARK MODE HILANG DI MOBILE */
+/* Memunculkan kembali tombol yang disembunyikan class d-none */
+.dropdown.d-none.d-sm-inline-block {
+    display: inline-block !important;
+}
+
+/* 5. HOVER EFFECT: GOLD MIST SHADOW & COLOR PALETTE */
+/* Shadow kuning emas saat hover sesuai permintaan user */
+.kemenag-hover-card,
+.kemenag-stats-card {
+    transition: all 0.3s ease-in-out;
+}
+
+.kemenag-hover-card:hover,
+.kemenag-stats-card:hover {
+    transform: translateY(-5px);
+    /* Gold Mist (#d5cd94) Shadow with 40% opacity */
+    box-shadow: 0 12px 24px rgba(213, 205, 148, 0.4) !important;
+    z-index: 10;
+}
+
+/* 6. LOGIKA NAVIGASI MOBILE (Hamburger Menu & Sidebar) */
+@media (max-width: 991.98px) {
+
+    /* Fix Container Layout agar Logo & Menu muat */
+    .navbar-brand-box {
+        width: auto !important;
+        margin-right: 15px;
+    }
+
+    /* Pastikan konten tidak terdorong ke kanan di mobile */
+    .main-content {
+        margin-left: 0 !important;
+    }
+
+    /* Sidebar: Default Sembunyi */
+    .vertical-menu {
+        display: none;
+    }
+
+    /* Sidebar: Tampil ketika tombol Hamburger diklik (Toggle) */
+    body.sidebar-enable .vertical-menu {
+        display: block !important;
+        position: fixed;
+        top: 70px;
+        bottom: 0;
+        z-index: 9999;
+        width: 250px;
+        background: #fff;
+        overflow-y: auto;
+        box-shadow: 0 0 24px 0 rgba(0, 0, 0, .06);
+    }
+
+    /* Opsi: Jika ingin menampilkan teks 'Kemenag RI' di Mobile,
+       hapus tanda komentar di bawah ini: */
+    /* Teks Kemenag Aktif - Fix Double Logo by increasing specificity */
+    html body .navbar-brand-box .logo-sm,
+    html body[data-sidebar-size="sm"] .navbar-brand-box .logo-sm {
+        display: none !important;
+    }
+
+    /* Show Full Logo */
+    html body .navbar-brand-box .logo-lg {
+        display: flex !important;
+        align-items: center;
+    }
+}

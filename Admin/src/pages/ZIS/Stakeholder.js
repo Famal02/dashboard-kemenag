@@ -25,7 +25,7 @@ const Stakeholder = () => {
         chart: { toolbar: { show: false }, zoom: { enabled: false }, fontFamily: "'Inter', sans-serif" },
         dataLabels: { enabled: false },
         stroke: { curve: 'smooth', width: 3 },
-        colors: ['#059669', '#fbbf24'], // Green & Amber
+        colors: ['#375673', '#d5cd94'], // Kemenag Blue Fusion & Golden Mist
         fill: { type: 'solid', opacity: [0.1, 1] }, // First series soft fill, second line only
         grid: { borderColor: '#f1f5f9', strokeDashArray: 4 },
         xaxis: { categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], axisBorder: { show: false }, axisTicks: { show: false } },
@@ -45,7 +45,7 @@ const Stakeholder = () => {
             }
         },
         labels: ['Active Rate'],
-        colors: ['#10b981'],
+        colors: ['#375673'],
         stroke: { lineCap: 'round' },
     }
 
@@ -66,7 +66,7 @@ const Stakeholder = () => {
                 {/* Removed Container fluid as custom-container handles layout */}
                 <style>{`
            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-           .page-content { font-family: 'Inter', sans-serif; background-color: #f8fafc !important; }
+           .page-content { font-family: 'Inter', sans-serif; background-color: #f0eee9 !important; }
            
            /* Custom Card Styling */
            .card-stats { border: none; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); transition: transform 0.2s; }
@@ -77,7 +77,7 @@ const Stakeholder = () => {
               background: #fff; color: #64748b; font-weight: 500; padding: 10px 24px; border-radius: 8px; border: 1px solid #e2e8f0; margin-right: 10px;
            }
            .nav-pills-custom .nav-link.active {
-              background: #065f46; color: #fff; border-color: #065f46; box-shadow: 0 4px 6px rgba(6, 95, 70, 0.2);
+              background: #375673; color: #fff; border-color: #375673; box-shadow: 0 4px 6px rgba(55, 86, 115, 0.3);
            }
            
            /* Map Styling */
@@ -88,7 +88,6 @@ const Stakeholder = () => {
                 <Row className="align-items-center mb-4">
                     <Col>
                         <h4 className="font-size-20 fw-bold text-dark mb-1">Dashboard {label.title}</h4>
-                        <p className="text-muted mb-0">Overview kinerja dan sebaran data {label.title.toLowerCase()}.</p>
                     </Col>
                     <Col xs="auto">
                         <Nav pills className="nav-pills-custom">
@@ -124,7 +123,7 @@ const Stakeholder = () => {
                                         <span className="text-success small fw-bold"><i className="bx bx-up-arrow-alt"></i> +12%</span> <span className="text-muted small">vs last month</span>
                                     </div>
                                     <div style={{ width: '80px' }}>
-                                        <Chart options={sparklineOptions("#10b981")} series={[{ data: [12, 14, 20, 15, 18, 25, 20] }]} type="area" height={40} />
+                                        <Chart options={sparklineOptions("#375673")} series={[{ data: [12, 14, 20, 15, 18, 25, 20] }]} type="area" height={40} />
                                     </div>
                                 </div>
                             </CardBody>
@@ -145,7 +144,7 @@ const Stakeholder = () => {
                                         <span className="text-danger small fw-bold"><i className="bx bx-down-arrow-alt"></i> -2%</span> <span className="text-muted small">vs last month</span>
                                     </div>
                                     <div style={{ width: '80px' }}>
-                                        <Chart options={sparklineOptions("#3b82f6")} series={[{ data: [25, 22, 20, 18, 20, 18, 15] }]} type="area" height={40} />
+                                        <Chart options={sparklineOptions("#d5cd94")} series={[{ data: [25, 22, 20, 18, 20, 18, 15] }]} type="area" height={40} />
                                     </div>
                                 </div>
                             </CardBody>
@@ -310,12 +309,12 @@ const Stakeholder = () => {
                                                 containerStyle={{ width: "100%", height: "100%" }}
                                                 regionStyle={{
                                                     initial: { fill: "#e2e8f0", stroke: "#ffffff", "stroke-width": 1 },
-                                                    hover: { "fill-opacity": 0.8, cursor: "pointer", fill: "#10b981" }, // Hover Green
-                                                    selected: { fill: "#22c55e" }
+                                                    hover: { "fill-opacity": 0.8, cursor: "pointer", fill: "#375673" }, // Hover Blue Fusion
+                                                    selected: { fill: "#375673" }
                                                 }}
                                                 series={{
                                                     regions: [{
-                                                        scale: ["#d1fae5", "#047857"], // Gradient Light to Dark Green
+                                                        scale: ["#f0eee9", "#375673"], // Gradient Cloud Dancer to Blue Fusion
                                                         attribute: "fill",
                                                         values: { "ID-JK": 90, "ID-JB": 80, "ID-JT": 70, "ID-JI": 60, "ID-SU": 40 },
                                                         normalizeFunction: "polynomial",

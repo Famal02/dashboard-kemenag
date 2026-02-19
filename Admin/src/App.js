@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React from "react";
+import React, { Suspense } from "react";
 
 import { Routes, Route } from "react-router-dom";
 import { connect } from "react-redux";
@@ -15,38 +15,30 @@ import HorizontalLayout from "./components/HorizontalLayout/";
 import "./assets/scss/theme.scss";
 import "./assets/scss/preloader.scss";
 import "./assets/scss/kemenag-theme.css";
+import "./assets/scss/responsive-patch.css";
+import "./assets/scss/kemenag-hover.css";
+import "./assets/scss/skeleton.scss";
 
 const App = props => {
 
-  function getLayout() {
-    let layoutCls = VerticalLayout
-    switch (props.layout.layoutType) {
-      case "horizontal":
-        layoutCls = HorizontalLayout
-        break
-      default:
-        layoutCls = VerticalLayout
-        break
-    }
-    return layoutCls
-  }
+  const Layout = props.layout.layoutType === "horizontal" ? HorizontalLayout : VerticalLayout;
 
-  const Layout = getLayout()
   return (
     <React.Fragment>
-      <Routes>
-        {userRoutes.map((route, idx) => (
-          <Route
-            path={route.path}
-            element={
-              <React.Fragment>
+      <Suspense fallback={null}>
+        <Routes>
+          {userRoutes.map((route, idx) => (
+            <Route
+              path={route.path}
+              element={
                 <Layout>{route.component}</Layout>
-              </React.Fragment>}
-            key={idx}
-            exact={true}
-          />
-        ))}
-      </Routes>
+              }
+              key={idx}
+              exact={true}
+            />
+          ))}
+        </Routes>
+      </Suspense>
     </React.Fragment >
   )
 }

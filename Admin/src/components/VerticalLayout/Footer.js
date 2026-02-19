@@ -5,6 +5,18 @@ import { Container, Row, Col } from "reactstrap"
 const Footer = () => {
   return (
     <React.Fragment>
+      <style>{`
+        .footer {
+          background: transparent !important;
+          border-top: 1px solid rgba(0, 0, 0, 0.05);
+          backdrop-filter: blur(10px);
+        }
+        
+        /* Dark mode support */
+        [data-layout-mode="dark"] .footer {
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+      `}</style>
       <footer className="footer">
         <Container fluid={true}>
           <Row>

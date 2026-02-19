@@ -10,9 +10,9 @@ import FeatherIcon from "feather-icons-react";
 import { Dropdown, DropdownToggle, DropdownMenu, Row, Col, Container } from "reactstrap";
 
 // Import menuDropdown
-// import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
+import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
 // import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDropdown";
-import LightDark from "../CommonForBoth/Menus/LightDark";
+// import LightDark from "../CommonForBoth/Menus/LightDark";
 
 // import images
 import logoSvg from "../../assets/images/logo-kemenag.png";
@@ -74,29 +74,29 @@ const Header = props => {
       <header id="page-topbar">
         <style>{`
           .header-menu-hover:hover {
-            background-color: #e6f9ed !important; /* Hijau muda lembut */
-            color: #34c38f !important; /* Teks Hijau saat hover */
+            background-color: rgba(213, 205, 148, 0.15) !important; /* Golden Mist light */
+            color: #375673 !important; /* Blue Fusion */
             border-radius: 8px !important;
             transition: all 0.3s ease;
           }
           /* Pastikan icon di dalam juga berubah warna */
           .header-menu-hover:hover i {
-             color: #34c38f !important;
+             color: #375673 !important;
           }
           /* Class untuk Menu yang Sedang Aktif (Dibuka) */
           .menu-active-green {
-            background-color: #e6f9ed !important;
-            color: #34c38f !important;
+            background-color: rgba(213, 205, 148, 0.2) !important;
+            color: #375673 !important;
             border-radius: 8px !important;
           }
           .menu-active-green i {
-            color: #34c38f !important;
+            color: #375673 !important;
           }
 
           /* Style untuk Submenu Dropdown item */
           .dropdown-item:hover, .dropdown-item:active, .dropdown-item:focus {
-            background-color: #e6f9ed !important;
-            color: #34c38f !important; /* Teks Hijau */
+            background-color: rgba(213, 205, 148, 0.15) !important;
+            color: #375673 !important; /* Blue Fusion */
             border-radius: 6px; /* Agar item list cantik tidak kotak kaku */
           }
 
@@ -115,16 +115,42 @@ const Header = props => {
 
 
           /* --- FIX FULL WIDTH LAYOUT (NO SIDEBAR) --- */
-          .vertical-menu { display: none !important; }
-          .main-content { margin-left: 0 !important; }
-          .footer { left: 0 !important; }
+          /* --- FIX FULL WIDTH LAYOUT (NO SIDEBAR) ON DESKTOP Only --- */
+          @media (min-width: 992px) {
+            .vertical-menu { display: none !important; }
+            .main-content { margin-left: 0 !important; }
+            .footer { left: 0 !important; }
+          }
 
           /* --- CONTAINER GLOBAL --- */
           .custom-container {
               width: 100%;
-              max-width: 1440px;
+              max-width: 2000px;
               margin: 0 auto;
-              padding: 0 24px;
+              padding-left: 200px;
+              padding-right: 200px;
+          }
+          
+          /* Responsive untuk layar kecil - SAMA dengan kemenag-container */
+          @media (max-width: 1600px) {
+              .custom-container {
+                  padding-left: 100px;
+                  padding-right: 100px;
+              }
+          }
+          
+          @media (max-width: 1200px) {
+              .custom-container {
+                  padding-left: 50px;
+                  padding-right: 50px;
+              }
+          }
+          
+          @media (max-width: 768px) {
+              .custom-container {
+                  padding-left: 20px;
+                  padding-right: 20px;
+              }
           }
           
         `}</style>
@@ -135,6 +161,15 @@ const Header = props => {
 
             {/* === 1. BAGIAN KIRI: LOGO (Tanpa Kotak Background) === */}
             <div className="d-flex align-items-center">
+              <button
+                type="button"
+                className="btn btn-sm px-3 font-size-16 header-item waves-effect vertical-menu-btn d-lg-none me-2"
+                onClick={() => {
+                  tToggle();
+                }}
+              >
+                <i className="fa fa-fw fa-bars"></i>
+              </button>
               <div className="navbar-brand-box">
                 <Link to="/dashboard" className="logo logo-dark">
                   <span className="logo-sm">
@@ -143,7 +178,7 @@ const Header = props => {
                   <span className="logo-lg d-flex align-items-center">
                     {/* mixBlendMode: multiply membuat background putih pada logo JPG/PNG menjadi transparan */}
                     <img src={logoSvg} alt="" height="45" style={{ mixBlendMode: 'multiply' }} />
-                    <span className="logo-txt text-dark font-size-18 fw-bold ms-2 text-uppercase">Kemenag RI</span>
+                    <span className="logo-txt text-dark font-size-18 fw-bold ms-2 text-uppercase text-nowrap">Kemenag RI</span>
                   </span>
                 </Link>
 
@@ -153,11 +188,13 @@ const Header = props => {
                   </span>
                   <span className="logo-lg d-flex align-items-center">
                     <img src={logoSvg} alt="" height="45" />
-                    <span className="logo-txt text-light font-size-18 fw-bold ms-2 text-uppercase">Kemenag RI</span>
+                    <span className="logo-txt text-light font-size-18 fw-bold ms-2 text-uppercase text-nowrap">Kemenag RI</span>
                   </span>
                 </Link>
               </div>
             </div>
+
+
 
             {/* === 2. BAGIAN TENGAH: MENU NAVIGASI (Absolute Center) === */}
             {/* Posisi Absolute membuat elemen ini lepas dari aliran flexbox dan bisa ditaruh tepat di tengah layar */}
@@ -173,16 +210,16 @@ const Header = props => {
                 </DropdownToggle>
 
                 <DropdownMenu className="dropdown-menu-end border-0 shadow-lg rounded-3 p-2 mt-2">
-                  <Link to="/Informasi-ZIS" className="dropdown-item fw-medium font-size-14 py-2 rounded mb-1">Laporan Dana</Link>
-                  <Link to="/Informasi-ZIS/Stakeholder" className="dropdown-item fw-medium font-size-14 py-2 rounded">Stakeholder</Link>
+                  <Link to="/ZIS" className="dropdown-item fw-medium font-size-14 py-2 rounded mb-1" onClick={() => setMenuZis(false)}>Laporan Dana</Link>
+                  <Link to="/ZIS/Stakeholder" className="dropdown-item fw-medium font-size-14 py-2 rounded" onClick={() => setMenuZis(false)}>Stakeholder</Link>
                 </DropdownMenu>
               </Dropdown>
 
-              <Link to="/Informasi-Wakaf" className="btn header-menu-hover waves-effect d-inline-flex align-items-center justify-content-center px-3 py-2">
+              <Link to="/Wakaf" className="btn header-menu-hover waves-effect d-inline-flex align-items-center justify-content-center px-3 py-2">
                 <span className="fw-bold font-size-15">Wakaf</span>
               </Link>
 
-              <Dropdown className="d-inline-block" isOpen={menuRumahIbadah} toggle={() => setMenuRumahIbadah(!menuRumahIbadah)}>
+              {/* <Dropdown className="d-inline-block" isOpen={menuRumahIbadah} toggle={() => setMenuRumahIbadah(!menuRumahIbadah)}>
                 <DropdownToggle
                   className={`btn header-menu-hover waves-effect d-inline-flex align-items-center justify-content-center px-3 py-2 ${menuRumahIbadah ? 'menu-active-green' : ''}`}
                   tag="button"
@@ -192,27 +229,28 @@ const Header = props => {
                 </DropdownToggle>
 
                 <DropdownMenu className="border-0 shadow-lg rounded-3 p-2 mt-2" style={{ minWidth: '200px' }}>
-                  <Link to="/Islam" className="dropdown-item fw-medium font-size-14 py-2 rounded">Islam</Link>
-                  <Link to="/Kristen" className="dropdown-item fw-medium font-size-14 py-2 rounded">Kristen</Link>
-                  <Link to="/Katolik" className="dropdown-item fw-medium font-size-14 py-2 rounded">Katolik</Link>
-                  <Link to="/Hindu" className="dropdown-item fw-medium font-size-14 py-2 rounded">Hindu</Link>
-                  <Link to="/Buddha" className="dropdown-item fw-medium font-size-14 py-2 rounded">Buddha</Link>
-                  <Link to="/Khonghucu" className="dropdown-item fw-medium font-size-14 py-2 rounded">Khonghucu</Link>
+                  <Link to="/Islam" className="dropdown-item fw-medium font-size-14 py-2 rounded" onClick={() => setMenuRumahIbadah(false)}>Islam</Link>
+                  <Link to="/Kristen" className="dropdown-item fw-medium font-size-14 py-2 rounded" onClick={() => setMenuRumahIbadah(false)}>Kristen</Link>
+                  <Link to="/Katolik" className="dropdown-item fw-medium font-size-14 py-2 rounded" onClick={() => setMenuRumahIbadah(false)}>Katolik</Link>
+                  <Link to="/Hindu" className="dropdown-item fw-medium font-size-14 py-2 rounded" onClick={() => setMenuRumahIbadah(false)}>Hindu</Link>
+                  <Link to="/Buddha" className="dropdown-item fw-medium font-size-14 py-2 rounded" onClick={() => setMenuRumahIbadah(false)}>Buddha</Link>
+                  <Link to="/Khonghucu" className="dropdown-item fw-medium font-size-14 py-2 rounded" onClick={() => setMenuRumahIbadah(false)}>Khonghucu</Link>
                 </DropdownMenu>
-              </Dropdown>
+              </Dropdown> */}
             </div>
 
             {/* === 3. BAGIAN KANAN: PROFILE & TOOLS === */}
             <div className="d-flex align-items-center">
 
-              <LightDark layoutMode={props['layoutMode']} onChangeLayoutMode={onChangeLayoutMode} />
+              <LanguageDropdown />
+              {/* <LightDark layoutMode={props['layoutMode']} onChangeLayoutMode={onChangeLayoutMode} /> */}
 
             </div>
 
           </div>
         </div> {/* <--- INI YANG BARU */}
       </header>
-    </React.Fragment>
+    </React.Fragment >
   );
 };
 

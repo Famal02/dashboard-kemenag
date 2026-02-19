@@ -6,6 +6,7 @@ import PetaIndonesia from "./PetaIndonesia";
 import axios from 'axios';
 import { GET_PENERIMAAN_PROVINSI, GET_PENYALURAN_PROVINSI } from "../../helpers/url_helper";
 import { idnMerc } from "@react-jvectormap/indonesia";
+import SkeletonLoader from "../../components/Common/SkeletonLoader";
 
 // --- MAPPING HELPERS ---
 const STATIC_ALIASES = {
@@ -178,25 +179,24 @@ const PetaSebaranZis = () => {
             <style>{`
                 .kemenag-btn-tab {
                     border: 1px solid #ced4da; padding: 6px 20px; font-weight: 600; font-size: 13px;
-                    background: white; color: #74788d; transition: all 0.3s;
+                    background: white; color: #d5cd94; transition: all 0.3s;
                 }
                 .kemenag-btn-tab.active-coll {
-                    background: ${ACTIVE_COLOR} !important; color: white !important; border-color: ${ACTIVE_COLOR} !important;
+                    background: ${ACTIVE_COLOR} !important; color: #d5cd94 !important; border-color: ${ACTIVE_COLOR} !important;
                 }
                 .kemenag-btn-tab.active-dist {
-                    background: ${DIST_COLOR} !important; color: white !important; border-color: ${DIST_COLOR} !important;
+                    background: ${DIST_COLOR} !important; color: #d5cd94 !important; border-color: ${DIST_COLOR} !important;
                 }
-                .kemenag-header-title { color: ${activeTab === 'collection' ? ACTIVE_COLOR : DIST_COLOR}; font-weight: 700; transition: color 0.3s; }
+                .kemenag-header-title { color: #375673 !important; font-weight: 700; transition: color 0.3s; }
              `}</style>
 
             <Row className="mb-4">
                 <Col xl={12}>
-                    <Card className="shadow-sm border-0" style={{ borderRadius: 12 }}>
+                    <Card className="kemenag-card kemenag-hover-card">
                         <CardBody>
                             <div className="d-flex flex-wrap align-items-center justify-content-between mb-4">
                                 <div>
                                     <h4 className="mb-1 kemenag-header-title" style={{ fontSize: 20 }}>Peta Sebaran {activeTab === 'collection' ? 'Penerimaan' : 'Penyaluran'} ZIS</h4>
-                                    <p className="text-muted mb-0 font-size-13">Data Real-time Kemenag RI</p>
                                 </div>
                                 <div className="btn-group">
                                     <button
@@ -214,45 +214,55 @@ const PetaSebaranZis = () => {
 
                             <Row>
                                 <Col lg={9}>
-                                    <div style={{ height: '500px', width: '100%', position: 'relative', background: activeTab === 'collection' ? '#e0f2f1' : '#ffebee', borderRadius: '8px', overflow: 'hidden', transition: 'background 0.5s' }}>
-                                        {loading && <div className="position-absolute top-50 start-50"><div className="spinner-border text-primary"></div></div>}
-                                        <PetaIndonesia
-                                            value={mapValues}
-                                            onRegionClick={handleRegionClick}
-                                            selectedRegions={selectedRegion ? [selectedRegion] : []}
-                                            colorScale={activeTab === 'collection' ? ["#e0f2f1", ACTIVE_COLOR] : ["#ffebee", DIST_COLOR]}
-                                            onRegionTipShow={(e, label, code) => {
-                                                const d = fullDataRef.current[code];
-                                                if (d) label.html(`<b>${d.name}</b><br/>In: ${formatCurrency(d.coll)}<br/>Out: ${formatCurrency(d.dist)}`);
-                                            }}
-                                        />
-                                        <div style={{ position: 'absolute', bottom: 20, left: 20, background: 'rgba(255,255,255,0.95)', padding: '8px 12px', borderRadius: 8, fontSize: 11, boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-                                            <div className="d-flex align-items-center mb-1">
-                                                <div style={{ width: 12, height: 12, background: activeTab === 'collection' ? '#e0f2f1' : '#ffebee', marginRight: 6, borderRadius: 2, border: '1px solid #ddd' }}></div>
-                                                <small className="me-3">Ada Data</small>
-                                            </div>
-                                            <div className="d-flex align-items-center">
-                                                <div style={{ width: 12, height: 12, background: '#d1d1d1', marginRight: 6, borderRadius: 2 }}></div>
-                                                <small>Tidak Ada (0)</small>
+                                    {loading ? (
+                                        <SkeletonLoader type="map" height="500px" />
+                                    ) : (
+                                        <div style={{ height: '500px', width: '100%', position: 'relative', background: activeTab === 'collection' ? '#e0f2f1' : '#ffebee', borderRadius: '8px', overflow: 'hidden', transition: 'background 0.5s' }}>
+                                            <PetaIndonesia
+                                                value={mapValues}
+                                                onRegionClick={handleRegionClick}
+                                                selectedRegions={selectedRegion ? [selectedRegion] : []}
+                                                colorScale={activeTab === 'collection' ? ["#e0f2f1", ACTIVE_COLOR] : ["#ffebee", DIST_COLOR]}
+                                                onRegionTipShow={(e, label, code) => {
+                                                    const d = fullDataRef.current[code];
+                                                    if (d) {
+                                                        label.html(`
+                                                            <div style="color: #d5cd94; text-align: left;">
+                                                                <b style="font-size: 14px;">${d.name}</b><br/>
+                                                                <span style="font-size: 12px;">In: ${formatCurrency(d.coll)}</span><br/>
+                                                                <span style="font-size: 12px;">Out: ${formatCurrency(d.dist)}</span>
+                                                            </div>
+                                                        `);
+                                                    }
+                                                }}
+                                            />
+                                            <div style={{ position: 'absolute', bottom: 20, left: 20, background: 'rgba(255,255,255,0.95)', padding: '8px 12px', borderRadius: 8, fontSize: 11, boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                                                <div className="d-flex align-items-center mb-1">
+                                                    <div style={{ width: 12, height: 12, background: activeTab === 'collection' ? '#e0f2f1' : '#ffebee', marginRight: 6, borderRadius: 2, border: '1px solid #ddd' }}></div>
+                                                    <small className="me-3" style={{ color: '#d5cd94' }}>Ada Data</small>
+                                                </div>
+                                                <div className="d-flex align-items-center">
+                                                    <div style={{ width: 12, height: 12, background: '#d1d1d1', marginRight: 6, borderRadius: 2 }}></div>
+                                                    <small style={{ color: '#d5cd94' }}>Tidak Ada (0)</small>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    )}
                                 </Col>
                                 <Col lg={3}>
-                                    <Card className="h-100 border bg-light shadow-none" style={{ borderLeft: `5px solid ${activeTab === 'collection' ? ACTIVE_COLOR : DIST_COLOR} !important` }}>
+                                    <Card className="h-100 border bg-light shadow-none kemenag-hover-card-border-left" style={{ borderLeft: `5px solid ${activeTab === 'collection' ? ACTIVE_COLOR : DIST_COLOR} !important` }}>
                                         <CardBody>
-                                            <h5 className="font-size-13 text-uppercase text-muted mb-3" style={{ letterSpacing: 1 }}>Statistik Nasional</h5>
+                                            <h5 className="font-size-13 text-uppercase mb-3" style={{ letterSpacing: 1, color: '#375673' }}>Statistik Nasional</h5>
                                             <hr className="my-3" />
                                             <div className="mb-4">
-                                                <h6 className="font-size-12 text-muted">Total {activeTab === 'collection' ? 'Penerimaan' : 'Penyaluran'}</h6>
-                                                <h3 className="fw-bold font-size-20 mb-0" style={{ color: activeTab === 'collection' ? ACTIVE_COLOR : DIST_COLOR }}>
+                                                <h6 className="font-size-12" style={{ color: '#375673' }}>Total {activeTab === 'collection' ? 'Penerimaan' : 'Penyaluran'}</h6>
+                                                <h3 className="fw-bold font-size-20 mb-0" style={{ color: '#375673' }}>
                                                     {formatCurrency(activeTab === 'collection' ? statsData.collTotal : statsData.distTotal)}
                                                 </h3>
-                                                <small className="text-muted">Akumulasi Real-time</small>
                                             </div>
                                             <div>
-                                                <h6 className="font-size-12 text-muted">Wilayah Terdata</h6>
-                                                <h4 className="fw-bold font-size-18 text-dark mb-0">{tableData.length} Provinsi</h4>
+                                                <h6 className="font-size-12" style={{ color: '#375673' }}>Wilayah Terdata</h6>
+                                                <h4 className="fw-bold font-size-18 mb-0" style={{ color: ' #375673' }}>{tableData.length} Provinsi</h4>
                                             </div>
                                         </CardBody>
                                     </Card>
@@ -266,11 +276,11 @@ const PetaSebaranZis = () => {
             <div ref={sectionRef}>
                 <Row className="mb-4">
                     <Col xs={12}>
-                        <Card className="shadow-sm border-0" style={{ borderRadius: 12 }}>
+                        <Card className="kemenag-table-card kemenag-card-interactive">
                             <CardBody>
                                 <div className="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
                                     <div>
-                                        <h4 className="card-title mb-1 kemenag-header-title" style={{ fontSize: 16 }}>
+                                        <h4 className="card-title mb-1 kemenag-header-title" style={{ fontSize: 18 }}>
                                             <i className="bx bx-list-ul me-2"></i>
                                             Rincian {activeTab === 'collection' ? 'Penerimaan' : 'Penyaluran'} {selectedRegionName ? ` - ${selectedRegionName}` : ""}
                                         </h4>
@@ -295,45 +305,76 @@ const PetaSebaranZis = () => {
                                     </div>
                                 </div>
 
-                                <div className="table-responsive">
-                                    <Table className="table align-middle table-nowrap table-hover mb-0">
-                                        <thead className="table-light sticky-top">
-                                            <tr>
-                                                <th style={{ width: 50 }}>No</th>
-                                                <th>Provinsi</th>
-                                                {/* CONDITIONAL HEADER */}
-                                                {activeTab === 'collection' && <th className="text-end">Total Pengumpulan</th>}
-                                                {activeTab === 'distribution' && <th className="text-end">Total Penyaluran</th>}
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {filteredData
-                                                .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-                                                .map((row, idx) => {
-                                                    const realIdx = (currentPage - 1) * itemsPerPage + idx + 1;
-                                                    return (
-                                                        <tr key={idx} style={{ cursor: 'pointer' }} onClick={() => handleRegionClick(null, row.code)}>
-                                                            <td>{realIdx}</td>
-                                                            <td className="fw-bold">{row.name}</td>
+                                {loading ? (
+                                    <div className="py-4">
+                                        <SkeletonLoader type="table-rows" count={5} />
+                                    </div>
+                                ) : (
+                                    <div className="kemenag-table-responsive">
+                                        <Table className="kemenag-table-clean align-middle table-nowrap mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th style={{ width: 50 }}>No</th>
+                                                    <th>Provinsi</th>
+                                                    {/* CONDITIONAL HEADER */}
+                                                    {activeTab === 'collection' && <th className="text-end">Total Pengumpulan</th>}
+                                                    {activeTab === 'distribution' && <th className="text-end">Total Penyaluran</th>}
+                                                    <th className="text-end" style={{ width: '150px' }}>Persentase</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {filteredData
+                                                    .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+                                                    .map((row, idx) => {
+                                                        const realIdx = (currentPage - 1) * itemsPerPage + idx + 1;
+                                                        const total = activeTab === 'collection' ? statsData.collTotal : statsData.distTotal;
+                                                        const val = activeTab === 'collection' ? row.coll : row.dist;
+                                                        const percentage = total > 0 ? ((val / total) * 100).toFixed(1) : "0.0";
+                                                        const color = activeTab === 'collection' ? "#34c38f" : "#f1b44c"; // Green vs Warning
 
-                                                            {/* CONDITIONAL BODY */}
-                                                            {activeTab === 'collection' && (
-                                                                <td className="text-end" style={{ color: ACTIVE_COLOR, fontWeight: 500 }}>
-                                                                    {formatCurrency(row.coll)}
+                                                        return (
+                                                            <tr key={idx} style={{ cursor: 'pointer' }} onClick={() => handleRegionClick(null, row.code)}>
+                                                                <td className="kemenag-col-no">{realIdx}</td>
+                                                                <td>
+                                                                    <span className="kemenag-col-bold">{row.name}</span>
                                                                 </td>
-                                                            )}
-                                                            {activeTab === 'distribution' && (
-                                                                <td className="text-end" style={{ color: DIST_COLOR, fontWeight: 500 }}>
-                                                                    {formatCurrency(row.dist)}
+
+                                                                {/* CONDITIONAL BODY */}
+                                                                {activeTab === 'collection' && (
+                                                                    <td className="text-end">
+                                                                        <span className="badge bg-soft-primary text-primary font-size-12 px-2 py-1">
+                                                                            {formatCurrency(row.coll)}
+                                                                        </span>
+                                                                    </td>
+                                                                )}
+                                                                {activeTab === 'distribution' && (
+                                                                    <td className="text-end">
+                                                                        <span className="badge bg-soft-warning text-warning font-size-12 px-2 py-1">
+                                                                            {formatCurrency(row.dist)}
+                                                                        </span>
+                                                                    </td>
+                                                                )}
+
+                                                                <td className="text-end">
+                                                                    <div className="d-flex align-items-center justify-content-end">
+                                                                        <span className="me-2 font-size-13">{percentage}%</span>
+                                                                        <div className="progress" style={{ width: '60px', height: '6px' }}>
+                                                                            <div
+                                                                                className="progress-bar"
+                                                                                role="progressbar"
+                                                                                style={{ width: `${percentage}%`, backgroundColor: color }}
+                                                                            ></div>
+                                                                        </div>
+                                                                    </div>
                                                                 </td>
-                                                            )}
-                                                        </tr>
-                                                    )
-                                                })}
-                                            {filteredData.length === 0 && <tr><td colSpan="3" className="text-center py-4">Tidak ada data</td></tr>}
-                                        </tbody>
-                                    </Table>
-                                </div>
+                                                            </tr>
+                                                        )
+                                                    })}
+                                                {filteredData.length === 0 && <tr><td colSpan="4" className="text-center py-4">Tidak ada data</td></tr>}
+                                            </tbody>
+                                        </Table>
+                                    </div>
+                                )}
 
                                 {filteredData.length > 0 && (
                                     <div className="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">

@@ -127,6 +127,11 @@
 .stats-card .mini-stat-icon i {
     color: #375673;
     font-size: 28px;
+    transition: all 0.3s ease;
+}
+
+.stats-card:hover .mini-stat-icon i {
+    transform: scale(1.2);
 }
 
 /* Map Card */

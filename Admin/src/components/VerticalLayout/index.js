@@ -145,21 +145,28 @@ const Layout = props => {
 
   return (
     <React.Fragment>
-      <div className="pace pace-active" id="preloader">
-        <div className="pace-progress" data-progress-text="100%" data-progress="99" style={{ transform: "translate3d(100%, 0px, 0px)" }}>
-          <div className="pace-progress-inner"></div>
+      <div id="preloader" style={{ display: "none" }}>
+        <div id="status">
+          <div className="spinner-chase">
+            <div className="chase-dot"></div>
+            <div className="chase-dot"></div>
+            <div className="chase-dot"></div>
+            <div className="chase-dot"></div>
+            <div className="chase-dot"></div>
+            <div className="chase-dot"></div>
+          </div>
         </div>
-        <div className="pace-activity"></div></div>
+      </div>
 
       <div id="layout-wrapper">
 
         <Header toggleMenuCallback={toggleMenuCallback} onChangeLayoutMode={onChangeLayoutMode} />
 
-        {/* <Sidebar
+        <Sidebar
           theme={leftSideBarTheme}
           type={leftSideBarType}
           isMobile={isMobile}
-        /> */}
+        />
         <div className="main-content">{props.children}
           <Footer />
         </div>

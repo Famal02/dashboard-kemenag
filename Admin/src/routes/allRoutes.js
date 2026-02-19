@@ -3,18 +3,20 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 
 //Dashboard
-import Dashboard from "../pages/Dashboard/index";
+//Dashboard
+const Dashboard = React.lazy(() => import("../pages/Dashboard/index"));
 
 // ZIS Page
-import ZisPage from "../pages/ZIS/index";
-import LaporanDana from "../pages/ZIS/LaporanDana";
-import Stakeholder from "../pages/ZIS/Stakeholder";
+// ZIS Page
+const ZisPage = React.lazy(() => import("../pages/ZIS/index"));
+const LaporanDana = React.lazy(() => import("../pages/ZIS/LaporanDana"));
+const Stakeholder = React.lazy(() => import("../pages/ZIS/Stakeholder"));
 
 // Import Wakaf Page
-import WakafPage from "../pages/Wakaf/index";
+const WakafPage = React.lazy(() => import("../pages/Wakaf/index"));
 
 // Import AppTestKey
-import AppTestKey from "../AppTestKey";
+const AppTestKey = React.lazy(() => import("../AppTestKey"));
 
 // Import Pages Rumah Ibadah (RESTORED)
 import IslamPage from "../pages/RumahIbadah/Islam";
@@ -36,23 +38,23 @@ const userRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
 
   //Zispage
-  { path: "/Informasi-ZIS", component: <ZisPage /> },
-  { path: "/Informasi-ZIS/LaporanDana", component: <LaporanDana /> },
-  { path: "/Informasi-ZIS/Stakeholder", component: <Stakeholder /> },
+  { path: "/ZIS", component: <ZisPage /> },
+  { path: "/ZIS/LaporanDana", component: <LaporanDana /> },
+  { path: "/ZIS/Stakeholder", component: <Stakeholder /> },
 
   // API Key Generator
   { path: "/generate-api-key", component: <AppTestKey /> },
 
   // Wakaf Page
-  { path: "/Informasi-Wakaf", component: <WakafPage /> },
+  { path: "/Wakaf", component: <WakafPage /> },
 
-  // Route Rumah Ibadah (RESTORED)
-  { path: "/Islam", component: <IslamPage /> },
-  { path: "/Kristen", component: <KristenPage /> },
-  { path: "/Katolik", component: <KatolikPage /> },
-  { path: "/Hindu", component: <HinduPage /> },
-  { path: "/Buddha", component: <BuddhaPage /> },
-  { path: "/Khonghucu", component: <KhonghucuPage /> },
+  // Route Rumah Ibadah (DISABLED TEMPORARILY)
+  // { path: "/Islam", component: <IslamPage /> },
+  // { path: "/Kristen", component: <KristenPage /> },
+  // { path: "/Katolik", component: <KatolikPage /> },
+  // { path: "/Hindu", component: <HinduPage /> },
+  // { path: "/Buddha", component: <BuddhaPage /> },
+  // { path: "/Khonghucu", component: <KhonghucuPage /> },
 
   //Utility
   { path: "/pages-starter", component: <PagesStarter /> },
@@ -60,6 +62,12 @@ const userRoutes = [
   { path: "/pages-comingsoon", component: <PagesComingsoon /> },
   { path: "/pages-404", component: <Error404 /> },
   { path: "/pages-500", component: <Error500 /> },
+
+  // Old Routes Redirects
+  { path: "/Informasi-ZIS", component: <Navigate to="/ZIS" /> },
+  { path: "/Informasi-ZIS/LaporanDana", component: <Navigate to="/ZIS/LaporanDana" /> },
+  { path: "/Informasi-ZIS/Stakeholder", component: <Navigate to="/ZIS/Stakeholder" /> },
+  { path: "/Informasi-Wakaf", component: <Navigate to="/Wakaf" /> },
 
   // this route should be at the end of all other routes
   { path: "/", exact: true, component: <Navigate to="/dashboard" /> },

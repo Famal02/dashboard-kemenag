@@ -4,11 +4,70 @@ import { Col, Card, CardBody, Row } from "reactstrap";
 import Chart from "react-apexcharts";
 import axios from 'axios';
 import { GET_PENERIMAAN_PROVINSI, GET_PENYALURAN_PROVINSI } from "../../helpers/url_helper";
+import SkeletonLoader from "../../components/Common/SkeletonLoader"; // Import Skeleton
+
+// --- HELPER CHART COMPONENT (DASHBOARD STYLE) ---
+const ChartWithDetails = ({ title, options, series, labels, colors, unit = "Rp", isLoading }) => {
+    // Hitung total untuk persentase
+    const total = series ? series.reduce((a, b) => a + (b || 0), 0) : 0;
+
+    if (isLoading) {
+        return <SkeletonLoader type="chart" height={380} />;
+    }
+
+    return (
+        <Card className="h-100 shadow-sm border-0 kemenag-hover-card">
+            <CardBody>
+                <h5 className="card-title mb-4 fw-bold">{title}</h5>
+                <Row className="align-items-center">
+                    <Col xl={5} className="d-flex justify-content-center">
+                        <Chart
+                            options={{
+                                ...options,
+                                legend: { show: false }, // Hide default legend
+                            }}
+                            series={series}
+                            type="pie"
+                            height={280}
+                        />
+                    </Col>
+                    <Col xl={7}>
+                        <div className="mt-4 mt-xl-0">
+                            {labels.map((label, index) => {
+                                const value = series[index] || 0;
+                                const percent = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                                const color = colors[index % colors.length];
+
+                                // Format Value
+                                let displayValue = "Rp 0";
+                                if (value >= 1e12) displayValue = "Rp " + (value / 1e12).toFixed(2).replace('.', ',') + " Triliun";
+                                else if (value >= 1e9) displayValue = "Rp " + (value / 1e9).toFixed(2).replace('.', ',') + " Miliar";
+                                else displayValue = "Rp " + value.toLocaleString('id-ID');
+
+                                return (
+                                    <div className="d-flex align-items-center border-bottom py-2" key={index}>
+                                        <div className="flex-grow-1 d-flex align-items-center" style={{ overflow: 'hidden' }}>
+                                            <span className="rounded-circle me-2 flex-shrink-0" style={{ width: '10px', height: '10px', backgroundColor: color }}></span>
+                                            <span className="text-muted font-size-12 mb-0 text-truncate" title={label}>{label}</span>
+                                        </div>
+                                        <div className="text-end flex-shrink-0 ms-2">
+                                            <h6 className="mb-0 font-size-13">{displayValue}</h6>
+                                            <small className="text-muted font-size-11">({percent}%)</small>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </Col>
+                </Row>
+            </CardBody>
+        </Card>
+    );
+};
 
 const RingkasanZisComponent = ({ title }) => {
     const [loading, setLoading] = useState(true);
     const [yearData, setYearData] = useState(null);
-    const [refreshKey, setRefreshKey] = useState(0);
 
     const sourceCategories = ["Zakat Maal", "Zakat Fitrah", "Infaq", "Lainnya"];
     const asnafCategories = [
@@ -16,11 +75,14 @@ const RingkasanZisComponent = ({ title }) => {
         "Riqab", "Gharimin", "Fisabilillah", "Ibnu Sabil"
     ];
 
+    const [error, setError] = useState(null);
+
     useEffect(() => {
-        setRefreshKey(prev => prev + 1);
+
         const fetchData = async () => {
             try {
                 setLoading(true);
+                setError(null);
                 const ts = new Date().getTime();
                 const [resRecv, resDist] = await Promise.all([
                     axios.get(`${GET_PENERIMAAN_PROVINSI}?_=${ts}`, { headers: { "x-api-key": "prod-b533376f-f659-42c3-af49-92b03d468cf1" } }),
@@ -60,7 +122,19 @@ const RingkasanZisComponent = ({ title }) => {
                 });
                 setLoading(false);
 
-            } catch (err) { console.error(err); setLoading(false); }
+            } catch (err) {
+                console.error("Error fetching ZIS data:", err);
+                // Set default data on error so loading stops
+                setYearData({
+                    totalTerkumpul: 0,
+                    totalTersalurkan: 0,
+                    sisaDana: 0,
+                    sourceSeries: [0, 0, 0, 0],
+                    distributionSeries: [0, 0, 0, 0, 0, 0, 0, 0]
+                });
+                setError("Gagal memuat data. Silakan coba lagi.");
+                setLoading(false);
+            }
         };
         fetchData();
     }, []);
@@ -74,7 +148,7 @@ const RingkasanZisComponent = ({ title }) => {
 
     // --- CHART OPTIONS: PIE CHART ---
     const chartOptions = {
-        chart: { type: 'pie', height: 380 }, // TIPE PIE
+        chart: { type: 'pie', height: 380 },
         legend: { show: true, position: 'right', fontSize: '13px', width: 140 },
         dataLabels: {
             enabled: true,
@@ -82,39 +156,42 @@ const RingkasanZisComponent = ({ title }) => {
             style: { fontSize: '11px', fontWeight: 'bold' },
             dropShadow: { enabled: false }
         },
-        // Hapus konfigurasi Donut
         plotOptions: {
             pie: {
                 customScale: 1.0,
                 offsetX: 0
             }
         },
-        colors: ['#34c38f', '#f1b44c', '#556ee6', '#f46a6a', '#e74c3c', '#e67e22', '#1abc9c', '#9b59b6'],
+        colors: ['#375673', '#d5cd94', '#556ee6', '#f1b44c', '#50a5f1', '#f46a6a', '#34c38f', '#9b59b6'],
         stroke: { show: true, width: 2, colors: ['#fff'] },
         tooltip: { y: { formatter: (val) => "Rp " + val.toLocaleString('id-ID') } }
     };
 
-    if (loading) return <div>Loading...</div>;
-
-    const StatCard = ({ title, value, icon, color }) => (
-        <Col lg={4} md={6} className="mb-4">
-            <Card className="h-100 shadow-sm border-0" style={{ borderBottom: `4px solid ${color === 'success' ? '#34c38f' : color === 'primary' ? '#556ee6' : '#f1b44c'}` }}>
-                <CardBody className="p-4">
-                    <div className="d-flex justify-content-between">
-                        <div>
-                            <p className="text-muted text-uppercase fw-bold font-size-12">{title}</p>
-                            <h4 className="fw-bold mb-0">{value}</h4>
+    const StatCard = ({ title, value, icon, color, isLoading }) => {
+        return (
+            <Col lg={4} md={6} className="mb-4">
+                <Card className="h-100 shadow-lg border-0 kemenag-hover-card" style={{ backgroundColor: '#1c3e5e', borderLeft: '6px solid #d5cd94', borderRadius: '8px' }}>
+                    <CardBody className="p-3">
+                        <div className="d-flex align-items-center mb-3">
+                            <div className={`avatar-xs me-2`}>
+                                <span className={`avatar-title rounded-circle bg-transparent text-${color} font-size-18`}>
+                                    <i className={icon}></i>
+                                </span>
+                            </div>
+                            <h6 className="font-size-11 mb-0 text-uppercase fw-bold" style={{ color: '#d5cd94', opacity: 0.8, letterSpacing: '0.5px' }}>{title}</h6>
                         </div>
-                        <div className={`avatar-sm`}>
-                            <span className={`avatar-title rounded bg-${color} bg-opacity-10 text-${color} font-size-24`}>
-                                <i className={icon}></i>
-                            </span>
-                        </div>
-                    </div>
-                </CardBody>
-            </Card>
-        </Col>
-    );
+                        <h4 className="mt-0 mb-0 fw-bold" style={{ color: '#d5cd94', fontSize: '22px' }}>
+                            {isLoading ? (
+                                <SkeletonLoader type="text" width="60%" />
+                            ) : (
+                                value
+                            )}
+                        </h4>
+                    </CardBody>
+                </Card>
+            </Col>
+        );
+    };
 
     return (
         <React.Fragment>
@@ -122,7 +199,24 @@ const RingkasanZisComponent = ({ title }) => {
                 <Col><h4 className="fw-bold">Dashboard Nasional ZIS</h4></Col>
             </Row>
 
-            {yearData && (
+            {/* Jika Loading ATAU data belum ada, tampilkan Skeleton / Layout */}
+            {loading || !yearData ? (
+                <>
+                    <Row>
+                        <StatCard title="Total Terkumpul" isLoading={true} icon="bx bx-trending-up" color="success" />
+                        <StatCard title="Total Tersalurkan" isLoading={true} icon="bx bx-check-shield" color="primary" />
+                        <StatCard title="Sisa Dana" isLoading={true} icon="bx bx-wallet" color="warning" />
+                    </Row>
+                    <Row className="mb-4">
+                        <Col lg={6}>
+                            <ChartWithDetails title="Sumber Dana" isLoading={true} />
+                        </Col>
+                        <Col lg={6}>
+                            <ChartWithDetails title="Penyaluran Asnaf" isLoading={true} />
+                        </Col>
+                    </Row>
+                </>
+            ) : (
                 <>
                     <Row>
                         <StatCard title="Total Terkumpul" value={formatCurrency(yearData.totalTerkumpul)} icon="bx bx-trending-up" color="success" />
@@ -132,36 +226,22 @@ const RingkasanZisComponent = ({ title }) => {
 
                     <Row className="mb-4">
                         <Col lg={6}>
-                            <Card className="h-100 shadow-sm border-0">
-                                <CardBody>
-                                    <h6 className="mb-4 fw-bold">Sumber Dana (Pie Chart)</h6>
-                                    <div style={{ minHeight: 380 }}>
-                                        <Chart
-                                            options={{ ...chartOptions, labels: sourceCategories }}
-                                            series={yearData.sourceSeries}
-                                            type="pie" // Tipe Pie
-                                            height={380}
-                                            key={`chart-recv-pie-${refreshKey}`}
-                                        />
-                                    </div>
-                                </CardBody>
-                            </Card>
+                            <ChartWithDetails
+                                title="Sumber Dana"
+                                options={chartOptions}
+                                series={yearData.sourceSeries}
+                                labels={sourceCategories}
+                                colors={chartOptions.colors}
+                            />
                         </Col>
                         <Col lg={6}>
-                            <Card className="h-100 shadow-sm border-0">
-                                <CardBody>
-                                    <h6 className="mb-4 fw-bold">Penyaluran Asnaf (Pie Chart)</h6>
-                                    <div style={{ minHeight: 380 }}>
-                                        <Chart
-                                            options={{ ...chartOptions, labels: asnafCategories }}
-                                            series={yearData.distributionSeries}
-                                            type="pie" // Tipe Pie
-                                            height={380}
-                                            key={`chart-dist-pie-${refreshKey}`}
-                                        />
-                                    </div>
-                                </CardBody>
-                            </Card>
+                            <ChartWithDetails
+                                title="Penyaluran Asnaf"
+                                options={chartOptions}
+                                series={yearData.distributionSeries}
+                                labels={asnafCategories}
+                                colors={chartOptions.colors}
+                            />
                         </Col>
                     </Row>
                 </>

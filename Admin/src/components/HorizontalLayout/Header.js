@@ -95,7 +95,7 @@ const Header = props => {
             <div className="d-none d-lg-flex align-items-center ms-4">
               {/* Menu ZIS */}
               <Link
-                to="/Informasi-ZIS"
+                to="/ZIS"
                 className="text-dark fw-medium font-size-15 px-3 py-2 text-decoration-none"
                 style={{ transition: '0.3s' }}
               >
@@ -104,7 +104,7 @@ const Header = props => {
 
               {/* Menu Wakaf */}
               <Link
-                to="/Informasi-Wakaf"
+                to="/Wakaf"
                 className="text-dark fw-medium font-size-15 px-3 py-2 text-decoration-none"
                 style={{ transition: '0.3s' }}
               >

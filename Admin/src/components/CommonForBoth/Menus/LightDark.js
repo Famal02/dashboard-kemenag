@@ -7,7 +7,7 @@ import FeatherIcon from "feather-icons-react";
 import { layoutTheme } from "../../../constants/layout";
 const LightDark = ({ layoutMode, onChangeLayoutMode }) => {
     const mode = layoutMode === layoutTheme['DARKMODE'] ? layoutTheme['LIGHTMODE'] : layoutTheme['DARKMODE'];
-  
+
     return (
         <div className="dropdown d-none d-sm-inline-block">
             <button

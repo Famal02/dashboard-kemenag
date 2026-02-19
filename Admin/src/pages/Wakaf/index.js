@@ -1,42 +1,55 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Card, CardBody, Row } from "reactstrap";
+import { Col, Card, CardBody, Row, Table } from "reactstrap";
 import ReactApexChart from "react-apexcharts";
 import CountUp from "react-countup";
 import PetaSebaranWakaf from "./PetaSebaranWakaf";
 import axios from "axios";
 import { GET_WAKAF_TANAH_DATA } from "../../helpers/url_helper";
+import SkeletonLoader from "../../components/Common/SkeletonLoader"; // Import Skeleton
 
 // --- HELPER FUNCTIONS ---
 const formatCurrency = (value) => {
+    if (value == null) return "Rp 0";
     if (value >= 1000000000) return "Rp " + (value / 1000000000).toFixed(1) + " M";
     if (value >= 1000000) return "Rp " + (value / 1000000).toFixed(1) + " Jt";
     return "Rp " + value.toLocaleString('id-ID');
 };
 
-const formatNumber = (value) => value.toLocaleString('id-ID');
+const formatNumber = (value) => value ? value.toLocaleString('id-ID') : "0";
 
 // --- CHART COMPONENTS WITH DETAILS ---
 
-const ChartWithDetails = ({ title, options, series, labels, colors, totalValue, unit = "Rp", chartType = "donut" }) => {
-    // Handling Total Calculation
-    // For Donut: sum of series
-    // For Bar: series might be [{data: []}]. Check structure.
+const ChartWithDetails = ({ title, options, series, labels, colors, totalValue, unit = "Rp", chartType = "donut", isLoading }) => {
     let total = 0;
     let seriesData = [];
 
+    // Safely extract data series
     if (chartType === "bar") {
-        seriesData = series[0].data;
-        total = seriesData.reduce((a, b) => a + b, 0); // Total accumulated? Or maybe just show latest?
-        // Context: Growth chart total is usually "Current Total" (last item) not sum of history.
-        // For Assets Growth, the last bar is the current asset count.
-        total = seriesData[seriesData.length - 1];
+        if (series && series.length > 0 && series[0].data) {
+            seriesData = series[0].data;
+            // For Assets Growth, the last bar usually represents the current/total state
+            total = seriesData.length > 0 ? seriesData[seriesData.length - 1] : 0;
+        } else {
+            seriesData = [];
+            total = 0;
+        }
     } else {
-        seriesData = series;
-        total = seriesData.reduce((a, b) => a + b, 0);
+        // Pie/Donut
+        if (series && Array.isArray(series)) {
+            seriesData = series;
+            total = seriesData.reduce((a, b) => a + b, 0);
+        } else {
+            seriesData = [];
+            total = 0;
+        }
+    }
+
+    if (isLoading) {
+        return <SkeletonLoader type="chart" height={360} />;
     }
 
     return (
-        <Card className="kemenag-card">
+        <Card className="kemenag-card kemenag-hover-card">
             <CardBody>
                 <h5 className="card-title mb-4">{title}</h5>
                 <Row className="align-items-center">
@@ -52,16 +65,13 @@ const ChartWithDetails = ({ title, options, series, labels, colors, totalValue, 
                         <div className="mt-4 mt-xl-0">
                             {labels.map((label, index) => {
                                 let value = 0;
-                                let percent = 0; // For Bar chart, maybe Growth %? Or just % of max?
+                                let percent = 0;
 
-                                if (chartType === "bar") {
+                                if (seriesData[index] !== undefined) {
                                     value = seriesData[index];
-                                    // For growth, comparing to previous year would be nice, but consisteny with donut (share) is tricky.
-                                    // Let's just show the Value.
-                                    // Or if user wants "proporsi style", maybe just Value is enough.
-                                } else {
-                                    value = seriesData[index];
-                                    percent = ((value / total) * 100).toFixed(1);
+                                    if (total > 0 && chartType !== "bar") {
+                                        percent = ((value / total) * 100).toFixed(1);
+                                    }
                                 }
 
                                 const color = Array.isArray(colors) ? colors[index % colors.length] : colors;
@@ -102,11 +112,7 @@ const ChartWithDetails = ({ title, options, series, labels, colors, totalValue, 
 
 // --- SPECIFIC SECTION COMPONENTS ---
 
-// --- SPECIFIC SECTION COMPONENTS ---
-
-// --- SPECIFIC SECTION COMPONENTS ---
-
-const AssetsByPurposeChart = ({ data }) => {
+const AssetsByPurposeChart = ({ data, isLoading }) => {
     const labels = [
         'Sarana & Kegiatan Ibadah',
         'Sarana & Kegiatan Pendidikan',
@@ -119,7 +125,7 @@ const AssetsByPurposeChart = ({ data }) => {
     const defaultSeries = [0, 0, 0, 0, 0];
     const series = data && data.length > 0 ? data : defaultSeries;
 
-    const colors = ['#34c38f', '#556ee6', '#f46a6a', '#343a40', '#50a5f1'];
+    const colors = ['#375673', '#d5cd94', '#f46a6a', '#34c38f', '#50a5f1'];
 
     const options = {
         chart: { type: 'pie' },
@@ -149,11 +155,12 @@ const AssetsByPurposeChart = ({ data }) => {
             unit="Aset"
             totalValue={`${series.reduce((a, b) => a + b, 0).toLocaleString()} Aset`}
             chartType="pie"
+            isLoading={isLoading}
         />
     );
 };
 
-const AssetsGrowthChart = ({ years, startYear = 2020, data = [] }) => {
+const AssetsGrowthChart = ({ years, startYear = 2020, data = [], isLoading }) => {
     // If no real data passed, use static (fallback) or empty
     const defaultData = [0, 0, 0, 0, 0, 0];
     // Dynamic Years based on data
@@ -163,15 +170,15 @@ const AssetsGrowthChart = ({ years, startYear = 2020, data = [] }) => {
     const color = '#34c38f';
 
     const options = {
-        chart: { type: 'bar', toolbar: { show: false } }, // Remove height here, handled by wrapper
+        chart: { type: 'bar', toolbar: { show: false } },
         plotOptions: { bar: { borderRadius: 4, horizontal: false, columnWidth: '55%' } },
         dataLabels: { enabled: false },
         stroke: { show: true, width: 2, colors: ['transparent'] },
         xaxis: {
             categories: displayYears,
-            labels: { show: false } // Hide X labels in chart if they are in the list, or keep them? Let's hide to save space
+            labels: { show: false }
         },
-        yaxis: { show: false }, // Hide Y axis for cleaner look side-by-side
+        yaxis: { show: false },
         grid: { show: false },
         colors: [color],
         fill: { opacity: 1 },
@@ -180,14 +187,15 @@ const AssetsGrowthChart = ({ years, startYear = 2020, data = [] }) => {
 
     return (
         <ChartWithDetails
-            title={`Pertumbuhan Aset Wakaf Tanah (${displayYears[0]} - ${displayYears[displayYears.length - 1]})`}
+            title={`Pertumbuhan Aset Wakaf Tanah `}
             options={options}
             series={[{ name: 'Aset Tanah', data: displayData }]}
-            labels={displayYears} // Show years in the list
-            colors={displayYears.map(() => color)} // Same color for all list markers
+            labels={displayYears}
+            colors={displayYears.map(() => color)}
             chartType="bar"
             unit="Aset"
             totalValue={`${displayData.reduce((a, b) => a + b, 0).toLocaleString()} Aset`}
+            isLoading={isLoading}
         />
     );
 };
@@ -195,29 +203,99 @@ const AssetsGrowthChart = ({ years, startYear = 2020, data = [] }) => {
 
 // --- STAT CARDS ---
 
-const StatCard = ({ title, value, icon, color, isLoading }) => (
-    <Col xl={4} md={6}>
-        <Card className="card-h-100 border-0 shadow-sm rounded-3">
-            <CardBody className="p-3">
-                <div className="d-flex align-items-center mb-2">
-                    <div className={`avatar-xs me-3`}>
-                        <span className={`avatar-title rounded-circle bg-${color} bg-opacity-25 text-${color} font-size-18`}>
-                            <i className={icon}></i>
-                        </span>
+const StatCard = ({ title, value, icon, color, isLoading }) => {
+    return (
+        <Col xl={4} md={6}>
+            <Card className="card-h-100 shadow-lg kemenag-hover-card" style={{ backgroundColor: '#1c3e5e', border: 'none', borderLeft: '6px solid #d5cd94', borderRadius: '8px' }}>
+                <CardBody className="p-3">
+                    <div className="d-flex align-items-center mb-3">
+                        <div className={`avatar-xs me-2`}>
+                            <span className={`avatar-title rounded-circle bg-transparent text-${color} font-size-18`}>
+                                <i className={icon}></i>
+                            </span>
+                        </div>
+                        <h6 className="font-size-11 mb-0 text-uppercase fw-bold" style={{ color: '#d5cd94', opacity: 0.8, letterSpacing: '0.5px' }}>{title}</h6>
                     </div>
-                    <h6 className="font-size-12 text-muted mb-0 text-uppercase">{title}</h6>
-                </div>
-                <h4 className="mt-2 mb-0">
-                    {isLoading ? (
-                        <span className="spinner-grow spinner-grow-sm text-primary" role="status"></span>
-                    ) : (
-                        <CountUp end={value} duration={2} separator="." />
-                    )}
-                </h4>
+                    <h4 className="mt-0 mb-0 fw-bold" style={{ color: '#d5cd94', fontSize: '22px' }}>
+                        {isLoading ? (
+                            <SkeletonLoader type="text" width="60%" />
+                        ) : (
+                            <CountUp end={value} duration={2} separator="." />
+                        )}
+                    </h4>
+                </CardBody>
+            </Card>
+        </Col>
+    );
+};
+
+// --- PROVINCE TABLE COMPONENT ---
+const ProvinceTable = ({ data, isLoading }) => {
+    const totalWakaf = data.reduce((sum, item) => sum + item.count, 0);
+
+    const formatArea = (area) => {
+        if (area >= 10000) return (area / 10000).toFixed(2) + ' Ha';
+        return area.toFixed(2) + ' m²';
+    };
+
+    return (
+        <Card className="kemenag-table-card kemenag-card-interactive">
+            <CardBody>
+                <h5 className="card-title mb-4">Top 10 Provinsi - Wakaf Terbanyak</h5>
+                {isLoading ? (
+                    <SkeletonLoader type="table-rows" count={5} />
+                ) : (
+                    <div className="kemenag-table-responsive">
+                        <Table className="kemenag-table-clean align-middle table-nowrap mb-0">
+                            <thead>
+                                <tr>
+                                    <th style={{ width: '50px' }}>#</th>
+                                    <th>Provinsi</th>
+                                    <th className="text-end">Jumlah Wakaf</th>
+                                    <th className="text-end">Total Luas</th>
+                                    <th className="text-end" style={{ width: '100px' }}>Persentase</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {data.map((item, index) => {
+                                    const percentage = totalWakaf > 0 ? ((item.count / totalWakaf) * 100).toFixed(1) : 0;
+                                    return (
+                                        <tr key={index}>
+                                            <td className="kemenag-col-no">{index + 1}</td>
+                                            <td>
+                                                <span className="kemenag-col-bold">{item.name}</span>
+                                            </td>
+                                            <td className="text-end">
+                                                <span className="badge bg-soft-primary text-primary font-size-12 px-2 py-1">
+                                                    {item.count.toLocaleString('id-ID')}
+                                                </span>
+                                            </td>
+                                            <td className="text-end text-muted font-size-13">
+                                                {formatArea(item.totalArea)}
+                                            </td>
+                                            <td className="text-end">
+                                                <div className="d-flex align-items-center justify-content-end">
+                                                    <span className="me-2 font-size-13">{percentage}%</span>
+                                                    <div className="progress" style={{ width: '60px', height: '6px' }}>
+                                                        <div
+                                                            className="progress-bar bg-primary"
+                                                            role="progressbar"
+                                                            style={{ width: `${percentage}%` }}
+                                                        ></div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </Table>
+                    </div>
+                )}
             </CardBody>
         </Card>
-    </Col>
-);
+    );
+};
 
 
 // --- MAIN PAGE WAKAF ---
@@ -226,107 +304,134 @@ const WakafPage = () => {
     document.title = "Dashboard Wakaf | Zakat Nasional";
 
     const [loading, setLoading] = useState(true);
-    const [stats, setStats] = useState({
-        wakif: 0,
-        tanah: 0,
-        nazhir: 0
-    });
+    const [selectedYear, setSelectedYear] = useState("all");
+    const [availableYears, setAvailableYears] = useState([]);
 
+    const [allItems, setAllItems] = useState([]); // Store all data once
+    const [stats, setStats] = useState({ wakif: 0, tanah: 0, nazhir: 0 });
     const [purposeData, setPurposeData] = useState([]);
     const [growthData, setGrowthData] = useState({ years: [], counts: [] });
+    const [provinceData, setProvinceData] = useState([]);
 
+    // --- 1. FETCH DATA ONCE ---
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true);
             try {
                 const response = await axios.get(GET_WAKAF_TANAH_DATA, {
                     headers: { "x-api-key": "prod-b533376f-f659-42c3-af49-92b03d468cf1" },
-                    params: { limit: 20000 } // Fetch ample data
+                    params: { limit: 20000 }
                 });
-
                 const items = response.data?.data?.items || [];
+                const currentYear = new Date().getFullYear();
 
-                // 1. Process Stats
-                const uniqueWakif = new Set();
-                const uniqueNazhir = new Set();
+                // Encode Year Data Once
                 items.forEach(item => {
-                    if (item.wakif_nama) uniqueWakif.add(item.wakif_nama);
-                    if (item.nazhir_nama) uniqueNazhir.add(item.nazhir_nama);
-                });
-
-                setStats({
-                    tanah: items.length, // Total Locations based on data fetched
-                    wakif: uniqueWakif.size,
-                    nazhir: uniqueNazhir.size
-                });
-
-                // 2. Process Purpose (Peruntukan)
-                // Categories: Ibadah, Pendidikan, Sosial/Fakir, Makam, Lainnya
-                let counts = { ibadah: 0, pendidikan: 0, sosial: 0, makam: 0, lainnya: 0 };
-
-                items.forEach(item => {
-                    const ket = (item.peruntukan_keterangan || "").toLowerCase();
-                    if (ket.includes('masjid') || ket.includes('musholla') || ket.includes('langgar') || ket.includes('ibadah')) {
-                        counts.ibadah++;
-                    } else if (ket.includes('sekolah') || ket.includes('madrasah') || ket.includes('pesantren') || ket.includes('pendidikan') || ket.includes('tpq')) {
-                        counts.pendidikan++;
-                    } else if (ket.includes('fakir') || ket.includes('miskin') || ket.includes('yatim') || ket.includes('sosial') || ket.includes('panti')) {
-                        counts.sosial++;
-                    } else if (ket.includes('makam') || ket.includes('kuburan')) {
-                        counts.makam++;
-                    } else {
-                        counts.lainnya++;
-                    }
-                });
-
-                setPurposeData([counts.ibadah, counts.pendidikan, counts.sosial, counts.makam, counts.lainnya]);
-
-                // 3. Process Growth (Pertumbuhan Aset per Tahun)
-                // Use permohonan_kode first 4 chars OR tanggal_sertifikat year
-                let yearCounts = {};
-                items.forEach(item => {
-                    let year = null;
-                    // Try code first (e.g., 2025XXXX)
+                    let itemYear = null;
                     if (item.permohonan_kode && item.permohonan_kode.length >= 4) {
                         const y = parseInt(item.permohonan_kode.substring(0, 4));
-                        if (y > 1900 && y <= new Date().getFullYear()) year = y;
+                        if (y > 1900 && y <= currentYear + 1) itemYear = y;
                     }
-                    // Fallback to date
-                    if (!year && item.tanggal_sertifikat) {
+                    if (!itemYear && item.tanggal_sertifikat) {
                         const d = new Date(item.tanggal_sertifikat);
-                        if (!isNaN(d.getFullYear())) year = d.getFullYear();
+                        if (!isNaN(d.getFullYear())) itemYear = d.getFullYear();
                     }
-
-                    if (year) {
-                        yearCounts[year] = (yearCounts[year] || 0) + 1;
-                    }
+                    if (itemYear) item._year = itemYear;
                 });
 
-                // Get last 6 sorted years
-                const sortedYears = Object.keys(yearCounts).map(Number).sort((a, b) => a - b);
-                // Filter realistic years (e.g. > 2000) just in case
-                const recentYears = sortedYears.filter(y => y >= 2000).slice(-6); // Last 6 recorded years
-
-                // If years are empty, maybe use mock 2024/2025
-                if (recentYears.length > 0) {
-                    setGrowthData({
-                        years: recentYears.map(String),
-                        counts: recentYears.map(y => yearCounts[y])
-                    });
-                } else if (items.length > 0) {
-                    // Fallback if no dates found but data exists, put all in "Tahun Ini"
-                    const currentYear = new Date().getFullYear();
-                    setGrowthData({ years: [String(currentYear)], counts: [items.length] });
-                }
-
+                // Extract Available Years
+                const yearsSet = new Set(items.map(i => i._year).filter(Boolean));
+                const newAvailableYears = Array.from(yearsSet).sort((a, b) => b - a);
+                setAvailableYears(newAvailableYears);
+                setAllItems(items); // Store raw data
                 setLoading(false);
+
             } catch (error) {
                 console.error("Error fetching wakaf data:", error);
                 setLoading(false);
             }
         };
-
         fetchData();
     }, []);
+
+    // --- 2. FILTER & CALCULATE STATS LOCALLY ---
+    useEffect(() => {
+        if (allItems.length === 0 && loading) return; // Wait for fetch
+
+        // Filter
+        let filteredItems = allItems;
+        if (selectedYear !== "all") {
+            filteredItems = allItems.filter(item => String(item._year) === String(selectedYear));
+        }
+
+        // 1. Process Stats
+        const uniqueWakif = new Set();
+        const uniqueNazhir = new Set();
+        filteredItems.forEach(item => {
+            if (item.wakif_nama) uniqueWakif.add(item.wakif_nama);
+            if (item.nazhir_nama) uniqueNazhir.add(item.nazhir_nama);
+        });
+
+        setStats({
+            tanah: filteredItems.length,
+            wakif: uniqueWakif.size,
+            nazhir: uniqueNazhir.size
+        });
+
+        // 2. Process Purpose
+        let counts = { ibadah: 0, pendidikan: 0, sosial: 0, makam: 0, lainnya: 0 };
+        filteredItems.forEach(item => {
+            const ket = (item.peruntukan_keterangan || "").toLowerCase();
+            if (ket.includes('masjid') || ket.includes('musholla') || ket.includes('langgar') || ket.includes('ibadah')) {
+                counts.ibadah++;
+            } else if (ket.includes('sekolah') || ket.includes('madrasah') || ket.includes('pesantren') || ket.includes('pendidikan') || ket.includes('tpq')) {
+                counts.pendidikan++;
+            } else if (ket.includes('fakir') || ket.includes('miskin') || ket.includes('yatim') || ket.includes('sosial') || ket.includes('panti')) {
+                counts.sosial++;
+            } else if (ket.includes('makam') || ket.includes('kuburan')) {
+                counts.makam++;
+            } else {
+                counts.lainnya++;
+            }
+        });
+        setPurposeData([counts.ibadah, counts.pendidikan, counts.sosial, counts.makam, counts.lainnya]);
+
+        // 3. Process Growth (Only relevant if "all" or showing trend within year context)
+        let yearCounts = {};
+        filteredItems.forEach(item => {
+            if (item._year) {
+                yearCounts[item._year] = (yearCounts[item._year] || 0) + 1;
+            }
+        });
+        const sortedYears = Object.keys(yearCounts).map(Number).sort((a, b) => a - b);
+        if (sortedYears.length > 0) {
+            setGrowthData({
+                years: sortedYears.map(String),
+                counts: sortedYears.map(y => yearCounts[y])
+            });
+        } else {
+            setGrowthData({ years: [], counts: [] });
+        }
+
+        // 4. Process Province Table
+        const provinceAgg = {};
+        filteredItems.forEach(item => {
+            const prov = item.provinsi_nama || 'Tidak Diketahui';
+            if (!provinceAgg[prov]) {
+                provinceAgg[prov] = { count: 0, totalArea: 0 };
+            }
+            provinceAgg[prov].count += 1;
+            const area = parseFloat(item.tanah_luas) || 0;
+            provinceAgg[prov].totalArea += area;
+        });
+        const provinceArray = Object.keys(provinceAgg).map(name => ({
+            name,
+            count: provinceAgg[name].count,
+            totalArea: provinceAgg[name].totalArea
+        })).sort((a, b) => b.count - a.count).slice(0, 10);
+        setProvinceData(provinceArray);
+
+    }, [selectedYear, allItems, loading]);
 
     const statCards = [
         { title: "Jumlah Wakif", value: stats.wakif, icon: "bx bx-user", color: "primary" },
@@ -341,15 +446,23 @@ const WakafPage = () => {
                 {/* Header */}
                 <Row className="mb-4">
                     <Col xs={12}>
-                        <div className="d-flex align-items-center justify-content-between">
+                        <div className="d-flex flex-wrap align-items-center justify-content-between">
                             <div>
                                 <h4 className="kemenag-title">Dashboard Wakaf Nasional</h4>
-                                <p className="kemenag-subtitle">Data Real-time Sistem Informasi Wakaf (SIWAK)</p>
                             </div>
-                            <div className="text-end">
-                                <span className="badge bg-soft-success text-success font-size-12 p-2">
-                                    <i className="bx bx-check-circle me-1"></i> Terhubung API
-                                </span>
+                            <div className="d-flex align-items-center gap-2">
+                                <span className="fw-bold text-muted font-size-13">Tahun:</span>
+                                <select
+                                    className="form-select kemenag-select shadow-sm"
+                                    style={{ width: '150px', borderColor: '#d5cd94', color: '#888' }}
+                                    value={selectedYear}
+                                    onChange={(e) => setSelectedYear(e.target.value)}
+                                >
+                                    <option value="all">Semua Tahun</option>
+                                    {availableYears.map(year => (
+                                        <option key={year} value={year}>{year}</option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
                     </Col>
@@ -365,19 +478,26 @@ const WakafPage = () => {
                 {/* Section Charts Row 2: Aset Breakdown (Dynamic) */}
                 <Row className="g-3 mb-4">
                     <Col xl={6}>
-                        <AssetsByPurposeChart data={purposeData} />
+                        <AssetsByPurposeChart data={purposeData} isLoading={loading} />
                     </Col>
                     <Col xl={6}>
                         {growthData.years.length > 0 ? (
-                            <AssetsGrowthChart years={growthData.years} data={growthData.counts} />
+                            <AssetsGrowthChart years={growthData.years} data={growthData.counts} isLoading={loading} />
                         ) : (
-                            <AssetsGrowthChart years={['No Data']} data={[0]} />
+                            <AssetsGrowthChart years={['No Data']} data={[0]} isLoading={loading} />
                         )}
                     </Col>
                 </Row>
 
+                {/* Section Table Summary */}
+                <Row className="mb-4">
+                    <Col xs={12}>
+                        <ProvinceTable data={provinceData} isLoading={loading} />
+                    </Col>
+                </Row>
+
                 {/* Section Sebaran Aset Wakaf (Peta Interaktif) */}
-                <PetaSebaranWakaf />
+                <PetaSebaranWakaf globalFilterYear={selectedYear} allData={allItems} isLoading={loading} />
 
             </div>
         </div>

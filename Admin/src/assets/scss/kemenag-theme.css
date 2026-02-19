@@ -205,6 +205,35 @@ body {
     font-size: 28px;
 }
 
+/* === HOVER EFFECTS === */
+.kemenag-hover-card {
+    transition: all 0.3s ease;
+}
+
+.kemenag-hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(55, 86, 115, 0.15) !important;
+    border-color: rgba(213, 205, 148, 0.8) !important;
+}
+
+.kemenag-hover-card-border-left:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(55, 86, 115, 0.15) !important;
+    background-color: #fff !important;
+    /* Keep existing border left */
+}
+
+.kemenag-hover-card:hover .avatar-title i,
+.kemenag-hover-card-border-left:hover .avatar-title i {
+    transform: scale(1.2);
+    transition: all 0.3s ease;
+}
+
+.kemenag-hover-card .avatar-title i,
+.kemenag-hover-card-border-left .avatar-title i {
+    transition: all 0.3s ease;
+}
+
 /* ========================================
    BUTTONS
    ======================================== */
@@ -738,4 +767,169 @@ body {
 /* PetaSebaranWakaf & PetaSebaranZis - samakan spacing */
 .kemenag-page .mb-4 {
     margin-bottom: 24px !important;
+}
+
+/* === TABLE GRAY VARIANT (DASHBOARD STYLE) === */
+.kemenag-table-gray {
+    margin-bottom: 0;
+}
+
+.kemenag-table-gray thead {
+    background-color: #f8f9fa !important;
+    /* Force Light Gray */
+}
+
+.kemenag-table-gray thead th {
+    color: #495057 !important;
+    /* Dark Gray Text */
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 14px 12px;
+    border: none;
+}
+
+.kemenag-table-gray tbody tr {
+    border-bottom: 1px solid #eff2f7;
+    transition: all 0.2s ease;
+}
+
+.kemenag-table-gray tbody tr:hover {
+    background-color: rgba(213, 205, 148, 0.1);
+}
+
+.kemenag-table-gray tbody td {
+    padding: 14px 12px;
+    vertical-align: middle;
+    font-size: 13px;
+    color: var(--kemenag-text);
+    border: none;
+}
+
+/* === KEMENAG TABLE CLEAN (Reference Style) === */
+.kemenag-table-clean {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.kemenag-table-clean thead th {
+    border-bottom: 1px solid #eff2f7;
+    border-top: none !important;
+    background-color: transparent !important;
+    color: #878a99 !important;
+    /* Muted gray header */
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 12px 16px;
+    white-space: nowrap;
+}
+
+.kemenag-table-clean tbody tr {
+    transition: all 0.2s ease;
+}
+
+.kemenag-table-clean tbody tr:hover {
+    background-color: rgba(213, 205, 148, 0.15) !important;
+    /* Golden Mist soft - Lebih Jelas */
+    transform: scale(1.002);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    z-index: 2;
+    position: relative;
+}
+
+/* === NEW INTERACTIVE CARD CLASS (To Refresh Cache/Conflict) === */
+.kemenag-card-interactive {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    cursor: pointer;
+    border: 1px solid rgba(213, 205, 148, 0.2);
+}
+
+.kemenag-card-interactive:hover {
+    transform: translateY(-8px) !important;
+    box-shadow: 0 12px 24px rgba(55, 86, 115, 0.25) !important;
+    border-color: #d5cd94 !important;
+    z-index: 10;
+}
+
+/* === PROFESSIONAL ACTION BUTTON === */
+.btn-action-view {
+    background-color: rgba(55, 86, 115, 0.1);
+    color: #375673;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 30px;
+    /* Pill shape for modern look */
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.btn-action-view:hover {
+    background-color: #375673;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(55, 86, 115, 0.25);
+}
+
+.btn-action-view:active {
+    transform: translateY(0);
+}
+
+.kemenag-table-clean tbody td {
+    border-bottom: 1px solid #f3f6f9;
+    padding: 16px 16px;
+    /* Lega */
+    font-size: 13px;
+    color: #495057;
+    vertical-align: middle;
+}
+
+.kemenag-table-clean tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Custom Column Styles */
+.kemenag-col-no {
+    color: #50a5f1;
+    /* Cyan/Blue standard */
+    font-weight: 600;
+}
+
+.kemenag-col-bold {
+    font-weight: 600;
+    color: #343a40;
+}
+
+.kemenag-col-green {
+    color: #34c38f;
+    /* Green success */
+    font-weight: 600;
+}
+
+/* === FORCED HOVER INTERACTIVITY === */
+.kemenag-hover-card {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease !important;
+    cursor: pointer;
+    /* Visual cue */
+    position: relative;
+    /* Needed for z-index */
+    will-change: transform, box-shadow;
+    /* Optimization */
+}
+
+.kemenag-hover-card:hover {
+    transform: translateY(-8px) !important;
+    /* Gerakan naik lebih jelas */
+    box-shadow: 0 12px 24px rgba(55, 86, 115, 0.25) !important;
+    /* Shadow lebih tebal */
+    border-color: #d5cd94 !important;
+    /* Golden Mist Border */
+    z-index: 10;
 }

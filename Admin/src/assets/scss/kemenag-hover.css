@@ -1,0 +1,25 @@
+/* Tambahan untuk efek hover generik pada Card */
+.kemenag-hover-card {
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+.kemenag-hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(55, 86, 115, 0.15) !important;
+    /* Blue Fusion Shadow */
+    border: 1px solid rgba(213, 205, 148, 0.8) !important;
+    /* Golden Mist Strong */
+}
+
+/* Khusus untuk Laporan Dana yang punya border-left tebal */
+.kemenag-hover-card-left-border {
+    transition: all 0.3s ease;
+}
+
+.kemenag-hover-card-left-border:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(55, 86, 115, 0.15) !important;
+    background-color: #fff !important;
+    /* Force white background on hover */
+}

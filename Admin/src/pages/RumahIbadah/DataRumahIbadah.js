@@ -1,10 +1,11 @@
 
 import React, { useState, useEffect, useRef } from "react";
-import { Container, Row, Col, Card, CardBody, Table } from "reactstrap";
+import { Container, Row, Col, Card, CardBody, Table, Input } from "reactstrap";
 import PetaIndonesia from "../ZIS/PetaIndonesia";
 import ReactApexChart from "react-apexcharts";
 import dataRumahIbadah from "../../assets/data/dataRumahIbadah.json";
 import { idnMerc } from "@react-jvectormap/indonesia";
+import SkeletonLoader from "../../components/Common/SkeletonLoader"; // Import Skeleton
 import "./DataRumahIbadah.css";
 
 // --- NORMALIZATION HELPER ---
@@ -32,6 +33,35 @@ const DataRumahIbadah = ({ religion, color }) => {
     const [data, setData] = useState(null);
     const [mapValues, setMapValues] = useState({});
     const [selectedProvinceCode, setSelectedProvinceCode] = useState(null);
+
+    // --- TABLE STATE ---
+    const [searchQuery, setSearchQuery] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+
+    // Filtered Data for Table
+    const filteredProvinces = React.useMemo(() => {
+        const res = data?.provinces ? [...data.provinces] : [];
+        let filtered = res;
+
+        if (selectedProvinceCode) {
+            filtered = filtered.filter(p => p.code === selectedProvinceCode);
+        }
+
+        if (searchQuery) {
+            const lower = searchQuery.toLowerCase();
+            filtered = filtered.filter(p => (p.name || "").toLowerCase().includes(lower));
+        }
+
+        // Sort by count descending by default
+        return filtered.sort((a, b) => b.count - a.count);
+    }, [data, selectedProvinceCode, searchQuery]);
+
+    // Handle Search Change
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value);
+        setCurrentPage(1);
+    };
 
     // Use ref for accessing data in callbacks (like Wakaf implementation)
     const fullDataRef = useRef({});
@@ -153,12 +183,75 @@ const DataRumahIbadah = ({ religion, color }) => {
         setSelectedProvinceCode(null);
     };
 
-    if (!data) return null;
 
-    // Filtered Data for Table
-    const filteredProvinces = selectedProvinceCode
-        ? data.provinces.filter(p => p.code === selectedProvinceCode)
-        : data.provinces;
+    // --- LOADING STATE WITH SKELETON ---
+    if (!data) {
+        return (
+            <div className="rumah-ibadah-page">
+                <div className="rumah-ibadah-container">
+                    {/* Header Skeleton */}
+                    <Row className="mb-4">
+                        <Col xs={12}>
+                            <div className="d-flex align-items-center justify-content-between">
+                                <SkeletonLoader type="text" width="200px" height="30px" />
+                                <SkeletonLoader type="text" width="150px" height="20px" />
+                            </div>
+                        </Col>
+                    </Row>
+
+                    {/* Summary Cards Skeleton */}
+                    <Row className="mb-4">
+                        {[1, 2, 3].map((item) => (
+                            <Col md={4} key={item}>
+                                <Card className="stats-card kemenag-hover-card" style={{ backgroundColor: '#1c3e5e', border: 'none', borderLeft: '6px solid #d5cd94', borderRadius: '8px' }}>
+                                    <CardBody className="p-3">
+                                        <div className="d-flex align-items-center mb-3">
+                                            <div className="flex-grow-1">
+                                                <SkeletonLoader type="text" width="100px" />
+                                                <div className="mt-2">
+                                                    <SkeletonLoader type="text" width="60%" height="25px" />
+                                                </div>
+                                            </div>
+                                            <div className="flex-shrink-0 align-self-center">
+                                                <SkeletonLoader type="circle" width="40px" height="40px" />
+                                            </div>
+                                        </div>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+                        ))}
+                    </Row>
+
+                    {/* Map Skeleton */}
+                    <Row>
+                        <Col lg={12}>
+                            <Card className="map-card kemenag-hover-card">
+                                <CardBody>
+                                    <div className="mb-4">
+                                        <SkeletonLoader type="text" width="200px" />
+                                    </div>
+                                    <SkeletonLoader type="map" height="500px" />
+                                </CardBody>
+                            </Card>
+                        </Col>
+
+                        {/* Table Skeleton */}
+                        <Col lg={12} className="mt-4">
+                            <Card className="kemenag-table-card kemenag-hover-card">
+                                <CardBody>
+                                    <div className="mb-4 d-flex justify-content-between">
+                                        <SkeletonLoader type="text" width="200px" />
+                                        <SkeletonLoader type="text" width="250px" />
+                                    </div>
+                                    <SkeletonLoader type="table-rows" count={5} />
+                                </CardBody>
+                            </Card>
+                        </Col>
+                    </Row>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="rumah-ibadah-page">
@@ -179,17 +272,19 @@ const DataRumahIbadah = ({ religion, color }) => {
                 {/* Summary Cards */}
                 <Row className="mb-4">
                     <Col md={4}>
-                        <Card className="stats-card fade-in-animation">
-                            <CardBody>
-                                <div className="d-flex">
+                        <Card className="stats-card fade-in-animation kemenag-hover-card" style={{ backgroundColor: '#1c3e5e', border: 'none', borderLeft: '6px solid #d5cd94', borderRadius: '8px' }}>
+                            <CardBody className="p-3">
+                                <div className="d-flex align-items-center mb-3">
                                     <div className="flex-grow-1">
-                                        <p className="text-muted fw-medium">Total Rumah Ibadah</p>
-                                        <h4 className="mb-0">{data?.total?.toLocaleString() || "0"}</h4>
-                                        <small className="text-muted">Unit {religion} Terdata</small>
+                                        <p className="fw-bold mb-0 text-uppercase font-size-11" style={{ color: '#d5cd94', opacity: 0.8, letterSpacing: '0.5px' }}>Total Rumah Ibadah</p>
+                                        <h4 className="mb-0 fw-bold mt-1" style={{ color: '#d5cd94', fontSize: '22px' }}>{data?.total?.toLocaleString() || "0"}</h4>
+                                        <small style={{ color: '#d5cd94', opacity: 0.7 }}>Unit {religion} Terdata</small>
                                     </div>
                                     <div className="flex-shrink-0 align-self-center">
-                                        <div className="mini-stat-icon">
-                                            <i className="bx bx-home-alt"></i>
+                                        <div className="avatar-xs">
+                                            <span className="avatar-title rounded-circle bg-transparent text-primary font-size-18">
+                                                <i className="bx bx-home-alt" style={{ color: '#556ee6' }}></i>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -197,17 +292,19 @@ const DataRumahIbadah = ({ religion, color }) => {
                         </Card>
                     </Col>
                     <Col md={4}>
-                        <Card className="stats-card fade-in-animation" style={{ animationDelay: '0.1s' }}>
-                            <CardBody>
-                                <div className="d-flex">
+                        <Card className="stats-card fade-in-animation kemenag-hover-card" style={{ backgroundColor: '#1c3e5e', border: 'none', borderLeft: '6px solid #d5cd94', borderRadius: '8px', animationDelay: '0.1s' }}>
+                            <CardBody className="p-3">
+                                <div className="d-flex align-items-center mb-3">
                                     <div className="flex-grow-1">
-                                        <p className="text-muted fw-medium">Provinsi Terbanyak</p>
-                                        <h4 className="mb-0">{data?.maxProv?.count?.toLocaleString() || "0"}</h4>
-                                        <small className="text-muted">{data?.maxProv?.name || "-"}</small>
+                                        <p className="fw-bold mb-0 text-uppercase font-size-11" style={{ color: '#d5cd94', opacity: 0.8, letterSpacing: '0.5px' }}>Provinsi Terbanyak</p>
+                                        <h4 className="mb-0 fw-bold mt-1" style={{ color: '#d5cd94', fontSize: '22px' }}>{data?.maxProv?.count?.toLocaleString() || "0"}</h4>
+                                        <small style={{ color: '#d5cd94', opacity: 0.7 }}>{data?.maxProv?.name || "-"}</small>
                                     </div>
                                     <div className="flex-shrink-0 align-self-center">
-                                        <div className="mini-stat-icon">
-                                            <i className="bx bx-trending-up"></i>
+                                        <div className="avatar-xs">
+                                            <span className="avatar-title rounded-circle bg-transparent text-success font-size-18">
+                                                <i className="bx bx-trending-up" style={{ color: '#34c38f' }}></i>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -215,17 +312,19 @@ const DataRumahIbadah = ({ religion, color }) => {
                         </Card>
                     </Col>
                     <Col md={4}>
-                        <Card className="stats-card fade-in-animation" style={{ animationDelay: '0.2s' }}>
-                            <CardBody>
-                                <div className="d-flex">
+                        <Card className="stats-card fade-in-animation kemenag-hover-card" style={{ backgroundColor: '#1c3e5e', border: 'none', borderLeft: '6px solid #d5cd94', borderRadius: '8px', animationDelay: '0.2s' }}>
+                            <CardBody className="p-3">
+                                <div className="d-flex align-items-center mb-3">
                                     <div className="flex-grow-1">
-                                        <p className="text-muted fw-medium">Provinsi Paling Sedikit</p>
-                                        <h4 className="mb-0">{data?.minProv?.count?.toLocaleString() || "0"}</h4>
-                                        <small className="text-muted">{data?.minProv?.name || "-"}</small>
+                                        <p className="fw-bold mb-0 text-uppercase font-size-11" style={{ color: '#d5cd94', opacity: 0.8, letterSpacing: '0.5px' }}>Provinsi Paling Sedikit</p>
+                                        <h4 className="mb-0 fw-bold mt-1" style={{ color: '#d5cd94', fontSize: '22px' }}>{data?.minProv?.count?.toLocaleString() || "0"}</h4>
+                                        <small style={{ color: '#d5cd94', opacity: 0.7 }}>{data?.minProv?.name || "-"}</small>
                                     </div>
                                     <div className="flex-shrink-0 align-self-center">
-                                        <div className="mini-stat-icon">
-                                            <i className="bx bx-trending-down"></i>
+                                        <div className="avatar-xs">
+                                            <span className="avatar-title rounded-circle bg-transparent text-danger font-size-18">
+                                                <i className="bx bx-trending-down" style={{ color: '#f46a6a' }}></i>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -236,11 +335,11 @@ const DataRumahIbadah = ({ religion, color }) => {
 
                 <Row>
                     {/* Map Section */}
-                    <Col lg={8}>
-                        <Card className="map-card">
+                    <Col lg={12}>
+                        <Card className="map-card kemenag-hover-card">
                             <CardBody>
                                 <div className="d-flex justify-content-between align-items-center mb-4">
-                                    <h4 className="card-title">Sebaran Geografis</h4>
+                                    <h4 className="card-title" style={{ color: '#d5cd94' }}>Sebaran Geografis</h4>
                                     {selectedProvinceCode && (
                                         <button
                                             className="reset-filter-btn"
@@ -267,12 +366,12 @@ const DataRumahIbadah = ({ religion, color }) => {
                                             } else if (count !== undefined) {
                                                 details = `<br/><hr style='margin:8px 0; border-top:1px solid rgba(255,255,255,0.3)'><b style='color:#d5cd94'>Total: ${count.toLocaleString()}</b>`;
                                             } else {
-                                                details = `<br/><i style='color:#f0eee9; opacity:0.7'>Belum ada data</i>`;
+                                                details = `<br/><i style='color:#d5cd94; opacity:0.7'>Belum ada data</i>`;
                                             }
 
                                             label.html(`
                                                 <div style="text-align:left; padding:4px;">
-                                                    <h6 style="margin:0; font-size:14px; color:#f0eee9; font-weight:600;">${label.html()}</h6>
+                                                    <h6 style="margin:0; font-size:14px; color:#d5cd94; font-weight:600;">${label.html()}</h6>
                                                     ${details}
                                                 </div>
                                             `);
@@ -282,11 +381,11 @@ const DataRumahIbadah = ({ religion, color }) => {
 
                                     {/* Legend */}
                                     <div className="map-legend">
-                                        <div className="map-legend-item">
+                                        <div className="map-legend-item" style={{ color: '#d5cd94' }}>
                                             <span className="map-legend-color" style={{ background: '#f0eee9' }}></span>
                                             Sedikit
                                         </div>
-                                        <div className="map-legend-item">
+                                        <div className="map-legend-item" style={{ color: '#d5cd94' }}>
                                             <span className="map-legend-color" style={{ background: '#375673' }}></span>
                                             Banyak
                                         </div>
@@ -297,42 +396,87 @@ const DataRumahIbadah = ({ religion, color }) => {
                     </Col>
 
                     {/* Table Section */}
-                    <Col lg={4}>
-                        <Card className="table-card">
+                    <Col lg={12} className="mt-4">
+                        <Card className="kemenag-table-card kemenag-hover-card">
                             <CardBody>
-                                <h4 className="card-title mb-4">
-                                    {selectedProvinceCode ? "Detail Provinsi" : "Peringkat Provinsi"}
-                                </h4>
-                                <div className="table-responsive" style={{ maxHeight: '500px', overflowY: 'auto' }}>
-                                    <Table className="table-nowrap mb-0">
-                                        <thead className="sticky-top">
+                                <div className="d-flex justify-content-between align-items-center mb-4">
+                                    <h4 className="card-title">Rincian Rumah Ibadah</h4>
+                                    <div className="d-flex gap-2">
+                                        <Input
+                                            type="text"
+                                            placeholder="Cari Provinsi..."
+                                            className="form-control-sm"
+                                            style={{ width: '250px', borderRadius: 20 }}
+                                            value={searchQuery}
+                                            onChange={handleSearch}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="kemenag-table-responsive">
+                                    <Table className="kemenag-table-clean table-hover align-middle table-nowrap mb-0">
+                                        <thead>
                                             <tr>
-                                                <th>#</th>
+                                                <th style={{ width: '50px' }}>No</th>
                                                 <th>Provinsi</th>
                                                 <th className="text-end">Jumlah</th>
+                                                <th className="text-end" style={{ width: '200px' }}>Persentase</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {filteredProvinces && filteredProvinces.length > 0 ? filteredProvinces.map((prov, idx) => (
-                                                <tr key={idx} className={prov?.code === selectedProvinceCode ? "table-active" : ""}>
-                                                    <td style={{ width: '40px' }}>{idx + 1}</td>
-                                                    <td>
-                                                        <h6 className="text-truncate mb-1" style={{ maxWidth: '150px' }} title={prov?.name || ''}>
-                                                            {prov?.name || '-'}
-                                                        </h6>
-                                                    </td>
-                                                    <td className="text-end fw-bold">{prov?.count?.toLocaleString() || '0'}</td>
-                                                </tr>
-                                            )) : (
-                                                <tr>
-                                                    <td colSpan="3" className="text-center text-muted py-4">
-                                                        Data tidak ditemukan
-                                                    </td>
-                                                </tr>
-                                            )}
+                                            {filteredProvinces && filteredProvinces.length > 0 ?
+                                                filteredProvinces
+                                                    .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+                                                    .map((prov, idx) => {
+                                                        const realIdx = (currentPage - 1) * itemsPerPage + idx + 1;
+                                                        const percentage = data?.total > 0 ? ((prov.count / data.total) * 100).toFixed(1) : 0;
+                                                        return (
+                                                            <tr key={idx} className={prov?.code === selectedProvinceCode ? "table-active" : ""}>
+                                                                <td className="kemenag-col-no">{realIdx}</td>
+                                                                <td>
+                                                                    <span className="kemenag-col-bold">{prov?.name || '-'}</span>
+                                                                </td>
+                                                                <td className="text-end fw-bold">{prov?.count?.toLocaleString() || '0'}</td>
+                                                                <td className="text-end">
+                                                                    <div className="d-flex align-items-center justify-content-end">
+                                                                        <span className="me-2 font-size-13">{percentage}%</span>
+                                                                        <div className="progress" style={{ width: '60px', height: '6px' }}>
+                                                                            <div
+                                                                                className="progress-bar"
+                                                                                role="progressbar"
+                                                                                style={{ width: `${percentage}%`, backgroundColor: '#34c38f' }}
+                                                                            ></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        );
+                                                    })
+                                                : (
+                                                    <tr>
+                                                        <td colSpan="4" className="text-center text-muted py-4">
+                                                            Data tidak ditemukan
+                                                        </td>
+                                                    </tr>
+                                                )}
                                         </tbody>
                                     </Table>
                                 </div>
+                                {/* PAGINATION */}
+                                {filteredProvinces.length > 0 && (
+                                    <div className="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                                        <span className="text-muted font-size-13">
+                                            Halaman <b>{currentPage}</b> dari <b>{Math.ceil(filteredProvinces.length / itemsPerPage)}</b>
+                                        </span>
+                                        <ul className="pagination pagination-rounded mb-0 pagination-sm">
+                                            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                                                <button className="page-link" onClick={() => setCurrentPage(p => Math.max(1, p - 1))}><i className="bx bx-chevron-left"></i></button>
+                                            </li>
+                                            <li className={`page-item ${currentPage >= Math.ceil(filteredProvinces.length / itemsPerPage) ? 'disabled' : ''}`}>
+                                                <button className="page-link" onClick={() => setCurrentPage(p => Math.min(Math.ceil(filteredProvinces.length / itemsPerPage), p + 1))}><i className="bx bx-chevron-right"></i></button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                )}
                             </CardBody>
                         </Card>
                     </Col>

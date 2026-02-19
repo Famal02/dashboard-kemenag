@@ -20,7 +20,7 @@ const PetaIndonesia = ({ value, width, color, onRegionClick, onRegionTipShow, co
                 series={{
                     regions: [{
                         values: value || {},
-                        scale: colorScale || ['#C8EEFF', '#0071A4'],
+                        scale: colorScale || ['#f0eee9', '#375673'], // Cloud Dancer to Blue Fusion
                         normalizeFunction: 'polynomial',
                         attribute: 'fill',
                     }]
@@ -36,11 +36,11 @@ const PetaIndonesia = ({ value, width, color, onRegionClick, onRegionTipShow, co
                     hover: {
                         "fill-opacity": 1,
                         cursor: 'pointer',
-                        stroke: '#333',
-                        "stroke-width": 1
+                        stroke: '#d5cd94', // Golden Mist
+                        "stroke-width": 2
                     },
                     selected: {
-                        fill: '#2938bc'
+                        fill: '#375673' // Blue Fusion
                     },
                     selectedHover: {
                         "fill-opacity": 1

@@ -35,16 +35,20 @@ const SidebarContent = props => {
 
         const parent3 = parent2.parentElement; // li tag
 
-        if (parent3) {
+        if (parent3 && parent3.id !== "sidebar-menu") {
           parent3.classList.add("mm-active"); // li
-          parent3.childNodes[0].classList.add("mm-active"); //a
+          if (parent3.childNodes[0] && parent3.childNodes[0].classList) {
+            parent3.childNodes[0].classList.add("mm-active"); //a
+          }
           const parent4 = parent3.parentElement; // ul
           if (parent4) {
             parent4.classList.add("mm-show"); // ul
             const parent5 = parent4.parentElement;
             if (parent5) {
               parent5.classList.add("mm-show"); // li
-              parent5.childNodes[0].classList.add("mm-active"); // a tag
+              if (parent5.childNodes[0] && parent5.childNodes[0].classList) {
+                parent5.childNodes[0].classList.add("mm-active"); // a tag
+              }
             }
           }
         }
@@ -158,25 +162,24 @@ const SidebarContent = props => {
             </li>
 
             <li>
-              <Link to="/#" className="has-arrow">
+              <Link to="/ZIS">
                 <FeatherIcon
-                  icon="grid"
+                  icon="gift"
                 />{" "}
-                <span>{props.t("Informasi")}</span>
+                <span>{props.t("ZIS")}</span>
               </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="/Informasi-ZIS">{props.t("ZIS")}</Link>
-                </li>
-                <li>
-                  <Link to="/Informasi-Wakaf">
-                    {props.t("Wakaf")}
-                  </Link>
-                </li>
-              </ul>
             </li>
 
             <li>
+              <Link to="/Wakaf">
+                <FeatherIcon
+                  icon="layers"
+                />{" "}
+                <span>{props.t("Wakaf")}</span>
+              </Link>
+            </li>
+
+            {/* <li>
               <Link to="/#" className="has-arrow">
                 <FeatherIcon
                   icon="map"
@@ -191,7 +194,7 @@ const SidebarContent = props => {
                 <li><Link to="/Buddha">{props.t("Buddha")}</Link></li>
                 <li><Link to="/Khonghucu">{props.t("Khonghucu")}</Link></li>
               </ul>
-            </li>
+            </li> */}
 
           </ul>
         </div>
