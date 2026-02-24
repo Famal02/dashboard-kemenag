@@ -2,7 +2,7 @@ import PropTypes from "prop-types"
 import React, { useEffect, useRef, useCallback } from "react"
 
 //Import Icons
-import FeatherIcon from "feather-icons-react";
+// (Icons removed as requested)
 
 // //Import Scrollbar
 import SimpleBar from "simplebar-react"
@@ -145,6 +145,13 @@ const SidebarContent = props => {
     }
   }
 
+  // --- AUTO COLLAPSE HANDLER ---
+  const handleMenuClick = () => {
+    if (window.innerWidth <= 992) {
+      document.body.classList.remove("sidebar-enable");
+    }
+  };
+
   return (
     <React.Fragment>
       <SimpleBar style={{ maxHeight: "100%" }} ref={ref}>
@@ -153,53 +160,26 @@ const SidebarContent = props => {
             <li className="menu-title">{props.t("Menu Utama")} </li>
 
             <li>
-              <Link to="/dashboard" className="">
-                <FeatherIcon
-                  icon="home"
-                />{" "}
-                <span>{props.t("Dashboard")}</span>
+              <Link to="/dashboard" className="" onClick={handleMenuClick}>
+                <span style={{ paddingLeft: '1.5rem' }}>Dashboard Utama</span>
               </Link>
             </li>
 
             <li>
-              <Link to="/ZIS">
-                <FeatherIcon
-                  icon="gift"
-                />{" "}
-                <span>{props.t("ZIS")}</span>
+              <Link to="/ZIS" onClick={handleMenuClick}>
+                <span style={{ paddingLeft: '1.5rem' }}>ZIS</span>
               </Link>
             </li>
 
             <li>
-              <Link to="/Wakaf">
-                <FeatherIcon
-                  icon="layers"
-                />{" "}
-                <span>{props.t("Wakaf")}</span>
+              <Link to="/Wakaf" onClick={handleMenuClick}>
+                <span style={{ paddingLeft: '1.5rem' }}>Wakaf</span>
               </Link>
             </li>
-
-            {/* <li>
-              <Link to="/#" className="has-arrow">
-                <FeatherIcon
-                  icon="map"
-                />{" "}
-                <span>{props.t("Rumah Ibadah")}</span>
-              </Link>
-              <ul className="sub-menu">
-                <li><Link to="/Islam">{props.t("Islam")}</Link></li>
-                <li><Link to="/Kristen">{props.t("Kristen")}</Link></li>
-                <li><Link to="/Katolik">{props.t("Katolik")}</Link></li>
-                <li><Link to="/Hindu">{props.t("Hindu")}</Link></li>
-                <li><Link to="/Buddha">{props.t("Buddha")}</Link></li>
-                <li><Link to="/Khonghucu">{props.t("Khonghucu")}</Link></li>
-              </ul>
-            </li> */}
-
           </ul>
         </div>
       </SimpleBar>
-    </React.Fragment>
+    </React.Fragment >
   )
 }
 

@@ -1,79 +1,23 @@
 import {
-    GET_MARKET_OVERVIEW,
-    GET_MARKET_OVERVIEW_SUCCESS,
-    GET_MARKET_OVERVIEW_FAIL,
-    GET_WALLENT_BALANCE_SUCCESS,
-    GET_WALLENT_BALANCE_FAIL,
-    GET_WALLENT_BALANCE,
-    GET_Invested_Overview,
-    GET_Invested_Overview_SUCCESS,
-    GET_Invested_Overview_FAIL,
     GET_DASHBOARD_KEMENAG_DATA_SUCCESS,
     GET_DASHBOARD_KEMENAG_DATA_FAIL
 } from "./actiontype"
 
 const INIT_STATE = {
-    Marketoverview: [],
-    error: {},
-    WallentBalanceData: [],
-    InvestedData: [],
     dashboardKemenagData: {
-        summary: { zis: 0, wakaf: 0, rumahIbadah: 0 },
+        summary: { zis: 0, wakaf: 0 },
         trends: [],
         chartData: []
-    }
+    },
+    error: {}
 }
 
 const dashboard = (state = INIT_STATE, action) => {
     switch (action.type) {
-        case GET_MARKET_OVERVIEW_SUCCESS:
-            return {
-                ...state,
-                Marketoverview: action.payload,
-            }
-
-        case GET_MARKET_OVERVIEW_FAIL:
-            return {
-                ...state,
-                error: action.payload,
-            }
-
-        case GET_WALLENT_BALANCE_SUCCESS:
-            return {
-                ...state,
-                WallentBalanceData: action.payload,
-            }
-
-        case GET_MARKET_OVERVIEW_FAIL:
-            return {
-                ...state,
-                error: action.payload,
-            }
-
-        case GET_Invested_Overview_SUCCESS:
-            return {
-                ...state,
-                InvestedData: action.payload,
-            }
-
-        case GET_Invested_Overview_FAIL:
-            return {
-                ...state,
-                error: action.payload,
-            }
-
         case GET_DASHBOARD_KEMENAG_DATA_SUCCESS:
-            return {
-                ...state,
-                dashboardKemenagData: action.payload,
-            }
-
+            return { ...state, dashboardKemenagData: action.payload }
         case GET_DASHBOARD_KEMENAG_DATA_FAIL:
-            return {
-                ...state,
-                error: action.payload,
-            }
-
+            return { ...state, error: action.payload }
         default:
             return state
     }

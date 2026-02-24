@@ -2,33 +2,13 @@ import PropTypes from 'prop-types';
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-
-//Import Icons
 import FeatherIcon from "feather-icons-react";
 
-// Reactstrap
-import { Dropdown, DropdownToggle, DropdownMenu, Row, Col, Container } from "reactstrap";
 
-// Import menuDropdown
-import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
-// import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDropdown";
-// import LightDark from "../CommonForBoth/Menus/LightDark";
-
-// import images
 import logoSvg from "../../assets/images/logo-kemenag.png";
-// import github from "../../assets/images/brands/github.png";
-// import bitbucket from "../../assets/images/brands/bitbucket.png";
-// import dribbble from "../../assets/images/brands/dribbble.png";
-// import dropbox from "../../assets/images/brands/dropbox.png";
-// import mail_chimp from "../../assets/images/brands/mail_chimp.png";
-// import slack from "../../assets/images/brands/slack.png";
 
-//i18n
 import { withTranslation } from "react-i18next";
-//redux
 import { useSelector, useDispatch } from "react-redux";
-
-// Redux Store
 import {
   showRightSidebarAction,
   toggleLeftmenu,
@@ -46,17 +26,11 @@ const Header = props => {
       showRightSidebar: layout.showRightSide
     })
   );
-  // Inside your component
   const { showRightSidebar } = useSelector(headerData);
 
   const { onChangeLayoutMode } = props;
-  const [search, setsearch] = useState(false);
-  // const [socialDrp, setsocialDrp] = useState(false);
   const [isClick, setClick] = useState(true);
-  const [menuRumahIbadah, setMenuRumahIbadah] = useState(false);
-  const [menuZis, setMenuZis] = useState(false);
 
-  /*** Sidebar menu icon and default menu set */
   function tToggle() {
     var body = document.body;
     setClick(!isClick);
@@ -74,55 +48,33 @@ const Header = props => {
       <header id="page-topbar">
         <style>{`
           .header-menu-hover:hover {
-            background-color: rgba(213, 205, 148, 0.15) !important; /* Golden Mist light */
-            color: #375673 !important; /* Blue Fusion */
+            background-color: rgba(213, 205, 148, 0.15) !important;
+            color: #375673 !important;
             border-radius: 8px !important;
             transition: all 0.3s ease;
           }
-          /* Pastikan icon di dalam juga berubah warna */
           .header-menu-hover:hover i {
              color: #375673 !important;
           }
-          /* Class untuk Menu yang Sedang Aktif (Dibuka) */
-          .menu-active-green {
-            background-color: rgba(213, 205, 148, 0.2) !important;
-            color: #375673 !important;
-            border-radius: 8px !important;
-          }
-          .menu-active-green i {
-            color: #375673 !important;
-          }
 
-          /* Style untuk Submenu Dropdown item */
-          .dropdown-item:hover, .dropdown-item:active, .dropdown-item:focus {
-            background-color: rgba(213, 205, 148, 0.15) !important;
-            color: #375673 !important; /* Blue Fusion */
-            border-radius: 6px; /* Agar item list cantik tidak kotak kaku */
-          }
-
-          /* --- FIX LOGO VISIBILITY --- */
-          /* Default Desktop (Layar Besar): Tampilkan Logo Besar, Sembunyikan Kecil */
+          /* Logo visibility */
           @media (min-width: 992px) {
             .navbar-brand-box .logo-sm { display: none !important; }
             .navbar-brand-box .logo-lg { display: flex !important; align-items: center; }
           }
-          
-          /* Mobile/Tablet (Layar Kecil) atau Sidebar Collapsed: Tampilkan Logo Kecil, Sembunyikan Besar */
           @media (max-width: 991.98px), body[data-sidebar-size="sm"] .navbar-brand-box {
             .navbar-brand-box .logo-sm { display: inline-block !important; }
             .navbar-brand-box .logo-lg { display: none !important; }
           }
 
-
-          /* --- FIX FULL WIDTH LAYOUT (NO SIDEBAR) --- */
-          /* --- FIX FULL WIDTH LAYOUT (NO SIDEBAR) ON DESKTOP Only --- */
+          /* Full width layout (no sidebar) on desktop */
           @media (min-width: 992px) {
             .vertical-menu { display: none !important; }
             .main-content { margin-left: 0 !important; }
             .footer { left: 0 !important; }
           }
 
-          /* --- CONTAINER GLOBAL --- */
+          /* Container global */
           .custom-container {
               width: 100%;
               max-width: 2000px;
@@ -130,43 +82,27 @@ const Header = props => {
               padding-left: 200px;
               padding-right: 200px;
           }
-          
-          /* Responsive untuk layar kecil - SAMA dengan kemenag-container */
           @media (max-width: 1600px) {
-              .custom-container {
-                  padding-left: 100px;
-                  padding-right: 100px;
-              }
+              .custom-container { padding-left: 100px; padding-right: 100px; }
           }
-          
           @media (max-width: 1200px) {
-              .custom-container {
-                  padding-left: 50px;
-                  padding-right: 50px;
-              }
+              .custom-container { padding-left: 50px; padding-right: 50px; }
           }
-          
           @media (max-width: 768px) {
-              .custom-container {
-                  padding-left: 20px;
-                  padding-right: 20px;
-              }
+              .custom-container { padding-left: 20px; padding-right: 20px; }
           }
-          
         `}</style>
-        {/* WRAPPER UTAMA: Container membatasi lebar konten (±1200px) agar berada di tengah */}
-        <div className="custom-container"> {/* <--- INI YANG BARU */}
+
+        <div className="custom-container">
           <div className="navbar-header px-0 position-relative d-flex justify-content-between align-items-center"
             style={{ boxShadow: '0 4px 12px rgba(113, 216, 88, 0.05)' }}>
 
-            {/* === 1. BAGIAN KIRI: LOGO (Tanpa Kotak Background) === */}
+            {/* KIRI: LOGO */}
             <div className="d-flex align-items-center">
               <button
                 type="button"
                 className="btn btn-sm px-3 font-size-16 header-item waves-effect vertical-menu-btn d-lg-none me-2"
-                onClick={() => {
-                  tToggle();
-                }}
+                onClick={() => { tToggle(); }}
               >
                 <i className="fa fa-fw fa-bars"></i>
               </button>
@@ -176,12 +112,10 @@ const Header = props => {
                     <img src={logoSvg} alt="" height="10" />
                   </span>
                   <span className="logo-lg d-flex align-items-center">
-                    {/* mixBlendMode: multiply membuat background putih pada logo JPG/PNG menjadi transparan */}
                     <img src={logoSvg} alt="" height="45" style={{ mixBlendMode: 'multiply' }} />
                     <span className="logo-txt text-dark font-size-18 fw-bold ms-2 text-uppercase text-nowrap">Kemenag RI</span>
                   </span>
                 </Link>
-
                 <Link to="/dashboard" className="logo logo-light">
                   <span className="logo-sm">
                     <img src={logoSvg} alt="" height="10" />
@@ -194,63 +128,21 @@ const Header = props => {
               </div>
             </div>
 
-
-
-            {/* === 2. BAGIAN TENGAH: MENU NAVIGASI (Absolute Center) === */}
-            {/* Posisi Absolute membuat elemen ini lepas dari aliran flexbox dan bisa ditaruh tepat di tengah layar */}
+            {/* TENGAH: MENU NAVIGASI */}
             <div className="d-none d-lg-flex align-items-center position-absolute start-50 translate-middle-x gap-3">
-
-              <Dropdown className="d-inline-block" isOpen={menuZis} toggle={() => setMenuZis(!menuZis)}>
-                <DropdownToggle
-                  className={`btn header-menu-hover waves-effect d-inline-flex align-items-center justify-content-center px-3 py-2 ${menuZis ? 'menu-active-green' : ''}`}
-                  tag="button"
-                >
-                  <span className="d-inline-block fw-bold font-size-15">ZIS</span>
-                  <i className={`mdi mdi-chevron-down d-inline-block ms-1 transition-all ${menuZis ? 'rotate-180' : ''}`}></i>
-                </DropdownToggle>
-
-                <DropdownMenu className="dropdown-menu-end border-0 shadow-lg rounded-3 p-2 mt-2">
-                  <Link to="/ZIS" className="dropdown-item fw-medium font-size-14 py-2 rounded mb-1" onClick={() => setMenuZis(false)}>Laporan Dana</Link>
-                  <Link to="/ZIS/Stakeholder" className="dropdown-item fw-medium font-size-14 py-2 rounded" onClick={() => setMenuZis(false)}>Stakeholder</Link>
-                </DropdownMenu>
-              </Dropdown>
-
+              <Link to="/ZIS" className="btn header-menu-hover waves-effect d-inline-flex align-items-center justify-content-center px-3 py-2">
+                <span className="fw-bold font-size-15">ZIS</span>
+              </Link>
               <Link to="/Wakaf" className="btn header-menu-hover waves-effect d-inline-flex align-items-center justify-content-center px-3 py-2">
                 <span className="fw-bold font-size-15">Wakaf</span>
               </Link>
-
-              {/* <Dropdown className="d-inline-block" isOpen={menuRumahIbadah} toggle={() => setMenuRumahIbadah(!menuRumahIbadah)}>
-                <DropdownToggle
-                  className={`btn header-menu-hover waves-effect d-inline-flex align-items-center justify-content-center px-3 py-2 ${menuRumahIbadah ? 'menu-active-green' : ''}`}
-                  tag="button"
-                >
-                  <span className="d-inline-block fw-bold font-size-15">Rumah Ibadah</span>
-                  <i className={`mdi mdi-chevron-down d-inline-block ms-1 transition-all ${menuRumahIbadah ? 'rotate-180' : ''}`}></i>
-                </DropdownToggle>
-
-                <DropdownMenu className="border-0 shadow-lg rounded-3 p-2 mt-2" style={{ minWidth: '200px' }}>
-                  <Link to="/Islam" className="dropdown-item fw-medium font-size-14 py-2 rounded" onClick={() => setMenuRumahIbadah(false)}>Islam</Link>
-                  <Link to="/Kristen" className="dropdown-item fw-medium font-size-14 py-2 rounded" onClick={() => setMenuRumahIbadah(false)}>Kristen</Link>
-                  <Link to="/Katolik" className="dropdown-item fw-medium font-size-14 py-2 rounded" onClick={() => setMenuRumahIbadah(false)}>Katolik</Link>
-                  <Link to="/Hindu" className="dropdown-item fw-medium font-size-14 py-2 rounded" onClick={() => setMenuRumahIbadah(false)}>Hindu</Link>
-                  <Link to="/Buddha" className="dropdown-item fw-medium font-size-14 py-2 rounded" onClick={() => setMenuRumahIbadah(false)}>Buddha</Link>
-                  <Link to="/Khonghucu" className="dropdown-item fw-medium font-size-14 py-2 rounded" onClick={() => setMenuRumahIbadah(false)}>Khonghucu</Link>
-                </DropdownMenu>
-              </Dropdown> */}
             </div>
 
-            {/* === 3. BAGIAN KANAN: PROFILE & TOOLS === */}
-            <div className="d-flex align-items-center">
-
-              <LanguageDropdown />
-              {/* <LightDark layoutMode={props['layoutMode']} onChangeLayoutMode={onChangeLayoutMode} /> */}
-
-            </div>
 
           </div>
-        </div> {/* <--- INI YANG BARU */}
+        </div>
       </header>
-    </React.Fragment >
+    </React.Fragment>
   );
 };
 
@@ -266,12 +158,7 @@ Header.propTypes = {
 };
 
 const mapStatetoProps = state => {
-  const {
-    layoutType,
-    showRightSidebar,
-    leftMenu,
-    layoutMode
-  } = state.Layout;
+  const { layoutType, showRightSidebar, leftMenu, layoutMode } = state.Layout;
   return { layoutType, showRightSidebar, leftMenu, layoutMode };
 };
 

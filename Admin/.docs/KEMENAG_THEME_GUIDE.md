@@ -1,6 +1,6 @@
 # KEMENAG DASHBOARD - GLOBAL THEME GUIDE
 
-## 🎨 Color Palette
+##  Color Palette
 
 | Color Name | Hex Code | RGB | Usage |
 |------------|----------|-----|-------|
@@ -8,14 +8,14 @@
 | **Cloud Dancer** (Background) | `#f0eee9` | RGB(240, 238, 233) | Page background, light fills |
 | **Golden Mist** (Accent) | `#d5cd94` | RGB(213, 205, 148) | Borders, highlights, selected states |
 
-## 📦 Installation
+##  Installation
 
 Global theme sudah diimport di `App.js`:
 ```javascript
 import "./assets/scss/kemenag-theme.css";
 ```
 
-## 🔧 CSS Variables
+##  CSS Variables
 
 Gunakan CSS variables untuk konsistensi:
 
@@ -31,7 +31,7 @@ Gunakan CSS variables untuk konsistensi:
 }
 ```
 
-## 📋 Available Classes
+##  Available Classes
 
 ### Page Layout
 
@@ -202,7 +202,7 @@ Gunakan CSS variables untuk konsistensi:
 <div className="border border-kemenag-primary">Primary border</div>
 ```
 
-## 🎯 Complete Example - Dashboard Page
+##  Complete Example - Dashboard Page
 
 ```jsx
 import React from 'react';
@@ -282,14 +282,14 @@ const Dashboard = () => {
 export default Dashboard;
 ```
 
-## 📱 Responsive Design
+##  Responsive Design
 
 Theme sudah include responsive breakpoints:
 - Mobile: < 768px
 - Tablet: 768px - 1024px
 - Desktop: > 1024px
 
-## 🎨 Color Scale untuk Peta
+##  Color Scale untuk Peta
 
 Gunakan gradient dari Cloud Dancer ke Blue Fusion:
 
@@ -301,7 +301,7 @@ Gunakan gradient dari Cloud Dancer ke Blue Fusion:
 />
 ```
 
-## ✅ Checklist Implementasi
+##  Checklist Implementasi
 
 Untuk setiap halaman baru:
 
@@ -316,7 +316,7 @@ Untuk setiap halaman baru:
 - [ ] Tambahkan `kemenag-fade-in` untuk animations
 - [ ] Set map `colorScale` ke `["#f0eee9", "#375673"]`
 
-## 🔄 Migration dari Style Lama
+##  Migration dari Style Lama
 
 ### Before:
 ```jsx
@@ -347,6 +347,6 @@ Untuk setiap halaman baru:
 </Card>
 ```
 
-## 📞 Support
+##  Support
 
 Untuk pertanyaan atau customization lebih lanjut, hubungi tim development.

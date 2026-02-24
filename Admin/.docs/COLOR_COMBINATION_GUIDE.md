@@ -1,4 +1,4 @@
-# 🎨 KEMENAG DASHBOARD - COLOR COMBINATION GUIDE
+#  KEMENAG DASHBOARD - COLOR COMBINATION GUIDE
 
 ## Palet Warna Utama
 
@@ -10,7 +10,7 @@
 
 ---
 
-## 📊 Kombinasi Warna Final
+##  Kombinasi Warna Final
 
 ### 1. **Background & Layout**
 
@@ -140,7 +140,7 @@ Caption:  #375673 (60%)  ← Subtle
 │ Map Container: #f0eee9                  │
 │ Border: #d5cd94 30%                     │
 │                                         │
-│  🗺️ Gradient: #f0eee9 → #375673       │
+│   Gradient: #f0eee9 → #375673       │
 │                                         │
 │  ┌─────────┐                            │
 │  │ Legend  │ ← BG: #ffffff              │
@@ -152,16 +152,16 @@ Caption:  #375673 (60%)  ← Subtle
 
 ---
 
-## 🎯 Prinsip Kombinasi
+##  Prinsip Kombinasi
 
 ### **Kontras Tinggi (High Contrast)**
 - Header Tabel: `#375673` background + `#f0eee9` text
 - Buttons Primary: `#375673` background + `#f0eee9` text
-- **Ratio: 4.8:1** ✅ WCAG AA Compliant
+- **Ratio: 4.8:1**  WCAG AA Compliant
 
 ### **Kontras Sedang (Medium Contrast)**
 - Body Text: `#375673` pada `#ffffff`
-- **Ratio: 7.2:1** ✅ WCAG AAA Compliant
+- **Ratio: 7.2:1**  WCAG AAA Compliant
 
 ### **Subtle Highlights**
 - Hover: `#d5cd94` 15% opacity
@@ -170,7 +170,7 @@ Caption:  #375673 (60%)  ← Subtle
 
 ---
 
-## 📐 Hierarchy Visual
+##  Hierarchy Visual
 
 ```
 PALING PENTING (Most Visible)
@@ -191,20 +191,20 @@ KURANG PENTING (Subtle)
 
 ---
 
-## ✅ Accessibility Check
+##  Accessibility Check
 
 | Kombinasi | Ratio | WCAG Level |
 |-----------|-------|------------|
-| `#375673` on `#ffffff` | 7.2:1 | AAA ✅ |
-| `#375673` on `#f0eee9` | 6.1:1 | AAA ✅ |
-| `#f0eee9` on `#375673` | 4.8:1 | AA ✅ |
-| `#d5cd94` on `#ffffff` | 1.4:1 | ❌ (Accent only) |
+| `#375673` on `#ffffff` | 7.2:1 | AAA  |
+| `#375673` on `#f0eee9` | 6.1:1 | AAA  |
+| `#f0eee9` on `#375673` | 4.8:1 | AA  |
+| `#d5cd94` on `#ffffff` | 1.4:1 |  (Accent only) |
 
 **Note:** Golden Mist (#d5cd94) hanya untuk accent/border, bukan untuk text utama.
 
 ---
 
-## 🎨 CSS Variables Reference
+##  CSS Variables Reference
 
 ```css
 :root {
@@ -226,7 +226,7 @@ KURANG PENTING (Subtle)
 
 ---
 
-## 🖼️ Contoh Implementasi
+##  Contoh Implementasi
 
 ### **Card dengan Table:**
 ```html
@@ -257,7 +257,7 @@ KURANG PENTING (Subtle)
 
 ---
 
-## 💡 Tips Penggunaan
+##  Tips Penggunaan
 
 1. **Background Halaman:** Selalu gunakan `#f0eee9` untuk konsistensi
 2. **Card:** Putih `#ffffff` dengan border Golden Mist tipis
@@ -269,8 +269,8 @@ KURANG PENTING (Subtle)
 ---
 
 **Kombinasi ini memberikan:**
-✅ Kontras tinggi untuk readability  
-✅ Konsistensi visual  
-✅ Professional & elegant  
-✅ WCAG AA/AAA compliant  
-✅ Harmonis & tidak melelahkan mata
+ Kontras tinggi untuk readability  
+ Konsistensi visual  
+ Professional & elegant  
+ WCAG AA/AAA compliant  
+ Harmonis & tidak melelahkan mata

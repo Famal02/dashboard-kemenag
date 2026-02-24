@@ -1,6 +1,6 @@
-# 🚀 QUICK START: Cleanup Project (Praktis)
+#  QUICK START: Cleanup Project (Praktis)
 
-## ⚡ Langkah Cepat (30 Menit)
+##  Langkah Cepat (30 Menit)
 
 ### STEP 1: Backup (2 menit)
 ```bash
@@ -54,11 +54,11 @@ git commit -m "Cleanup: Remove unused dependencies and pages"
 npm run build
 ```
 
-Jika berhasil → **SELESAI!** ✅
+Jika berhasil → **SELESAI!** 
 
 ---
 
-## 📋 Checklist Cepat
+##  Checklist Cepat
 
 - [ ] Backup dengan Git
 - [ ] Jalankan `depcheck`
@@ -71,7 +71,7 @@ Jika berhasil → **SELESAI!** ✅
 
 ---
 
-## 🚨 Jika Error
+##  Jika Error
 
 ```bash
 # Revert semua perubahan

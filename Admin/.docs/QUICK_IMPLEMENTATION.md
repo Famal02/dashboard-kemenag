@@ -1,8 +1,8 @@
 # QUICK IMPLEMENTATION GUIDE - Kemenag Theme
 
-## 🚀 Implementasi Cepat untuk Setiap Halaman
+##  Implementasi Cepat untuk Setiap Halaman
 
-### 1. Update DataRumahIbadah.js ✅ (SUDAH SELESAI)
+### 1. Update DataRumahIbadah.js  (SUDAH SELESAI)
 File ini sudah menggunakan custom CSS sendiri yang compatible dengan theme global.
 
 ### 2. Update PetaSebaranWakaf.js
@@ -280,7 +280,7 @@ return (
 );
 ```
 
-## 🎨 Color Mapping untuk Chart
+##  Color Mapping untuk Chart
 
 Gunakan warna theme untuk charts:
 
@@ -311,7 +311,7 @@ const chartOptions = {
 };
 ```
 
-## ✅ Checklist Perubahan
+##  Checklist Perubahan
 
 Untuk setiap file:
 
@@ -344,7 +344,7 @@ Untuk setiap file:
    - [ ] Add `kemenag-fade-in` untuk cards
    - [ ] Use `kemenag-fade-in-delay-1/2/3` untuk staggered animations
 
-## 🔄 Search & Replace Pattern
+##  Search & Replace Pattern
 
 Gunakan Find & Replace di VS Code:
 
@@ -357,14 +357,14 @@ Gunakan Find & Replace di VS Code:
 **Find:** `colorScale={\[.*?\]}`  
 **Replace:** `colorScale={["#f0eee9", "#375673"]}`
 
-## 📝 Notes
+##  Notes
 
 - Semua perubahan bersifat **non-breaking** - class lama tetap berfungsi
 - Theme global akan **override** styling default
 - Untuk customization khusus, buat file CSS terpisah seperti `DataRumahIbadah.css`
 - Gunakan `!important` hanya jika benar-benar diperlukan
 
-## 🚀 Priority Order
+##  Priority Order
 
 1. **High Priority:**
    - Dashboard/index.js (halaman utama)

@@ -2,11 +2,11 @@
 
 Folder ini berisi dokumentasi teknis untuk developer. File-file ini tidak perlu diberikan ke user.
 
-## 📚 Daftar Dokumentasi
+##  Daftar Dokumentasi
 
 Semua file dokumentasi perubahan dan perbaikan ada di folder ini untuk referensi developer.
 
-## 🔒 Catatan
+##  Catatan
 
 Folder ini di-ignore di `.gitignore` sehingga tidak akan ter-commit ke repository (opsional).
 

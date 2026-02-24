@@ -312,7 +312,7 @@ const PetaSebaranWakaf = ({ globalFilterYear, allData = [], isLoading = false })
                                     <div className="d-flex gap-2">
                                         <Input
                                             type="text"
-                                            placeholder="Cari Nazhir / Lokasi..."
+                                            placeholder="Cari Lokasi..."
                                             className="kemenag-search-input"
                                             style={{ width: '350px' }}
                                             value={searchQuery}
@@ -342,10 +342,8 @@ const PetaSebaranWakaf = ({ globalFilterYear, allData = [], isLoading = false })
                                             <thead>
                                                 <tr>
                                                     <th>No</th>
-                                                    <th>Nazhir</th>
                                                     <th>Lokasi</th>
                                                     <th>Luas (m²)</th>
-                                                    <th>Manfaat</th>
                                                     <th>Aksi</th>
                                                 </tr>
                                             </thead>
@@ -355,18 +353,8 @@ const PetaSebaranWakaf = ({ globalFilterYear, allData = [], isLoading = false })
                                                     .map((item, index) => (
                                                         <tr key={index}>
                                                             <td style={{ width: '50px' }} className="kemenag-col-no">{(currentPage - 1) * itemsPerPage + index + 1}</td>
-                                                            <td>
-                                                                <span className="kemenag-col-bold d-block text-truncate" style={{ maxWidth: 200 }} title={item.nazhir_nama}>
-                                                                    {item.nazhir_nama}
-                                                                </span>
-                                                            </td>
                                                             <td>{item.kabupaten_nama || item.provinsi_nama}</td>
                                                             <td>{item.tanah_luas}</td>
-                                                            <td>
-                                                                <div className="text-truncate" style={{ maxWidth: '250px' }} title={item.peruntukan_keterangan}>
-                                                                    {item.peruntukan_keterangan || "-"}
-                                                                </div>
-                                                            </td>
                                                             <td>
                                                                 <button
                                                                     className="btn-action-view"
@@ -391,7 +379,7 @@ const PetaSebaranWakaf = ({ globalFilterYear, allData = [], isLoading = false })
                                                     ))}
                                                 {filteredTableData.length === 0 && (
                                                     <tr>
-                                                        <td colSpan="6" className="text-center py-4">
+                                                        <td colSpan="4" className="text-center py-4">
                                                             <div className="text-muted">Tidak ada data ditemukan</div>
                                                         </td>
                                                     </tr>
@@ -443,16 +431,6 @@ const PetaSebaranWakaf = ({ globalFilterYear, allData = [], isLoading = false })
                                 <div className="mb-3 border-bottom pb-2">
                                     <h6 className="font-size-11 text-muted text-uppercase mb-1">Luas Tanah</h6>
                                     <p className="fw-bold mb-0 text-dark">{modalData.area}</p>
-                                </div>
-                                <div className="mb-3 border-bottom pb-2">
-                                    <h6 className="font-size-11 text-muted text-uppercase mb-1">Nazhir (Pengelola)</h6>
-                                    <p className="fw-bold mb-0 text-dark">{modalData.nazhir}</p>
-                                </div>
-                                <div className="mb-3">
-                                    <h6 className="font-size-11 text-muted text-uppercase mb-1">Peruntukan</h6>
-                                    <span className="badge bg-success bg-opacity-10 text-success p-2" style={{ whiteSpace: 'normal', textAlign: 'left' }}>
-                                        {modalData.benefit || "Tidak disebutkan"}
-                                    </span>
                                 </div>
                             </Col>
                             <Col md={7}>

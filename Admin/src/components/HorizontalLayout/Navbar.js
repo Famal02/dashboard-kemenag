@@ -28,8 +28,6 @@ const Navbar = props => {
   const [invoice, setinvoice] = useState(false);
   const [auth, setauth] = useState(false);
   const [utility, setutility] = useState(false);
-  // State for Rumah Ibadah (Top Level)
-  const [rumahIbadah, setrumahIbadah] = useState(false);
 
   useEffect(() => {
     var matchingMenuItem = null;
@@ -119,7 +117,6 @@ const Navbar = props => {
                   </Link>
                 </li>
 
-                {/* Menu Wakaf */}
                 <li className="nav-item">
                   <Link className="nav-link" to="/Wakaf">
                     <FeatherIcon icon="layers" />
@@ -127,28 +124,6 @@ const Navbar = props => {
                   </Link>
                 </li>
 
-                {/* Menu Rumah Ibadah */}
-                {/* <li className="nav-item dropdown">
-                  <Link
-                    to="/#"
-                    className="nav-link dropdown-toggle arrow-none"
-                    onClick={e => {
-                      e.preventDefault();
-                      setrumahIbadah(!rumahIbadah);
-                    }}
-                  >
-                    <FeatherIcon icon="map" />
-                    <span>{props.t("Rumah Ibadah")}</span> <div className="arrow-down"></div>
-                  </Link>
-                  <div className={classname("dropdown-menu", { show: rumahIbadah })}>
-                    <Link to="/Islam" className="dropdown-item">{props.t("Islam")}</Link>
-                    <Link to="/Kristen" className="dropdown-item">{props.t("Kristen")}</Link>
-                    <Link to="/Katolik" className="dropdown-item">{props.t("Katolik")}</Link>
-                    <Link to="/Hindu" className="dropdown-item">{props.t("Hindu")}</Link>
-                    <Link to="/Buddha" className="dropdown-item">{props.t("Buddha")}</Link>
-                    <Link to="/Khonghucu" className="dropdown-item">{props.t("Khonghucu")}</Link>
-                  </div>
-                </li> */}
 
                 <li className="nav-item dropdown">
                   <Link

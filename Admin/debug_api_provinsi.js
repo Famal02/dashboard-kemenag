@@ -21,7 +21,7 @@ async function inspectApi() {
             });
 
             const data = response.data;
-            output += `✅ Status: ${response.status}\n`;
+            output += ` Status: ${response.status}\n`;
 
             let items = [];
             if (data && data.data) {
@@ -32,22 +32,22 @@ async function inspectApi() {
                 }
             }
 
-            output += `✅ Items Found: ${items.length}\n`;
+            output += ` Items Found: ${items.length}\n`;
 
             if (items.length > 0) {
                 // Collect all province names
                 const provinces = items.map(i => i.provinsi).sort();
-                output += `\n📋 Found ${provinces.length} Provinces:\n${provinces.join(", ")}\n`;
+                output += `\n Found ${provinces.length} Provinces:\n${provinces.join(", ")}\n`;
 
                 const sample = items[0];
-                output += `\n📦 Sample Item Keys:\n${Object.keys(sample).join(", ")}\n`;
+                output += `\n Sample Item Keys:\n${Object.keys(sample).join(", ")}\n`;
             } else {
-                output += `\n⚠️ No items found or unknown structure.\nRaw Data: ${JSON.stringify(data, null, 2).substring(0, 500)}...\n`;
+                output += `\n No items found or unknown structure.\nRaw Data: ${JSON.stringify(data, null, 2).substring(0, 500)}...\n`;
             }
             output += `\n\n`;
 
         } catch (error) {
-            output += `❌ Error fetching ${api.name}: ${error.message}\n`;
+            output += ` Error fetching ${api.name}: ${error.message}\n`;
             if (error.response) {
                 output += `Status: ${error.response.status}\n`;
             }
@@ -56,7 +56,7 @@ async function inspectApi() {
     }
 
     fs.writeFileSync('debug_api_provinsi_output.txt', output);
-    console.log("✅ Analysis complete. Check debug_api_provinsi_output.txt");
+    console.log(" Analysis complete. Check debug_api_provinsi_output.txt");
 }
 
 inspectApi();

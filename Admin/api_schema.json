@@ -1,0 +1,71 @@
+{
+  "penyaluran_per_tahun": {
+    "tahun": 2025,
+    "total_asnaf_amil": 218386113848,
+    "total_asnaf_fakir": 325045057212,
+    "total_asnaf_fisabilillah": 511755853727,
+    "total_asnaf_gharimin": 18397586359,
+    "total_asnaf_ibnusabil": 16615032384,
+    "total_asnaf_miskin": 1316340903884,
+    "total_asnaf_muallaf": 11413046997,
+    "total_asnaf_riqab": 268330500,
+    "total_csr": 76927766367,
+    "total_dskl": 97513484266,
+    "total_infak_amil": 208576408307,
+    "total_infak_penyaluran": 32921984827,
+    "total_ist": 661167449660,
+    "total_istt": 744215829543,
+    "total_kurban": 478055684821,
+    "total_zakat_fitrah": 202780856486
+  },
+  "penerimaan_provinsi": {
+    "provinsi": "Yogyakarta",
+    "total_csr": 2083045435,
+    "total_dskl": 1565306384,
+    "total_fidyah": 1509500403,
+    "total_fitrah": 3431053248,
+    "total_infak_penyaluran": 995254078,
+    "total_is_ops": 212798393,
+    "total_ist": 83765615358,
+    "total_istt": 57021857560,
+    "total_kurban": 25269982020,
+    "total_zm_badan": 2281284766,
+    "total_zm_perorangan": 214331435078
+  },
+  "penerimaan-on-bs": {
+    "tahun": 2025,
+    "total_csr": 90133370940,
+    "total_dskl": 180716743720,
+    "total_fidyah": 31327035893,
+    "total_fitrah": 407334422680,
+    "total_infak_penyaluran": 45198889202,
+    "total_is_ops": 26413978093,
+    "total_ist": 969109325081,
+    "total_istt": 972084905394,
+    "total_kurban": 514628753157,
+    "total_zm_badan": 508593474689,
+    "total_zm_perorangan": 2283439558157
+  },
+  "penerimaan_per_tahun": {
+    "tahun": 2025,
+    "total_csr": 90133370940,
+    "total_dskl": 180716743720,
+    "total_fidyah": 31327035893,
+    "total_fitrah": 407334422680,
+    "total_infak_penyaluran": 45198889202,
+    "total_is_ops": 26413978093,
+    "total_ist": 969109325081,
+    "total_istt": 972084905394,
+    "total_kurban": 514628753157,
+    "total_zm_badan": 508593474689,
+    "total_zm_perorangan": 2283439558157
+  },
+  "penyaluran_per_bidang": {
+    "tahun": 2025,
+    "total_bidang_dakwah": 1103406939853,
+    "total_bidang_ekonomi": 350030763175,
+    "total_bidang_kemanusiaan": 1541800287371,
+    "total_bidang_kesehatan": 262872424913,
+    "total_bidang_pendidikan": 753105677901
+  }
+}

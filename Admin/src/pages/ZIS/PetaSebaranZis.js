@@ -4,7 +4,7 @@ import { Card, CardBody, Row, Col, Table, Input, Button } from "reactstrap";
 // Import Vector Map
 import PetaIndonesia from "./PetaIndonesia";
 import axios from 'axios';
-import { GET_PENERIMAAN_PROVINSI, GET_PENYALURAN_PROVINSI } from "../../helpers/url_helper";
+import { GET_ZAKAT_PENERIMAAN_PROVINSI, GET_PENYALURAN_PROVINSI } from "../../helpers/url_helper";
 import { idnMerc } from "@react-jvectormap/indonesia";
 import SkeletonLoader from "../../components/Common/SkeletonLoader";
 
@@ -61,17 +61,41 @@ const PetaSebaranZis = () => {
     }, []);
 
     useEffect(() => {
+        const CACHE_KEY = 'zis_peta_cache';
+        const CACHE_TTL = 30 * 60 * 1000; // 30 menit
+
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const ts = new Date().getTime();
-                const [resRecv, resDist] = await Promise.all([
-                    axios.get(`${GET_PENERIMAAN_PROVINSI}?_=${ts}`, { headers: { "x-api-key": "prod-b533376f-f659-42c3-af49-92b03d468cf1" } }),
-                    axios.get(`${GET_PENYALURAN_PROVINSI}?_=${ts}`, { headers: { "x-api-key": "prod-b533376f-f659-42c3-af49-92b03d468cf1" } })
-                ]);
 
-                const recItems = resRecv.data?.data?.items || [];
-                const distItems = resDist.data?.data?.items || [];
+                let recItems, distItems;
+
+                // Cek cache dulu
+                try {
+                    const cached = sessionStorage.getItem(CACHE_KEY);
+                    if (cached) {
+                        const { data, timestamp } = JSON.parse(cached);
+                        if (Date.now() - timestamp < CACHE_TTL && data) {
+                            recItems = data.recv;
+                            distItems = data.dist;
+                        }
+                    }
+                } catch (e) { /* fetch fresh */ }
+
+                // Fetch dari API jika tidak ada cache
+                if (!recItems) {
+                    const ts = new Date().getTime();
+                    const [resRecv, resDist] = await Promise.all([
+                        axios.get(`${GET_ZAKAT_PENERIMAAN_PROVINSI}?limit=100&_=${ts}`, { headers: { "x-api-key": "prod-2cf350c4-cc0f-494a-af78-5685349627a7" } }),
+                        axios.get(`${GET_PENYALURAN_PROVINSI}?limit=100&_=${ts}`, { headers: { "x-api-key": "prod-b533376f-f659-42c3-af49-92b03d468cf1" } })
+                    ]);
+
+                    recItems = resRecv.data?.data?.items || [];
+                    distItems = resDist.data?.data?.items || [];
+
+                    // Simpan ke cache
+                    try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ data: { recv: recItems, dist: distItems }, timestamp: Date.now() })); } catch (e) { }
+                }
 
                 const combined = {};
                 const nextFullData = {};
@@ -84,10 +108,21 @@ const PetaSebaranZis = () => {
                 let totalC = 0;
                 let totalD = 0;
 
+                const calcTotalObj = (obj) => {
+                    if (!obj) return 0;
+                    let sum = 0;
+                    Object.keys(obj).forEach(key => {
+                        if (key.startsWith('total_') || key.startsWith('zakat_')) {
+                            if (typeof obj[key] === 'number') sum += obj[key];
+                        }
+                    });
+                    return sum;
+                };
+
                 recItems.forEach(item => {
                     const name = item.provinsi || item.nama_provinsi;
                     const code = getCode(name);
-                    const val = item.total_penerimaan || (item.total_zakat_perorangan || 0) + (item.total_zakat_badan || 0) + (item.zakat_fitrah || 0) + (item.total_infak_penyaluran || 0);
+                    const val = item.total_penerimaan || calcTotalObj(item);
                     if (!combined[name]) combined[name] = { name, code, coll: 0, dist: 0 };
                     combined[name].coll = val;
                     totalC += val;
@@ -100,7 +135,7 @@ const PetaSebaranZis = () => {
                 distItems.forEach(item => {
                     const name = item.provinsi || item.nama_provinsi;
                     const code = getCode(name);
-                    const val = item.total_penyaluran || (item.total_asnaf_fakir || 0) + (item.total_asnaf_miskin || 0) + (item.total_asnaf_amil || 0);
+                    const val = item.total_penyaluran || calcTotalObj(item);
                     if (!combined[name]) combined[name] = { name, code, coll: 0, dist: 0 };
                     combined[name].dist = val;
                     totalD += val;
@@ -317,7 +352,7 @@ const PetaSebaranZis = () => {
                                                     <th style={{ width: 50 }}>No</th>
                                                     <th>Provinsi</th>
                                                     {/* CONDITIONAL HEADER */}
-                                                    {activeTab === 'collection' && <th className="text-end">Total Pengumpulan</th>}
+                                                    {activeTab === 'collection' && <th className="text-end">Total Penerimaan</th>}
                                                     {activeTab === 'distribution' && <th className="text-end">Total Penyaluran</th>}
                                                     <th className="text-end" style={{ width: '150px' }}>Persentase</th>
                                                 </tr>

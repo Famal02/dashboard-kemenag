@@ -1,10 +1,10 @@
 Analysis of https://spl-satudata.kemenag.go.id/core/apidev/penerimaan-zm/penyaluran
 
-✅ API Response Status: 200
-✅ Data Type: object
-✅ 'data.items' is an Array with 1 items.
+ API Response Status: 200
+ Data Type: object
+ 'data.items' is an Array with 1 items.
 
-📦 Sample Item Structure (from data.items):
+ Sample Item Structure (from data.items):
 {
   "id": 1,
   "terakhir_diperbarui": "2026-02-02T15:27:14.237122Z",
@@ -32,5 +32,5 @@ Analysis of https://spl-satudata.kemenag.go.id/core/apidev/penerimaan-zm/penyalu
   "total_zakat_fitrah": 732891479641
 }
 
-🔑 Keys:
+ Keys:
 id, terakhir_diperbarui, total_asnaf_amil, total_asnaf_fakir, total_asnaf_fisabilillah, total_asnaf_gharimin, total_asnaf_ibnusabil, total_asnaf_miskin, total_asnaf_muallaf, total_asnaf_riqab, total_bidang_dakwah, total_bidang_ekonomi, total_bidang_kemanusiaan, total_bidang_kesehatan, total_bidang_pendidikan, total_csr, total_dskl, total_infak_amil, total_infak_penyaluran, total_ist, total_istt, total_kurban, total_penyaluran_all, total_zakat_fitrah

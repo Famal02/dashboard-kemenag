@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
 
 // Import Components
-import LightDark from "../CommonForBoth/Menus/LightDark";
+
 
 // Import Images
 import logoSvg from "../../assets/images/logo-kemenag.png";
@@ -39,13 +39,7 @@ const Header = props => {
   const { showRightSidebar } = useSelector(headerData);
   const { onChangeLayoutMode } = props;
 
-  // --- STATE MANAGEMENT ---
-  const [search, setsearch] = useState(false);
   const [isClick, setClick] = useState(true);
-
-  // State untuk Dropdown Rumah Ibadah
-  const [menuRumahIbadah, setMenuRumahIbadah] = useState(false);
-
   /*** Fungsi Toggle Sidebar (Garis Tiga) */
   function tToggle() {
     var body = document.body;
@@ -110,30 +104,6 @@ const Header = props => {
               >
                 Wakaf
               </Link>
-
-              {/* Menu Rumah Ibadah (Dropdown) */}
-              <Dropdown
-                isOpen={menuRumahIbadah}
-                toggle={() => setMenuRumahIbadah(!menuRumahIbadah)}
-                className="d-inline-block"
-              >
-                <DropdownToggle
-                  className="text-dark fw-medium font-size-15 px-3 py-2 text-decoration-none bg-transparent border-0"
-                  tag="button"
-                >
-                  Rumah Ibadah
-                  <i className="mdi mdi-chevron-down ms-1"></i>
-                </DropdownToggle>
-
-                <DropdownMenu>
-                  <Link to="/Islam" className="dropdown-item">Islam</Link>
-                  <Link to="/Kristen" className="dropdown-item">Kristen</Link>
-                  <Link to="/Katolik" className="dropdown-item">Katolik</Link>
-                  <Link to="/Hindu" className="dropdown-item">Hindu</Link>
-                  <Link to="/Buddha" className="dropdown-item">Buddha</Link>
-                  <Link to="/Khonghucu" className="dropdown-item">Khonghucu</Link>
-                </DropdownMenu>
-              </Dropdown>
             </div>
           </div>
 
@@ -142,9 +112,7 @@ const Header = props => {
           <div className="d-flex align-items-center gap-2">
 
             {/* Light/Dark Toggle */}
-            <div className="ms-2">
-              <LightDark layoutMode={props['layoutMode']} onChangeLayoutMode={onChangeLayoutMode} />
-            </div>
+
 
           </div>
         </div>

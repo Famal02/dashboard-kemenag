@@ -1,11 +1,11 @@
-# 🧹 PANDUAN PEMBERSIHAN PROJECT - AMAN & SISTEMATIS
+#  PANDUAN PEMBERSIHAN PROJECT - AMAN & SISTEMATIS
 
-## 📋 Tujuan
+##  Tujuan
 Membersihkan project dari file, folder, code double, code menimpa, teks tidak berguna, dan dependency yang tidak terpakai **tanpa merusak fungsi website**.
 
 ---
 
-## ⚠️ PENTING: Backup Dulu!
+##  PENTING: Backup Dulu!
 
 ### Sebelum Mulai:
 ```bash
@@ -24,7 +24,7 @@ git checkout main
 
 ---
 
-## 📊 FASE 1: IDENTIFIKASI (Analisis Dulu, Jangan Hapus)
+##  FASE 1: IDENTIFIKASI (Analisis Dulu, Jangan Hapus)
 
 ### 1.1. Cek Dependency yang Tidak Terpakai
 
@@ -53,7 +53,7 @@ depcheck
 - `toastr` - Jika tidak ada notifikasi
 - dll
 
-**⚠️ JANGAN HAPUS DULU!** Catat saja.
+** JANGAN HAPUS DULU!** Catat saja.
 
 ---
 
@@ -176,9 +176,9 @@ console.log('debug data:', data);
 
 ---
 
-## 🗑️ FASE 2: PEMBERSIHAN BERTAHAP
+##  FASE 2: PEMBERSIHAN BERTAHAP
 
-### ⚠️ ATURAN EMAS:
+###  ATURAN EMAS:
 1. **Hapus satu kategori per waktu**
 2. **Test setelah setiap penghapusan**
 3. **Commit setelah test berhasil**
@@ -217,7 +217,7 @@ npm uninstall toastr
 npm uninstall simplebar-react
 ```
 
-**⚠️ JANGAN HAPUS:**
+** JANGAN HAPUS:**
 - `react`, `react-dom` - Core
 - `reactstrap`, `bootstrap` - UI
 - `apexcharts`, `react-apexcharts` - Charts (dipakai)
@@ -361,7 +361,7 @@ npm install -g babel-plugin-transform-remove-console
 
 ---
 
-## ✅ FASE 3: VERIFIKASI & TESTING
+##  FASE 3: VERIFIKASI & TESTING
 
 ### 3.1. Test Fungsionalitas
 
@@ -398,7 +398,7 @@ ls -lh build/static/js/
 
 ---
 
-## 📊 FASE 4: DOKUMENTASI HASIL
+##  FASE 4: DOKUMENTASI HASIL
 
 ### 4.1. Catat Apa yang Dihapus
 
@@ -428,7 +428,7 @@ ls -lh build/static/js/
 
 ---
 
-## 🎯 CHECKLIST AKHIR
+##  CHECKLIST AKHIR
 
 ### Sebelum Dianggap Selesai:
 
@@ -446,7 +446,7 @@ ls -lh build/static/js/
 
 ---
 
-## 🚨 TROUBLESHOOTING
+##  TROUBLESHOOTING
 
 ### Jika Aplikasi Error Setelah Cleanup:
 
@@ -476,7 +476,7 @@ Solusi:
 
 ---
 
-## 💡 TIPS PRO
+##  TIPS PRO
 
 ### 1. Jangan Terburu-buru
 - Hapus satu kategori per hari
@@ -506,7 +506,7 @@ mv file.js _file_unused.js
 
 ---
 
-## 📈 ESTIMASI HASIL
+##  ESTIMASI HASIL
 
 ### Sebelum Cleanup:
 - Dependencies: ~45 packages
@@ -524,7 +524,7 @@ mv file.js _file_unused.js
 
 ---
 
-## ✅ KESIMPULAN
+##  KESIMPULAN
 
 ### Prinsip Pembersihan Aman:
 1. **Identifikasi dulu** - Jangan langsung hapus
@@ -534,4 +534,4 @@ mv file.js _file_unused.js
 5. **Commit setiap step** - Mudah revert jika error
 6. **Dokumentasikan** - Catat apa yang dihapus
 
-**Dengan cara ini, project bersih tanpa merusak fungsi!** 🧹✨
+**Dengan cara ini, project bersih tanpa merusak fungsi!** 

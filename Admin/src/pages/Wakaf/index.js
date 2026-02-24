@@ -7,41 +7,19 @@ import axios from "axios";
 import { GET_WAKAF_TANAH_DATA } from "../../helpers/url_helper";
 import SkeletonLoader from "../../components/Common/SkeletonLoader"; // Import Skeleton
 
-// --- HELPER FUNCTIONS ---
-const formatCurrency = (value) => {
-    if (value == null) return "Rp 0";
-    if (value >= 1000000000) return "Rp " + (value / 1000000000).toFixed(1) + " M";
-    if (value >= 1000000) return "Rp " + (value / 1000000).toFixed(1) + " Jt";
-    return "Rp " + value.toLocaleString('id-ID');
-};
-
 const formatNumber = (value) => value ? value.toLocaleString('id-ID') : "0";
 
 // --- CHART COMPONENTS WITH DETAILS ---
 
-const ChartWithDetails = ({ title, options, series, labels, colors, totalValue, unit = "Rp", chartType = "donut", isLoading }) => {
+const ChartWithDetails = ({ title, options, series, labels, colors, chartType = "donut", isLoading, hideTotal = false }) => {
     let total = 0;
     let seriesData = [];
 
-    // Safely extract data series
     if (chartType === "bar") {
-        if (series && series.length > 0 && series[0].data) {
-            seriesData = series[0].data;
-            // For Assets Growth, the last bar usually represents the current/total state
-            total = seriesData.length > 0 ? seriesData[seriesData.length - 1] : 0;
-        } else {
-            seriesData = [];
-            total = 0;
-        }
+        seriesData = (series && series.length > 0 && series[0].data) ? series[0].data : [];
     } else {
-        // Pie/Donut
-        if (series && Array.isArray(series)) {
-            seriesData = series;
-            total = seriesData.reduce((a, b) => a + b, 0);
-        } else {
-            seriesData = [];
-            total = 0;
-        }
+        seriesData = (series && Array.isArray(series)) ? series : [];
+        total = seriesData.reduce((a, b) => a + b, 0);
     }
 
     if (isLoading) {
@@ -49,7 +27,7 @@ const ChartWithDetails = ({ title, options, series, labels, colors, totalValue, 
     }
 
     return (
-        <Card className="kemenag-card kemenag-hover-card">
+        <Card className="kemenag-card h-100 shadow-sm border-0 kemenag-hover-card">
             <CardBody>
                 <h5 className="card-title mb-4">{title}</h5>
                 <Row className="align-items-center">
@@ -88,20 +66,18 @@ const ChartWithDetails = ({ title, options, series, labels, colors, totalValue, 
                                             </span>
                                         </div>
                                         <div className="text-end" style={{ minWidth: '100px' }}>
-                                            <h6 className="mb-0 font-size-13">{unit === "Rp" ? formatCurrency(value) : formatNumber(value)}</h6>
+                                            <h6 className="mb-0 font-size-13">{formatNumber(value)}</h6>
                                             {chartType !== "bar" && <small className="text-muted font-size-11">({percent}%)</small>}
                                         </div>
                                     </div>
                                 );
                             })}
-                            <div className="d-flex justify-content-between align-items-center mt-3 pt-2">
-                                <h6 className="mb-0 text-uppercase text-muted font-size-12 fw-bold">
-                                    {chartType === "bar" ? "Total Aset Saat Ini" : "Total"}
-                                </h6>
-                                <h5 className="mb-0 text-primary fw-bold">
-                                    {totalValue || (unit === "Rp" ? formatCurrency(total) : formatNumber(total))}
-                                </h5>
-                            </div>
+                            {!hideTotal && (
+                                <div className="d-flex justify-content-between align-items-center mt-3 pt-2">
+                                    <h6 className="mb-0 text-uppercase text-muted font-size-12 fw-bold">Total</h6>
+                                    <h5 className="mb-0 text-primary fw-bold">{formatNumber(total)}</h5>
+                                </div>
+                            )}
                         </div>
                     </Col>
                 </Row>
@@ -139,6 +115,12 @@ const AssetsByPurposeChart = ({ data, isLoading }) => {
             },
             style: { fontSize: '10px' }
         },
+        plotOptions: {
+            pie: {
+                customScale: 0.9,
+                offsetX: 0
+            }
+        },
         stroke: { show: true, width: 0 },
         tooltip: {
             y: { formatter: (val) => val + " Aset" }
@@ -147,27 +129,23 @@ const AssetsByPurposeChart = ({ data, isLoading }) => {
 
     return (
         <ChartWithDetails
-            title="Aset Wakaf Tanah Sesuai Peruntukan"
+            title="Aset Wakaf Tanah Peruntukan"
             options={options}
             series={series}
             labels={labels}
             colors={colors}
-            unit="Aset"
-            totalValue={`${series.reduce((a, b) => a + b, 0).toLocaleString()} Aset`}
             chartType="pie"
             isLoading={isLoading}
+            hideTotal={true}
         />
     );
 };
 
-const AssetsGrowthChart = ({ years, startYear = 2020, data = [], isLoading }) => {
-    // If no real data passed, use static (fallback) or empty
-    const defaultData = [0, 0, 0, 0, 0, 0];
-    // Dynamic Years based on data
+const AssetsGrowthChart = ({ years, data = [], isLoading }) => {
     const displayYears = years && years.length > 0 ? years : ['2020', '2021', '2022', '2023', '2024', '2025'];
-    const displayData = data && data.length > 0 ? data : defaultData;
+    const displayData = data && data.length > 0 ? data : [0, 0, 0, 0, 0, 0];
 
-    const color = '#34c38f';
+    const color = '#375673';
 
     const options = {
         chart: { type: 'bar', toolbar: { show: false } },
@@ -193,9 +171,8 @@ const AssetsGrowthChart = ({ years, startYear = 2020, data = [], isLoading }) =>
             labels={displayYears}
             colors={displayYears.map(() => color)}
             chartType="bar"
-            unit="Aset"
-            totalValue={`${displayData.reduce((a, b) => a + b, 0).toLocaleString()} Aset`}
             isLoading={isLoading}
+            hideTotal={true}
         />
     );
 };
@@ -206,7 +183,7 @@ const AssetsGrowthChart = ({ years, startYear = 2020, data = [], isLoading }) =>
 const StatCard = ({ title, value, icon, color, isLoading }) => {
     return (
         <Col xl={4} md={6}>
-            <Card className="card-h-100 shadow-lg kemenag-hover-card" style={{ backgroundColor: '#1c3e5e', border: 'none', borderLeft: '6px solid #d5cd94', borderRadius: '8px' }}>
+            <Card className="card-h-100 kemenag-hover-card" style={{ backgroundColor: '#1c3e5e', border: 'none', borderRadius: '8px', boxShadow: '-6px 6px 0px #d5cd94' }}>
                 <CardBody className="p-3">
                     <div className="d-flex align-items-center mb-3">
                         <div className={`avatar-xs me-2`}>
@@ -313,39 +290,85 @@ const WakafPage = () => {
     const [growthData, setGrowthData] = useState({ years: [], counts: [] });
     const [provinceData, setProvinceData] = useState([]);
 
-    // --- 1. FETCH DATA ONCE ---
+    // --- 1. FETCH DATA WITH PAGINATION + CACHE ---
     useEffect(() => {
+        const CACHE_KEY = 'wakaf_data_cache';
+        const CACHE_TTL = 30 * 60 * 1000; // 30 menit
+        const PAGE_SIZE = 2000; // items per page
+        const API_HEADERS = { "x-api-key": "prod-b533376f-f659-42c3-af49-92b03d468cf1" };
+
+        const processItems = (items) => {
+            const currentYear = new Date().getFullYear();
+            items.forEach(item => {
+                let itemYear = null;
+                if (item.permohonan_kode && item.permohonan_kode.length >= 4) {
+                    const y = parseInt(item.permohonan_kode.substring(0, 4));
+                    if (y > 1900 && y <= currentYear + 1) itemYear = y;
+                }
+                if (!itemYear && item.tanggal_sertifikat) {
+                    const d = new Date(item.tanggal_sertifikat);
+                    if (!isNaN(d.getFullYear())) itemYear = d.getFullYear();
+                }
+                if (itemYear) item._year = itemYear;
+            });
+
+            const yearsSet = new Set(items.map(i => i._year).filter(Boolean));
+            const newAvailableYears = Array.from(yearsSet).sort((a, b) => b - a);
+            setAvailableYears(newAvailableYears);
+            setAllItems(items);
+            setLoading(false);
+        };
+
         const fetchData = async () => {
             setLoading(true);
+
+            // Cek cache dulu
             try {
-                const response = await axios.get(GET_WAKAF_TANAH_DATA, {
-                    headers: { "x-api-key": "prod-b533376f-f659-42c3-af49-92b03d468cf1" },
-                    params: { limit: 20000 }
-                });
-                const items = response.data?.data?.items || [];
-                const currentYear = new Date().getFullYear();
-
-                // Encode Year Data Once
-                items.forEach(item => {
-                    let itemYear = null;
-                    if (item.permohonan_kode && item.permohonan_kode.length >= 4) {
-                        const y = parseInt(item.permohonan_kode.substring(0, 4));
-                        if (y > 1900 && y <= currentYear + 1) itemYear = y;
+                const cached = sessionStorage.getItem(CACHE_KEY);
+                if (cached) {
+                    const { data, timestamp } = JSON.parse(cached);
+                    if (Date.now() - timestamp < CACHE_TTL && data && data.length > 0) {
+                        processItems(data);
+                        return;
                     }
-                    if (!itemYear && item.tanggal_sertifikat) {
-                        const d = new Date(item.tanggal_sertifikat);
-                        if (!isNaN(d.getFullYear())) itemYear = d.getFullYear();
-                    }
-                    if (itemYear) item._year = itemYear;
+                }
+            } catch (e) { /* cache error, fetch fresh */ }
+
+            // Fetch halaman 1 untuk dapat totalPages
+            try {
+                const res1 = await axios.get(GET_WAKAF_TANAH_DATA, {
+                    headers: API_HEADERS,
+                    params: { limit: PAGE_SIZE, page: 1 }
                 });
+                const page1Data = res1.data?.data || {};
+                const page1Items = page1Data.items || [];
+                const totalPages = page1Data.totalPages || 1;
 
-                // Extract Available Years
-                const yearsSet = new Set(items.map(i => i._year).filter(Boolean));
-                const newAvailableYears = Array.from(yearsSet).sort((a, b) => b - a);
-                setAvailableYears(newAvailableYears);
-                setAllItems(items); // Store raw data
-                setLoading(false);
+                let allData = [...page1Items];
 
+                // Fetch halaman sisanya secara paralel
+                if (totalPages > 1) {
+                    const pageNumbers = [];
+                    for (let p = 2; p <= totalPages; p++) pageNumbers.push(p);
+
+                    const results = await Promise.all(
+                        pageNumbers.map(p =>
+                            axios.get(GET_WAKAF_TANAH_DATA, {
+                                headers: API_HEADERS,
+                                params: { limit: PAGE_SIZE, page: p }
+                            }).then(r => r.data?.data?.items || [])
+                                .catch(() => [])
+                        )
+                    );
+                    results.forEach(items => { allData = allData.concat(items); });
+                }
+
+                // Simpan ke cache
+                try {
+                    sessionStorage.setItem(CACHE_KEY, JSON.stringify({ data: allData, timestamp: Date.now() }));
+                } catch (e) { /* storage full, skip */ }
+
+                processItems(allData);
             } catch (error) {
                 console.error("Error fetching wakaf data:", error);
                 setLoading(false);
@@ -435,7 +458,7 @@ const WakafPage = () => {
 
     const statCards = [
         { title: "Jumlah Wakif", value: stats.wakif, icon: "bx bx-user", color: "primary" },
-        { title: "Lokasi Tanah", value: stats.tanah, icon: "bx bx-map", color: "success" },
+        { title: "Luas Tanah", value: stats.tanah, icon: "bx bx-map", color: "success" },
         { title: "Nazhir Sertif", value: stats.nazhir, icon: "bx bx-certification", color: "warning" }
     ];
 

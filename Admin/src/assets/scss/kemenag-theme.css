@@ -1,11 +1,3 @@
-/* ========================================
-   KEMENAG DASHBOARD - GLOBAL THEME
-   Color Palette:
-   - Primary (Blue Fusion): #375673
-   - Background (Cloud Dancer): #f0eee9
-   - Accent (Golden Mist): #d5cd94
-   ======================================== */
-
 :root {
     --kemenag-primary: #375673;
     --kemenag-primary-rgb: 55, 86, 115;
@@ -18,11 +10,7 @@
     --kemenag-text-lighter: rgba(55, 86, 115, 0.6);
 }
 
-/* ========================================
-   GLOBAL PAGE STYLES
-   ======================================== */
 
-/* Ensure body and html use theme background */
 html,
 body {
     background-color: var(--kemenag-background) !important;
@@ -98,6 +86,30 @@ body {
     margin-bottom: 24px;
 }
 
+/* Custom Scrollbar untuk Legend Chart */
+.chart-legend-scroll {
+    padding-right: 5px;
+}
+
+.chart-legend-scroll::-webkit-scrollbar {
+    width: 6px;
+    background: transparent;
+}
+
+.chart-legend-scroll::-webkit-scrollbar-thumb {
+    background: rgba(55, 86, 115, 0.2);
+    /* Transparan Blue Fusion */
+    border-radius: 10px;
+}
+
+.chart-legend-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(55, 86, 115, 0.4);
+}
+
+.chart-legend-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
 .kemenag-breadcrumb {
     background: transparent;
     padding: 0;
@@ -124,7 +136,6 @@ body {
     border-radius: 12px;
     box-shadow: 0 2px 12px rgba(var(--kemenag-primary-rgb), 0.08);
     transition: all 0.3s ease;
-    overflow: hidden;
 }
 
 .kemenag-card:hover {
@@ -445,6 +456,39 @@ body {
     background: var(--kemenag-accent-dark);
 }
 
+/* --- Chart Legend Scrollbar (transparent, appear on hover) --- */
+.chart-legend-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 0.3s ease;
+}
+
+.chart-legend-scroll:hover {
+    scrollbar-color: var(--kemenag-accent) transparent;
+}
+
+.chart-legend-scroll::-webkit-scrollbar {
+    width: 5px;
+}
+
+.chart-legend-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chart-legend-scroll::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+.chart-legend-scroll:hover::-webkit-scrollbar-thumb {
+    background: var(--kemenag-accent);
+}
+
+.chart-legend-scroll:hover::-webkit-scrollbar-thumb:hover {
+    background: var(--kemenag-accent-dark);
+}
+
 /* ========================================
    SEARCH & FILTER
    ======================================== */
@@ -754,15 +798,6 @@ body {
 }
 
 /* --- FIX UNTUK HALAMAN TERTENTU --- */
-
-/* Rumah Ibadah - samakan dengan global */
-.rumah-ibadah-page .row {
-    margin-bottom: 24px;
-}
-
-.rumah-ibadah-page .row:last-child {
-    margin-bottom: 0;
-}
 
 /* PetaSebaranWakaf & PetaSebaranZis - samakan spacing */
 .kemenag-page .mb-4 {
